@@ -1,0 +1,64 @@
+﻿@using MVCDemo.Models
+@using MVCDemo.Common
+@using System.Reflection;
+@using MVCDemo.CustomHtmlHelpers
+
+@model MVCDemo.Models.Search
+
+@{
+    if (ViewBag.Controller.ToString().ToLower() == "book" && ViewBag.Action.ToString().ToLower() == "index")
+    {
+        <div class="line_placeholder"></div>
+        <span id="spanSearchOptionsTitle">Opcje Wyszukiwania:</span>
+        <div class="line_placeholder"></div>
+        <table id="tableSearchOptions">
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.SortBy)
+                </td>
+                <td>
+                    @Html.DropDownListFor(m => m.SortBy, Model.DdlSortBy, new {id = "ddlSortBy"})
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.SortOrder)
+                </td>
+                <td>
+                    @Html.DropDownListFor(m => m.SortOrder, Model.DdlSortOrder, new {id = "ddlSortOrder"})
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.CheckBoxFor(m => m.IncludeTitle, new {id = "cbIncludeTitle"})
+                    @Html.LabelHtmlFor(m => m.IncludeTitle, @"<span></span>{prop}", new {@for = "cbIncludeTitle"})
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.CheckBoxFor(m => m.IncludeAuthor, new {id = "cbIncludeAuthor"})
+                    @Html.LabelHtmlFor(m => m.IncludeAuthor, @"<span></span>{prop}", new {@for = "cbIncludeAuthor"})
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.CheckBoxFor(m => m.IncludeCategory, new {id = "cbIncludeCategory"})
+                    @Html.LabelHtmlFor(m => m.IncludeCategory, @"<span></span>{prop}", new {@for = "cbIncludeCategory"})
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.CheckBoxFor(m => m.IncludeDescription, new {id = "cbIncludeDescription"})
+                    @Html.LabelHtmlFor(m => m.IncludeDescription, @"<span></span>{prop}", new {@for = "cbIncludeDescription"})
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    }
+}
+
+
+

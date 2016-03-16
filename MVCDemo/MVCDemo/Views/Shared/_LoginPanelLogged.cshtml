@@ -1,0 +1,8 @@
+﻿@using MVCDemo.CustomHtmlHelpers
+@model MVCDemo.Models.UserToLoginViewModel
+
+<span class="bold_descriptions">
+    Zalogowany jako: 
+    @Html.ActionLink(Model.UserName, "User", "Details", new { id = Model.Id.ToString() }, new { id = "lnkbtnUserDetails" }), 
+    <span id="lnkbtnLogout" class="linklike" style="font-size: 18px">Wyloguj</span>
+</span>

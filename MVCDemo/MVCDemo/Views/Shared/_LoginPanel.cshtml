@@ -1,0 +1,40 @@
+﻿@using MVCDemo.CustomHtmlHelpers
+@model MVCDemo.Models.UserToLoginViewModel
+
+@using (@Html.BeginForm(null, null, FormMethod.Post, new { id = "frmLoginPanel" }))
+{
+
+    <table id="tableLoginPanel">
+        <tr>
+            <td style="padding-right: 5px"><span class="bold_descriptions">Logowanie: </span></td>
+            <td style="padding-bottom: 2px">@Html.TextBoxFor(m => m.UserName, new { id = "txtLoginUserName", @placeholder = "Login..." })</td>
+            <td style="padding-left: 5px; white-space: nowrap;">
+                @Html.CheckBoxFor(m => m.RememberMe, new { id = "cbLoginRememberMe" })
+                @Html.LabelHtmlFor(m => m.RememberMe, "<span></span>{prop}", new { @for = "cbLoginRememberMe" })
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td style="padding-bottom: 2px">@Html.PasswordFor(m => m.Password, new { id = "txtLoginPassword", @placeholder = "Hasło..." })</td>
+            <td style="padding-left: 5px"><input id="btnLoginSubmit" type="button" value="Zaloguj" /></td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <span class="bold_descriptions">
+                    Nie masz konta? 
+                    @Html.ActionLink("Zarejestruj Się", "Register", "User", new { displayRegisterPanel = true, displayActivateAccountPanel = false, displayRemindPasswordPanel = false }, new {@style = "font-size: 18px;"})
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <span class="bold_descriptions">
+                    Zapomniałeś Hasła?
+                    @Html.ActionLink("Przypomnij", "Register", "User", new { displayRegisterPanel = false, displayActivateAccountPanel = false, displayRemindPasswordPanel = true }, new { @style = "font-size: 18px;" })
+                </span>
+            </td>
+        </tr>
+    </table>
+}
+
+

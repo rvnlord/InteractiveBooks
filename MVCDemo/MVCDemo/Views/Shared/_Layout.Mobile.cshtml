@@ -1,0 +1,92 @@
+﻿@using MVCDemo.CustomHtmlHelpers
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @*<link href="~/Content/jquery.mobile-1.4.5.css" rel="stylesheet"/>*@
+    <link href="~/Content/themes/base/all.css" rel="stylesheet" />
+    <link href="~/Content/Styles.css" rel="stylesheet" />
+    <meta name="description" content="The description of my page" />
+</head>
+<body>
+
+    @* DEBUGOWANIE *@
+
+    <div id="divDebug">Wiadomości Debugowania<br /><br /></div>
+
+    @* =========== *@
+
+    <div id="Background"></div>
+    <div id="Main" class="container body-content">
+        @{
+            var controller = ViewContext.RouteData.GetRequiredString("controller");
+            var action = ViewContext.RouteData.GetRequiredString("action");
+        }
+
+        @Html.Partial("_ViewSwitcher")
+        <div id="divMenuAndSearchContainer">
+            @using (@Html.BeginForm("Index", "Book", FormMethod.Post, new { id = "frmSearch" }))
+            {
+                <div id="divSearchWidget">
+                    @{ Html.RenderAction("GetSearchWidget", "Base", new { controller, action }); }
+                    <input id="btnSearchSubmit" type="submit" value="Szukaj" />
+                </div>
+
+                <div id="divSearchOptions">
+                    @{ Html.RenderAction("GetSearchOptions", "Book", new { controller, action }); }
+                </div>
+                        }
+
+            <div id="divLoginPanelContainer">
+                @{ Html.RenderAction("GetLoginPanel", "Base", new { controller, action }); }
+            </div>
+
+            <div id="divMenuContainer">
+                @{ Html.RenderAction("GetMenu", "Base", new { controller, action }); }
+            </div>
+
+        </div>
+
+        <br />
+
+        @RenderBody()
+
+        <div id="divError"></div>
+    </div>
+    <script src="~/Scripts/jquery-2.1.4.js"></script>
+    <script type="text/javascript">
+        //Function that provides a relative URL for cases of virtual directories.
+        jQuery.url = function (path) {
+            return '@Url.Content("~/")' + path;
+        };
+    </script>
+    @*<script type="text/javascript">
+        $(document).on('mobileinit', function () {
+            //$.mobile.keepNative = "*";
+            $.mobile.ignoreContentEnabled = true;
+            //$.mobile.autoInitializePage = false;
+        });
+    </script>*@
+    <script src="~/Scripts/jquery-ui-1.11.4.js"></script>
+    @* http://jquerymobile.com/download-builder/ *@
+    <script src="~/Scripts/jquery.mobile.noinit.noselects-1.4.5.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/Scripts/MicrosoftAjax.js"></script>
+    <script src="~/Scripts/MicrosoftMvcAjax.js"></script>
+    <script src="~/Scripts/linq.js"></script>
+    <script src="~/Scripts/jquery.linq.js"></script>
+    <script src="~/Scripts/jquery.cookie.js"></script>
+    <script src="~/Scripts/eventPause.js"></script>
+    <script src="~/Scripts/jhash-2.1.js"></script>
+    <script src="~/Scripts/attrchange.js"></script>
+    <script src="~/Scripts/moment.js"></script>
+    <script src="~/Scripts/Base/Index.js"></script>
+    @RenderSection("Scripts", false)
+</body>
+
+</html>

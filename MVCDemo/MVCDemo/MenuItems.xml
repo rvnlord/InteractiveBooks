@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<MenuItems>
+  <MenuItem Id="0" NavigateUrl="~/Home/Index" Text="Główna"/>
+  <MenuItem Id="1" NavigateUrl="~/Book/Index" Text="Książki">
+    <MenuItem Id="101" NavigateUrl="~/Book/Index" Text="Moje"/>
+    <MenuItem Id="102" NavigateUrl="~/Book/Add" Text="Dodaj"/>
+  </MenuItem>
+  <MenuItem Id="2" NavigateUrl="~/User/Index" Text="Autorzy">
+    <MenuItem Id="201" NavigateUrl="~/User/Details" Text="Pokaż Profil"/>
+    <MenuItem Id="202" NavigateUrl="~/User/Edit" Text="Edytuj Profil"/>
+  </MenuItem>
+  <MenuItem Id="3" NavigateUrl="~/Home/About" Text="O Nas"/>
+</MenuItems>

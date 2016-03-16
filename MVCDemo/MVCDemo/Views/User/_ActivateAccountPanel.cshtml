@@ -1,0 +1,47 @@
+﻿@using System.Web.Mvc.Html
+@using MVCDemo.Common
+@using MVCDemo.Models
+@model UserToActivateViewModel
+
+@{
+    var modelType = Model.GetType();
+    var activationEmailDisplayName = DisplayNameHelper.GetDisplayName(modelType.GetProperty(nameof(Model.ActivationEmail)));
+    var activationCodeDisplayName = DisplayNameHelper.GetDisplayName(modelType.GetProperty(nameof(Model.ActivationCode)));
+}
+
+@using (@Html.BeginForm(null, null, FormMethod.Post, new { id = "frmActivateAccountPanel" }))
+{
+    <fieldset>
+        <legend>Aktywacja Konta</legend>
+
+        <table class="tableAccountActivation">
+            <tr>
+                <td class="activation_editor_label">
+                    @Html.LabelFor(model => model.ActivationEmail, activationEmailDisplayName + ": ", new { @for = "ActivationEmail" })
+                </td>
+                <td class="activation_editor_field">
+                    @Html.TextBoxFor(model => model.ActivationEmail, new { @id = "txtActivationEmail", Name = "ActivationEmail", @placeholder = activationEmailDisplayName + "..." })
+                </td>
+            </tr>
+            <tr>
+                <td class="activation_editor_label">
+                    @Html.LabelFor(model => model.ActivationCode, activationCodeDisplayName + ": ", new {@for = "ActivationCode"})
+                </td>
+                <td class="activation_editor_field">
+                    @Html.TextBoxFor(model => model.ActivationCode, new {@id = "txtActivationCode", Name = "ActivationCode", @placeholder = activationCodeDisplayName + "...", @Value = string.Empty})
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="activation_sendnewactivationcode_container">
+                    <span id="lnkbtnSendActivationCodeAgain" class="linklike">Wyślij ponownie Kod Aktywacyjny</span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: right">
+                    <input type="button" id="btnActivateAccount" value="Aktywuj Konto" />
+                </td>
+            </tr>
+        </table>
+
+    </fieldset>
+}

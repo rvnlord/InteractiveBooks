@@ -1,0 +1,61 @@
+﻿@using System.Web.Mvc.Html
+@using MVCDemo.Common
+@using MVCDemo.Models
+@model UserToRegisterViewModel
+
+@{
+    var modelType = Model.GetType();
+    var userNameDisplayName = DisplayNameHelper.GetDisplayName(modelType.GetProperty(nameof(Model.UserName)));
+    var passwordDisplayName = DisplayNameHelper.GetDisplayName(modelType.GetProperty(nameof(Model.Password)));
+    var confirmPasswordNameDisplayName = DisplayNameHelper.GetDisplayName(modelType.GetProperty(nameof(Model.ConfirmPassword)));
+    var emailDisplayName = DisplayNameHelper.GetDisplayName(modelType.GetProperty(nameof(Model.Email)));
+}
+
+@using (@Html.BeginForm(null, null, FormMethod.Post, new { id = "frmRegisterPanel" }))
+{
+    <fieldset>
+        <legend>Rejestracja</legend>
+
+        <table class="tableRegistration">
+            <tr>
+                <td class="registration_editor_label">
+                    @Html.LabelFor(model => model.UserName, userNameDisplayName + ": ", new { @for = "UserName" })
+                </td>
+                <td class="registration_editor_field">
+                    @Html.TextBoxFor(model => model.UserName, new { @id = "txtUserName", Name = "UserName", @placeholder = userNameDisplayName + "..." })
+                </td>
+            </tr>
+            <tr>
+                <td class="registration_editor_label">
+                    @Html.LabelFor(model => model.Password, passwordDisplayName + ": ", new { @for = "Password" })
+                </td>
+                <td class="registration_editor_field">
+                    @Html.PasswordFor(model => model.Password, new { @id = "txtPassword", Name = "Password", @placeholder = passwordDisplayName + "..." })
+                </td>
+            </tr>
+            <tr>
+                <td class="registration_editor_label">
+                    @Html.LabelFor(model => model.ConfirmPassword, confirmPasswordNameDisplayName + ": ", new { @for = "ConfirmPassword" })
+                </td>
+                <td class="registration_editor_field">
+                    @Html.PasswordFor(model => model.ConfirmPassword, new { @id = "txtConfirmPassword", Name = "ConfirmPassword", @placeholder = confirmPasswordNameDisplayName + "..." })
+                </td>
+            </tr>
+            <tr>
+                <td class="registration_editor_label">
+                    @Html.LabelFor(model => model.Email, emailDisplayName + ": ", new {@for = "Email"})
+                </td>
+                <td class="registration_editor_field">
+                    @Html.TextBoxFor(model => model.Email, new {@id = "txtEmail", Name = "Email", @placeholder = emailDisplayName + "..."})
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: right">
+                    @*<input type="submit" id="btnRegisterTEST" value="Zarejestruj (POST TEST)" />*@
+                    <input type="button" id="btnRegister" value="Zarejestruj" />
+                </td>
+            </tr>
+        </table>
+
+    </fieldset>
+}

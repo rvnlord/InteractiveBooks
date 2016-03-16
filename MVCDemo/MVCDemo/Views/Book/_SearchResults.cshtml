@@ -1,0 +1,33 @@
+﻿@model IEnumerable<MVCDemo.Models.Book>
+
+@foreach (var book in Model)
+{
+    <div class="searchresult_background" style="background-image: Url('@Url.Content(book.Thumbnail)')"></div>
+    <a href="@Url.Action("Details", "Book", new { id = book.Id }, Request.Url?.Scheme)">
+        <div class="searchresult_cover"></div>
+    </a>
+    <div class="searchresult_content_background"></div>
+    <div class="searchresult_item_additiondate">
+        @{
+            if (@book.AdditionDate != null)
+            {
+                @book.AdditionDate.Value.ToString("dd-MM-yyyy @ hh:mm")
+            }
+            else
+            {
+                @:"n/a"
+            }
+        }
+    </div>
+    <div class="searchresult_container">
+        <div class="searchresult_item_title">@book.Title</div>
+        <div class="searchresult_item_category">@book.Category</div>
+        <div class="searchresult_item_author">@book.Author.UserName</div>
+        <div class="searchresult_item_showmore">Zobacz</div>
+    </div>
+    <div class="searchresult_item_description">
+        Opis:
+        <br /><br />
+        @book.Description
+    </div>
+}

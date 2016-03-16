@@ -1,0 +1,116 @@
+﻿body {
+    font-size: 16px;
+    font-family: Arial;
+    background-color: #303030;
+    color: white;
+}
+
+div#main {
+    width: 1024px;
+    margin: 0 auto;
+    border: 1px solid blue;
+}
+
+ul {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 1em;
+}
+
+li {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+}
+
+pre {
+    font-family: Calibri, Verdana, Helvetica, sans-serif;
+    font-size: 16px;
+    line-height: 125%;
+}
+
+sub,
+sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+}
+
+sup {
+    top: -0.5em;
+}
+
+sub {
+    bottom: -0.25em;
+}
+
+input[type=text],
+input[type=password],
+input[type=number],
+input[type=date],
+input[type=datetime] {
+    /*width: 200px;*/
+    /*height: 20px;*/
+    border: 1px solid black;
+}
+
+input[type=text] {
+    background-color: transparent;
+    border: 1px solid darkgreen;
+    color: yellow;
+    font-size: 16px;
+}
+
+    input[type=text]:focus {
+        border: 1px solid white;
+    }
+
+input[type=button], input[type=submit] {
+    background-color: transparent;
+    border: 1px solid #254117;
+    color: yellow;
+    font-size: 16px;
+}
+
+fieldset {
+    border: 1px solid black;
+}
+
+textarea {
+    width: 30em;
+    height: 7em;
+}
+
+.table td, .table th {
+    border: 1px solid yellow;
+    border-collapse: collapse;
+    border-spacing: 0;
+    padding: 5px;
+}
+
+table, tr, td, th, tbody {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+
+form.form{ 
+    margin:10px 0 0 10px;
+    background: transparent;
+    padding:20px;
+    max-width: 400px !important;
+    min-width: 400px !important;
+    width: 400px !important;
+    border: 1px solid #CCCCCC;
+    float:left;
+}
+input.error{border:1px solid #FF0000 !important; }
+label.error,div.error{
+    font-weight:normal;
+    color:#FF0000 !important;
+}
+.text-normal {
+    font-weight: normal !important;
+}
+

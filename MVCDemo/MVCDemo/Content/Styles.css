@@ -1,0 +1,988 @@
+﻿/* BASE */
+
+body {
+    font-family: Calibri, Verdana, Helvetica, sans-serif;
+    font-size: 16px;
+    line-height: 125%;
+    background-color: black;
+    background-image: url("../Images/site_background_book_on_beach.png");
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-size: auto;
+}
+
+a {
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+a:hover {
+    color: #FF5468;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.linklike {
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.linklike:hover {
+    color: #FF5468;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.linklike_disabled {
+    color: #505050;
+    text-decoration: none;
+    cursor: auto;
+}
+
+ul {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 1em;
+}
+
+li {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+}
+
+pre {
+    font-family: Calibri, Verdana, Helvetica, sans-serif;
+    font-size: 16px;
+    line-height: 125%;
+}
+
+sub,
+sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+}
+
+sup { top: -0.5em; }
+
+sub { bottom: -0.25em; }
+
+body, p, table, tr, td {
+    margin: 0;
+    padding: 0 0 0 0;
+    color: yellow;
+    border: none;
+}
+
+div#Main {
+    width: 1004px;
+    margin: 0 auto;
+    position: relative;
+    margin-top: 0;
+    min-height: 780px;
+    padding: 10px;
+}
+
+div#Background {
+    position: absolute;
+    width: 1024px;
+    margin: 0 auto;
+    margin-top: 0;
+    background-color: black;
+    -ms-opacity: 0.8;
+    opacity: 0.8;
+    min-height: 800px;
+    z-index: -1;
+}
+
+.view-switcher {
+    position: relative;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    font-weight: normal;
+    color: white;
+    font-size: 16px;
+    -ms-opacity: 1;
+    opacity: 1;
+    background-color: #202020;
+    z-index: 3;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+.view-switcher a {
+    color: #ffff00;
+}
+
+.divStyle {
+    display: table-cell;
+    border: 5px solid black;
+    padding: 20px;
+    text-align: center;
+}
+
+.table td, .table th {
+    border: 1px solid black;
+    border-collapse: collapse;
+    border-spacing: 0;
+    padding: 5px;
+}
+
+.tableContainer {
+    margin-left: 22px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+table, tr, td, th, tbody {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+fieldset {
+    border: 1px solid darkblue;
+    -ms-border-radius: 5px;
+    border-radius: 5px;
+    padding: 20px 20px 20px 20px;
+}
+
+fieldset legend {
+    border: 1px solid darkblue;
+    background: transparent;
+    color: white;
+    padding: 10px;
+    font-size: 26px;
+    -ms-border-radius: 5px;
+    border-radius: 5px;
+}
+
+textarea {
+    width: 30em;
+    height: 7em;
+}
+
+input[type=text],
+input[type=password],
+input[type=number],
+input[type=date],
+input[type=datetime] {
+    width: 200px;
+    height: 20px;
+    border: 1px solid black;
+    background-color: transparent;
+    border: 1px solid darkgreen;
+    color: yellow;
+    font-size: 16px;
+}
+
+input[type=text]:focus, 
+input[type=password]:focus,
+input[type=number]:focus,
+input[type=date]:focus,
+input[type=datetime]:focus {
+     border: 1px solid white;
+}
+
+input[type=button], input[type=submit] {
+    background-color: transparent;
+    border: 1px solid #254117;
+    color: yellow;
+    font-size: 16px;
+}
+
+input[type="checkbox"] { display: none; }
+
+input[type="checkbox"] ~ label span {
+    display: inline-block;
+    width: 19px;
+    height: 19px;
+    margin: -1px 4px 0 0;
+    vertical-align: middle;
+    background: url("../Images/check_radio_sheet.png") left top no-repeat;
+    cursor: pointer;
+}
+
+input[type="checkbox"]:checked ~ label span {
+    margin: -1px 4px 0 0;
+    background: url("../Images/check_radio_sheet.png") -19px top no-repeat;
+}
+
+/* PLACEHOLDERY */
+
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color: #7f7f7f;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 14px;
+    font-family: 'Times New Roman', Times, serif;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: #7f7f7f;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 14px;
+    font-family: 'Times New Roman', Times, serif;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: #7f7f7f;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 14px;
+    font-family: 'Times New Roman', Times, serif;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #7f7f7f !important;
+    font-style: italic;
+    font-weight: 400 !important;
+    font-size: 14px !important;
+    font-family: 'Times New Roman', Times, serif !important;
+}
+::-ms-input-placeholder { /* Edge */
+    color: #7f7f7f;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 14px;
+    font-family: 'Times New Roman', Times, serif;
+}
+:placeholder-shown { /* Standard (https://drafts.csswg.org/selectors-4/#placeholder) */
+    color: #7f7f7f;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 14px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+/* validation */
+
+.field-validation-error {
+    color: red;
+    font-weight: bold;
+}
+
+.field-validation-valid { display: none; }
+
+input.input-validation-error {
+    border: 1px solid red;
+    background: #ff7d7d;
+}
+
+.validation-summary-errors {
+    color: red;
+    font-weight: bold;
+}
+
+.validation-summary-errors ul { margin: 12px 0 12px 12px; }
+
+.validation-summary-valid { display: none; }
+
+/* Autocomplete */
+
+/* Reset Autocomplete Styles */
+
+.ui-state-active,
+.ui-widget-content .ui-state-active,
+.ui-widget-header .ui-state-active,
+.ui-autocomplete, .ui-autocomplete:hover,
+.ui-menu-item, .ui-menu-item:hover,
+.ui-menu-item a, .ui-menu-item a:hover,
+.ui-widget-content .ui-state-focus,
+.ui-widget-header .ui-state-focus,
+.ui-widget-content .ui-state-hover,
+.ui-widget-header .ui-state-hover,
+.ui-menu .ui-menu-item a.ui-state-focus,
+.ui-menu .ui-menu-item a.ui-state-active,
+.ui-menu .ui-menu-item a {
+    background: transparent none no-repeat;
+    padding: 0;
+    margin: 0;
+    display: block;
+    border: 0;
+    border-collapse: collapse;
+}
+
+/* Autocomplete Style */
+
+.ui-autocomplete, .ui-autocomplete:hover {
+    background: black;
+    -ms-border-radius: 0;
+    border-radius: 0;
+    padding: 0;
+    margin-top: 10px;
+    -ms-opacity: 0.9;
+    opacity: 0.9;
+    border: 1px solid white;
+}
+
+.ui-menu .ui-menu-item {
+    color: yellow;
+    background-color: black;
+    margin: 0;
+    padding: 10px;
+}
+
+.ui-widget-content .ui-state-focus {
+    color: yellow;
+    background: #011c37 none no-repeat;
+    margin: 0;
+    padding: 10px;
+}
+
+.ui-menu .ui-menu-item a {
+    background: transparent;
+    color: yellow;
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.autocomplete_item_thumbnail {
+    height: 60px;
+    padding-right: 3px;
+    display: inline-block;
+}
+
+.autocomplete_item_imagecontainer {
+    width: 100px;
+    max-width: 100px;
+}
+
+.autocomplete_loading_container {
+    display: inline-block;
+    vertical-align: middle;
+    width: 16px;
+    height: 16px;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+/*.ui-autocomplete-loading ~ .autocomplete_loading_container {
+    background: url('../Images/Loading/loading1.gif') no-repeat transparent;
+}*/
+
+.autocomplete_table {
+    border: none;
+    padding: 0;
+    margin: 0;
+    display: inline-table;
+    height: 80px;
+    max-height: 80px;
+}
+
+.autocomplete_table tbody tr td {
+    /*border: 1px solid white;*/
+    padding: 0;
+    margin: 0;
+}
+
+.autocomplete_item_title {
+    font-weight: bold;
+    color: white;
+    font-size: 16px;
+    width: 300px;
+    max-width: 300px;
+    height: 16px;
+    max-height: 16px;
+}
+
+.autocomplete_item_category {
+    font-style: italic;
+    color: blue;
+    font-size: 12px;
+    height: 12px;
+    max-height: 12px;
+}
+
+.autocomplete_item_author {
+    font-style: normal;
+    color: yellow;
+    font-size: 14px;
+    vertical-align: top;
+    overflow: hidden;
+}
+
+.autocomplete_item_additiondate {
+    font-style: italic;
+    color: yellow;
+    font-size: 16px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 100%;
+    width: 200px;
+    max-width: 200px;
+}
+
+.autocomplete_search_description {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.txtSearch_tooltip {
+    background: none no-repeat #202020;
+    color: blue;
+    font-size: 12px;
+}
+
+/* PANEL LOGOWANIA */
+
+#divLoginPanelContainer {
+    position: absolute;
+}
+
+.bold_descriptions {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.loginpanel_loading_container {
+    display: inline-block;
+    vertical-align: middle;
+    width: 16px;
+    height: 16px;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+#txtLoginUserName, #txtLoginPassword {
+    width: 150px;
+}
+
+#tableLoginPanel td {
+    vertical-align: middle;
+    text-align: left;
+    color: white;
+    padding: 0;
+    /*border: 1px solid green;*/
+    border-collapse: collapse;
+}
+
+/* PANEL REJESTRACJI */
+
+#divRegisterPanelContainer {
+    position: relative;
+}
+
+#divActivateAccountPanelContainer {
+    position: relative;
+    margin-top: 26px;
+} 
+
+#divRemindPasswordPanelContainer {
+    position: relative;
+    margin-top: 26px;
+} 
+
+.tableRegistration td, .tableAccountActivation td, .tableRemindPassword td {
+    vertical-align: middle;
+    color: white;
+    /*border: 1px solid green;*/
+    border-collapse: collapse;
+}
+
+.registration_editor_label, .activation_editor_label, .remindpassword_editor_label {
+    padding-right: 20px;
+    padding-bottom: 5px;
+    width: 150px;
+}
+
+.registration_editor_field, .activation_editor_field, .remindpassword_editor_field {
+    padding-bottom: 5px;
+}
+
+.activation_sendnewactivationcode_container, .remindpassword_sendremindpasswordrequest_container {
+    text-align: right;
+    padding-bottom: 5px;
+} 
+
+/* MENU STRONY */
+
+#divMenuContainer {
+    vertical-align: top;
+    height: 80px;
+    list-style-type: none;
+    background-position: center center;
+    background-image: url('../Images/menu_background.jpg');
+    background-repeat: no-repeat;
+    text-align: center;
+    position: absolute;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+#divMenu {
+    background-repeat: no-repeat;
+    background-position: center center;
+    text-align: center;
+    vertical-align: middle;
+    position: absolute;
+    list-style-type: none;
+    z-index: 10;
+    top: 30px;
+    left: 200px;
+    color: #FFFF00;
+    text-decoration: none;
+    height: 20px;
+    width: 100px;
+}
+
+    #divMenu a {
+        background-repeat: no-repeat;
+        background-position: center center;
+        color: #FFFF00;
+        text-decoration: none;
+    }
+
+    #divMenu div {
+        background-repeat: no-repeat;
+        background-position: center center;
+    }
+
+        #divMenu div:hover {
+            background-repeat: no-repeat;
+            background-position: center center;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        #divMenu div.menu_sublvl_container {
+            position: relative;
+            display: none;
+        }
+
+        #divMenu div.menu_sublvl_item {
+            position: relative;
+            background-repeat: no-repeat;
+            background-position: center center;
+            cursor: pointer;
+            background-color: #000000;
+            opacity: 0.90;
+            height: 20px;
+            width: 100px;
+            vertical-align: middle;
+        }
+
+        #divMenu div.menu_mainlvl_container {
+            position: absolute;
+        }
+
+        #divMenu div.menu_mainlvl_item {
+            position: relative;
+            height: 20px;
+            max-height: 20px;
+            width: 100px;
+            max-width: 100px;
+        }
+
+
+/* SEARCH MENU */
+
+#divMenuAndSearchContainer {
+    background-color: #000020;
+    height: 100px;
+}
+
+    /* SEARCH WIdGET */
+
+    #divSearchWidget {
+        position: absolute;
+    }
+
+    /* SEARCH OPTIONS */
+
+    #divSearchOptions {
+        position: absolute;
+    }
+
+    .line_placeholder {
+         height: 10px;
+    }
+
+    #spanSearchOptionsTitle {
+        color: blue;
+        font-size: 18px;
+    }
+
+    #tableSearchOptions { }
+
+    #tableSearchOptions td {
+        vertical-align: middle;
+        color: white;
+        padding: 0;
+        /*border: 1px solid green;*/
+        border-collapse: collapse;
+    }
+
+/* SEARCH RESULTS */
+
+.div_books_scrollup {
+    /*position: absolute;*/
+    display: inline-block;
+    cursor: pointer;
+    width: 60px;
+    height: 60px;
+    -ms-background-size: contain;
+    background-size: contain;
+    background-image: url('../Images/up_arrow.png');
+    background-position: center center;
+    background-repeat: no-repeat;
+    -ms-opacity: 0.6;
+    opacity: 0.6;
+}
+
+.div_books_scrolldown {
+    /*position: absolute;*/
+    display: inline-block;
+    cursor: pointer;
+    width: 60px;
+    height: 60px;
+    -ms-background-size: contain;
+    background-size: contain;
+    background-image: url('../Images/down_arrow.png');
+    background-position: center center;
+    background-repeat: no-repeat;
+    -ms-opacity: 0.6;
+    opacity: 0.6;
+}
+
+.books_scrollbar {
+    height: 60px;
+    background-color: #202020;
+}
+
+#divSearchResults { position: absolute; }
+
+#divSearchResults a { text-decoration: none; }
+
+.searchresult_background {
+    -ms-background-size: cover;
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    z-index: 1;
+    position: absolute;
+    /*transition: background-image 1s ease-in-out;
+    -moz-transition: background-image 1s ease-in-out;
+    -webkit-transition: background-image 1s ease-in-out;
+    -ms-transition: background-image 1s ease-in-out;
+    -o-transition: background-image 1s ease-in-out;*/
+}
+
+/*.searchresult_background.hovered {
+        background-size: auto 260px;
+    }*/
+
+.searchresult_cover {
+    -ms-background-size: cover;
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    z-index: 5;
+    position: absolute;
+    /*background: blue;*/
+    -ms-opacity: 0.2;
+    opacity: 0.2;
+}
+
+.searchresult_content_background {
+    background-repeat: no-repeat;
+    background-color: black;
+    -ms-opacity: 0.7;
+    opacity: 0.7;
+    z-index: 2;
+    position: absolute;
+}
+
+.searchresult_container {
+    -ms-background-size: cover;
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    z-index: 3;
+    position: absolute;
+}
+
+.searchresult_container table { margin: 5px; }
+
+.searchresult_container div { /*border: 1px solid white;*/ }
+
+.searchresult_item_title {
+    font-weight: bold;
+    color: white;
+    font-size: 16px;
+    /* line-height: 16px; /* default 125% 
+    height: 20px; */
+    overflow: hidden;
+}
+
+.searchresult_item_category {
+    font-style: italic;
+    color: blue;
+    font-size: 12px;
+    line-height: 12px;
+    height: 12px;
+    padding: 0;
+    overflow: hidden;
+}
+
+.searchresult_item_author {
+    font-style: normal;
+    color: yellow;
+    font-size: 14px;
+    height: 17.5px;
+    vertical-align: top;
+    overflow: hidden;
+}
+
+.searchresult_item_additiondate {
+    font-style: italic;
+    font-weight: bold;
+    color: yellow;
+    font-size: 16px;
+    text-align: center;
+    overflow: hidden;
+    display: inline-block;
+    position: absolute;
+    -ms-opacity: 0.8;
+    opacity: 0.8;
+    background-color: black;
+    z-index: 3;
+}
+
+.searchresult_item_showmore {
+    font-weight: normal;
+    color: white;
+    font-size: 16px;
+    height: 20px;
+    text-align: right;
+    overflow: hidden;
+    padding-right: 30px;
+    background-image: url('../Images/right_arrow.png');
+    background-repeat: no-repeat;
+    background-position: right center;
+    -ms-background-size: auto 20px;
+    background-size: auto 20px;
+    margin-top: 12px;
+}
+
+.searchresult_item_description {
+    position: absolute;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    font-weight: normal;
+    color: white;
+    font-size: 16px;
+    -ms-opacity: 1;
+    opacity: 1;
+    background-color: #202020;
+    z-index: 4;
+    padding: 5px;
+    border: 1px solid blue;
+}
+
+#divNoSearchResults {
+    position: absolute;
+    z-index: 5;
+    -ms-opacity: 0.8;
+    opacity: 0.8;
+    background-color: black;
+}
+
+#divSearchNoResultsContent {
+    color: yellow;
+    font-size: 26px;
+    text-align: center;
+    vertical-align: middle;
+    z-index: 6;
+    width: 100%;
+}
+
+#divSearchNoMoreResultsContent {
+    color: yellow;
+    font-size: 26px;
+    text-align: center;
+    vertical-align: middle;
+    z-index: 6;
+    width: 100%;
+}
+
+/* SELECT LIST (MENU) */
+
+/*
+<span id="ddlSortBy-button" class="ui-selectmenu-button ui-widget ui-state-default ui-corner-all" tabindex="0" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-owns="ddlSortBy-menu" aria-haspopup="true" style="width: 198.2px;" aria-activedescendant="ui-id-3" aria-labelledby="ui-id-3" aria-disabled="false">
+    <span class="ui-icon ui-icon-arrow-1-s"></span>
+    <span class="ui-selectmenu-text">Nazwa</span>
+</span>
+
+<div class="ui-selectmenu-menu ui-front ui-selectmenu-open" style="top: 95px; left: 400px;">
+    <ul id="ddlSortBy-menu" class="ui-menu ui-widget ui-widget-content ui-corner-bottom" aria-hidden="false" aria-labelledby="ddlSortBy-button" role="listbox" tabindex="0" aria-activedescendant="ui-id-6" aria-disabled="false" style="width: 213.2px;">
+        <li id="ui-id-2" class="ui-menu-item" tabindex="-1" role="option">(Wybierz Sortowanie)</li>
+        <li id="ui-id-3" class="ui-menu-item" tabindex="-1" role="option">Nazwa</li>
+        <li id="ui-id-4" class="ui-menu-item" tabindex="-1" role="option">Kategoria</li>
+        <li id="ui-id-5" class="ui-menu-item" tabindex="-1" role="option">Składniki</li>
+        <li id="ui-id-6" class="ui-menu-item ui-state-focus" tabindex="-1" role="option">Opis</li>
+    </ul>
+</div>*/
+
+.ui-selectmenu-menu {
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+}
+
+.ui-selectmenu-menu .ui-menu {
+    overflow: auto;
+    /* Support: IE7 */
+    overflow-x: hidden;
+    padding-bottom: 1px;
+    font-size: 14px;
+}
+
+.ui-selectmenu-menu .ui-menu .ui-selectmenu-optgroup {
+    font-size: 1em;
+    font-weight: bold;
+    line-height: 1;
+    padding: 2px 0.4em;
+    margin: 0.5em 0 0 0;
+    height: auto;
+    border: 0;
+}
+
+.ui-selectmenu-open { display: block; }
+
+.ui-selectmenu-button {
+    display: inline-block;
+    overflow: hidden;
+    position: relative;
+    text-decoration: none;
+    cursor: pointer;
+    color: yellow;
+    background: transparent none no-repeat;
+    padding: 0;
+    margin: 0;
+}
+
+.ui-selectmenu-button.ui-state-hover {
+    display: inline-block;
+    overflow: hidden;
+    position: relative;
+    text-decoration: none;
+    cursor: pointer;
+    color: yellow;
+    background: #011c37 none no-repeat;
+    padding: 0;
+    margin: 0;
+}
+
+.ui-selectmenu-button span.ui-icon {
+    right: 0.5em;
+    left: auto;
+    margin-top: -8px;
+    position: absolute;
+    top: 50%;
+}
+
+.ui-selectmenu-button span.ui-selectmenu-text {
+    text-align: left;
+    padding: 0.4em 2.1em 0.4em 1em;
+    display: block;
+    line-height: 1;
+    overflow: hidden;
+    -moz-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 14px;
+}
+
+.ui-selectmenu-menu .ui-menu .ui-menu-item {
+    color: yellow;
+    background-color: black;
+    margin: 0;
+    padding: 2px;
+    font-size: 14px;
+}
+
+.ui-selectmenu-menu .ui-widget-content .ui-state-focus {
+    color: yellow;
+    background: #011c37 none no-repeat;
+    margin: 0;
+    padding: 2px;
+    font-size: 14px;
+}
+
+.ui-state-default .ui-icon.custom-icon-down-arrow {
+    background-repeat: no-repeat;
+    background-image: url('../Images/down_arrow.png');
+    -ms-background-size: contain;
+    background-size: contain;
+}
+
+/* DEBUGOWANIE */
+
+#divDebug {
+    background-color: #202020;
+    border: 1px solid white;
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    min-height: 16px;
+    -moz-min-width: 200px;
+    -ms-min-width: 200px;
+    -o-min-width: 200px;
+    -webkit-min-width: 200px;
+    min-width: 200px;
+    padding: 10px;
+    font-size: 16px;
+}
+
+#divDebug_Search {
+    border: 1px solid green;
+    padding: 10px;
+}
+
+/* BOOKS */
+
+#divListBooks { /*border: 1px solid yellow;*/ }
+
+#divListBooks:after { /* zachowanie wysokości bloku z elementami float w środku */
+    content: " ";
+    display: block;
+    height: 0;
+    clear: both;
+}
+
+.book_row {
+    background-color: transparent;
+    color: white;
+    text-align: right;
+    /*border: 1px solid blue;*/
+    margin: 0;
+    padding: 0;
+    font-size: 0;
+    float: right;
+    clear: both;
+}
+
+.book_content {
+    vertical-align: top;
+    background-color: #2e0c0c;
+    width: 240px;
+    height: 135px;
+    display: inline-block;
+    /*border: 1px solid red;*/
+    margin: 0;
+    padding: 0;
+    font-size: 0;
+}

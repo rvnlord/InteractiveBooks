@@ -1,0 +1,32 @@
+﻿@model MVCDemo.Models.Book
+
+<li>
+    <a>
+        <table class="autocomplete_table">
+            <tr>
+                <td class="autocomplete_item_imagecontainer" rowspan="3">
+                    <img class="autocomplete_item_thumbnail" src="@Url.Content(@Model.Thumbnail)" alt="No Image" />
+                </td>
+                <td class="autocomplete_item_title">@Model.Title</td>
+                <td class="autocomplete_item_additiondate" rowspan="3">
+                    @{
+                        if (Model.AdditionDate != null)
+                        {
+                            @Model.AdditionDate.Value.ToString("dd-MM-yyyy @ hh:mm")
+                        }
+                        else
+                        {
+                            @:"n/a"
+                        }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td class="autocomplete_item_category">@Model.Category</td>
+            </tr>
+            <tr>
+                <td class="autocomplete_item_author">@Model.Author.UserName</td>
+            </tr>
+        </table>
+    </a>
+</li>

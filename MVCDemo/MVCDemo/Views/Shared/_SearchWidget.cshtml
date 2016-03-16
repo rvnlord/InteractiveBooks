@@ -1,0 +1,15 @@
+﻿@using MVCDemo.CustomHtmlHelpers
+
+@model MVCDemo.Models.Search
+
+@Html.LabelFor(m => m.SearchTerm, new { @for = "txtSearch", @class = "autocomplete_search_description" })
+@Html.TextBoxFor(m => m.SearchTerm, new { id = "txtSearch", title = "Szukaj Książek: ", @placeholder = "Wpisz frazę..." })
+<span class="autocomplete_loading_container"></span>
+@{
+    if (!(ViewBag.Controller.ToString().ToLower() == "book" && ViewBag.Action.ToString().ToLower() == "index"))
+    {
+        @Html.CheckBoxFor(m => m.IncludeAuthor, new { id = "cbIncludeAuthor" })
+        @Html.LabelHtmlFor(m => m.IncludeAuthor, @"<span></span>{prop}", new { @for = "cbIncludeAuthor" })
+    }
+}
+
