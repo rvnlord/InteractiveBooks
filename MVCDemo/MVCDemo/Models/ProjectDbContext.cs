@@ -51,7 +51,7 @@ namespace MVCDemo.Models
                 .IsUnicode(true);
 
             modelBuilder.Entity<Book>()
-                .Property(e => e.Thumbnail)
+                .Property(e => e.Path)
                 .IsUnicode(true);
 
             // Users

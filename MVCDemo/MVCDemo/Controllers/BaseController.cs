@@ -296,7 +296,7 @@ namespace MVCDemo.Controllers
                 AuthorId = authorGuid,
                 Description = dictItem["Description"].ToString(),
                 AdditionDate = Convert.ToDateTime(dictItem["AdditionDate"].ToString()),
-                Thumbnail = dictItem["Thumbnail"].ToString(),
+                Path = dictItem["Path"].ToString(),
                 IsPublic = Convert.ToBoolean(dictItem["IsPublic"]),
                 // Navigation Properties - (added with include)
                 Author = db.Users.Single(u => u.Id == authorGuid)
@@ -432,27 +432,9 @@ namespace MVCDemo.Controllers
 
         public PartialViewResult GetLoginPanel(string controller, string action)
         {
-            // Jeśli Użytkownik jest zalogowany i dane są poprawne
-            var userCookie = Request.Cookies["LoggedUser"];
-            var userSession = (UserToLoginViewModel)Session["LoggedUser"];
-            if (userCookie != null)
-            {
-                var userToLogin = JsonConvert.DeserializeObject<UserToLoginViewModel>(userCookie.Value);
-                var user = new User();
-                AutoMapperConfiguration.Mapper.Map(userToLogin, user);
-                if (user.Authenticate(true) == UserActionResult.Success) // (przy użyciu Hasha z cookie, a nie czystego hasła)
-                    return PartialView("_LoginPanelLogged", userToLogin);
-            }
-            else if (userSession != null)
-            {
-                var userToLogin = userSession;
-                var user = new User();
-                AutoMapperConfiguration.Mapper.Map(userToLogin, user);
-                if (user.Authenticate(true) == UserActionResult.Success) 
-                    return PartialView("_LoginPanelLogged", userToLogin);
-            }
+            var userToLogin = GetAuthenticatedUser();
             
-            return PartialView("_LoginPanel", new UserToLoginViewModel());
+            return PartialView(userToLogin != null ? "_LoginPanelLogged" : "_LoginPanel", userToLogin ?? new UserToLoginViewModel());
         }
 
         public string LoginUser([Bind(Include = "UserName,Password,RememberMe")] UserToLoginViewModel userToLogin)
@@ -570,6 +552,30 @@ namespace MVCDemo.Controllers
             {
                 PartialView = RenderPartialView("_LoginPanel", new UserToLoginViewModel())
             }); 
+        }
+
+        public UserToLoginViewModel GetAuthenticatedUser()
+        {
+            var userCookie = Request.Cookies["LoggedUser"];
+            var userSession = (UserToLoginViewModel)Session["LoggedUser"];
+            if (userCookie != null)
+            {
+                var userToLogin = JsonConvert.DeserializeObject<UserToLoginViewModel>(userCookie.Value);
+                var user = new User();
+                AutoMapperConfiguration.Mapper.Map(userToLogin, user);
+                if (user.Authenticate(true) == UserActionResult.Success) // (przy użyciu Hasha z cookie, a nie czystego hasła)
+                    return userToLogin;
+            }
+            else if (userSession != null)
+            {
+                var userToLogin = userSession;
+                var user = new User();
+                AutoMapperConfiguration.Mapper.Map(userToLogin, user);
+                if (user.Authenticate(true) == UserActionResult.Success)
+                    return userToLogin;
+            }
+
+            return null;
         }
     }
 }

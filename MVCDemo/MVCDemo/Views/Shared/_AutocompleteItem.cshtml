@@ -1,12 +1,19 @@
 ﻿@model MVCDemo.Models.Book
 
+@{
+    var thumb = Model.Path + "/Cover.jpg";
+    if (!File.Exists(Server.MapPath(thumb)))
+    {
+        thumb = "~/Data/Books/No_Image_Available.png";
+    }
+}
+
 <li>
     <a>
         <table class="autocomplete_table">
             <tr>
-                <td class="autocomplete_item_imagecontainer" rowspan="3">
-                    <img class="autocomplete_item_thumbnail" src="@Url.Content(@Model.Thumbnail)" alt="No Image" />
-                </td>
+                <td class="autocomplete_item_imagecontainer" style="background-image: Url('@Url.Content(thumb)')" rowspan="3"></td>
+                <td class="autocomplete_item_imagerightmargin" rowspan="3"></td>
                 <td class="autocomplete_item_title">@Model.Title</td>
                 <td class="autocomplete_item_additiondate" rowspan="3">
                     @{

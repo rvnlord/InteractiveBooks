@@ -2,7 +2,16 @@
 
 @foreach (var book in Model)
 {
-    <div class="searchresult_background" style="background-image: Url('@Url.Content(book.Thumbnail)')"></div>
+    var thumb = book.Path + "/Cover.jpg";
+    if (!File.Exists(Server.MapPath(thumb)))
+    {
+        thumb = "~/Data/Books/No_Image_Available.png";
+        <div class="searchresult_background" style="background-image: Url('@Url.Content(thumb)'); -ms-background-size: contain; background-size: contain;"></div>
+    }
+    else
+    {
+        <div class="searchresult_background" style="background-image: Url('@Url.Content(thumb)')"></div>
+    }
     <a href="@Url.Action("Details", "Book", new { id = book.Id }, Request.Url?.Scheme)">
         <div class="searchresult_cover"></div>
     </a>

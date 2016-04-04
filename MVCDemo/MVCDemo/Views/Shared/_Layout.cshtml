@@ -24,6 +24,8 @@
         @{
             var controller = ViewContext.RouteData.GetRequiredString("controller");
             var action = ViewContext.RouteData.GetRequiredString("action");
+            var id = ViewContext.RouteData.Values["id"];
+            //var t = "";
             //var url = Request.ApplicationPath + "/" + controller + "/" + action;
             //var url = Request.Url?.AbsoluteUri;
         }
@@ -60,9 +62,12 @@
     </div>
     <script src="~/Scripts/jquery-2.1.4.js"></script>
     <script type="text/javascript">
-        jQuery.url = function (path) {
+        $.url = function (path) {
             return '@Url.Content("~/")' + path;
         };
+        $.controller = '@controller';
+        $.action = '@action';
+        $.id = '@id';
     </script>
     <script src="~/Scripts/jquery-ui-1.11.4.js"></script>
     <script src="~/Scripts/jquery.validate.js"></script>
@@ -77,6 +82,9 @@
     <script src="~/Scripts/jhash-2.1.js"></script>
     <script src="~/Scripts/attrchange.js"></script>
     <script src="~/Scripts/moment.js"></script>
+    <script src="~/Scripts/dagre.js"></script>
+    <script src="~/Scripts/cytoscape.js"></script>
+    <script src="~/Scripts/cytoscape-dagre.js"></script>
     <script src="~/Scripts/Base/Global.js"></script>
     @RenderSection("Scripts", false)
     <script src="~/Scripts/Base/After.js"></script>

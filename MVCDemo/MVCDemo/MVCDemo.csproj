@@ -450,6 +450,9 @@
     <Content Include="Data\Books\3b5771e2-d32a-11e5-b200-00ff23f4a6cf\Cover.jpg" />
     <Content Include="Data\Books\569a000d-a590-11e5-be13-00ff23f4a6cf\Cover.jpg" />
     <Content Include="Data\Books\5a914551-a592-11e5-be13-00ff23f4a6cf\Cover.jpg" />
+    <Content Include="Data\Books\7bcba4ed-f28c-11e5-9c77-00ff23f4a6cf\Book.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Data\Books\ae28a1ba-a590-11e5-be13-00ff23f4a6cf\Cover.jpg" />
     <Content Include="Data\Books\b31d78ec-a591-11e5-be13-00ff23f4a6cf\Cover.jpg" />
     <Content Include="Data\Books\b351f7a2-a594-11e5-be13-00ff23f4a6cf\Cover.jpg" />
@@ -458,6 +461,7 @@
     <Content Include="Data\Books\d91aabca-8314-11e5-91da-d43d7ef137da\Cover.jpg" />
     <Content Include="Data\Books\e039cc94-8315-11e5-91da-d43d7ef137da\Cover.jpg" />
     <Content Include="Data\Books\f3451066-a594-11e5-be13-00ff23f4a6cf\Cover.jpg" />
+    <Content Include="Data\Books\No_Image_Available.png" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="CodeTemplates\MvcViewWithoutModel\Imports.include.t4" />
@@ -470,7 +474,9 @@
     <Content Include="CodeTemplates\MvcView\Details.cs.t4" />
     <Content Include="CodeTemplates\MvcView\Delete.cs.t4" />
     <Content Include="CodeTemplates\MvcView\Create.cs.t4" />
+    <Content Include="Images\book_details_placeholder_background.png" />
     <Content Include="Images\Correct.png" />
+    <Content Include="Images\delete_tag.png" />
     <Content Include="Images\Incorrect.png" />
     <Content Include="Images\Loading\loading4.gif" />
     <Content Include="Images\Loading\loading3.gif" />
@@ -493,6 +499,9 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="Properties\PublishProfiles\interaktywneksiazki - Web Deploy.pubxml" />
+    <Content Include="Images\vixen_abby.png" />
+    <Content Include="Scripts\cytoscape-dagre.js" />
+    <Content Include="Scripts\cytoscape.js.map" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Images\site_background_book.jpg" />
     <Content Include="Images\site_background_book_on_beach.png" />
@@ -504,8 +513,13 @@
     <Content Include="Scripts\additional-methods.min.js" />
     <Content Include="Scripts\attrchange.js" />
     <Content Include="Scripts\Base\After.js" />
+    <Content Include="Scripts\Book\Details.js" />
+    <Content Include="Scripts\Book\Edit.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\cytoscape.js" />
+    <Content Include="Scripts\dagre.core.js" />
+    <Content Include="Scripts\dagre.js" />
     <Content Include="Scripts\eventPause.js" />
     <Content Include="Scripts\jhash-2.1.js" />
     <Content Include="Scripts\jhash-2.1.min.js" />
@@ -579,6 +593,7 @@
     <Compile Include="Models\ActivationRequest.cs" />
     <Compile Include="Models\AutoMapperConfiguration.cs" />
     <Compile Include="Models\Book.cs" />
+    <Compile Include="Models\BookContent.cs" />
     <Compile Include="Models\Encryption.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Models\ProjectDbContext.cs" />
@@ -617,6 +632,10 @@
     <Content Include="Views\User\_RegisterPanel.cshtml" />
     <Content Include="Views\User\_ActivateAccountPanel.cshtml" />
     <Content Include="Views\User\_RemindPasswordPanel.cshtml" />
+    <Content Include="Views\Book\_BookEditOptions.cshtml" />
+    <Content Include="Views\Book\Details.cshtml" />
+    <Content Include="Views\Book\_BookContentPartDetails.cshtml" />
+    <Content Include="Views\Book\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -651,8 +670,7 @@
           <IISUrl>http://localhost/MVCDemo</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
+          <CustomServerUrl>http://interaktywneksiazki.azurewebsites.net</CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>

@@ -1,0 +1,105 @@
+﻿@model MVCDemo.Models.Book
+
+@{
+    var thumb = Model.Path + "/Cover.jpg";
+}
+
+<div>
+    <h1>Test - Book/Edit/@Model.Id</h1>
+    <br/>
+
+    <div id="divBookEditContainer">
+        <div class="book_edit_fields">
+            edycja tytułu i okładki
+        </div>
+        <div class="book_edit_placeholder"></div>
+        <div class="book_edit_tree" id="divBookEditTreeContent"></div>
+        <div class="book_edit_part" id="divBookEditPartContent">
+            <fieldset>
+                <legend class="chapter_fullname">Edycja Wybranej Części Książki</legend>
+
+                @Html.Hidden("Id", null, new { @id = "hdId" })
+                <table class="table_book_edit_part">
+                    <tr>
+                        <td class="book_edit_part_editor_label">
+                            @Html.Label("ChapterNumber", "Rozdział: ")
+                        </td>
+                        <td class="book_edit_part_editor_field">
+                            @Html.TextBox("ChapterNumber", null, new { @id = "txtChapterNumber", @type = "number", @min = "1", @max = "100", @step = "1", @style = "width: 50px; text-align: right;" })
+                            : 
+                            @Html.TextBox("ChapterTitle", null, new { @id = "txtChapterTitle" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="book_edit_part_editor_label">
+                            @Html.Label("Choice", "Wybór: ")
+                        </td>
+                        <td class="book_edit_part_editor_field">
+                            @Html.TextBox("Choice", null, new {@id = "txtChoice"})
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="book_edit_part_editor_field book_edit_part_textareacontainer" colspan="2">
+                            @Html.Label("Description", "Krótki Opis Opcji Wyboru: ", new {@style = "display: block; padding-bottom: 5px"})
+                            @Html.TextArea("Description", "", new {@id = "taDescription"})
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="book_edit_part_editor_label">
+                            @Html.Label("ParentIds", "Historie Nadrzędne: ")
+                        </td>
+                        <td class="book_edit_part_editor_field">
+                            <div style="max-height: 27px;">
+                                @Html.DropDownList("ParentIds", new List<SelectListItem>
+                                {
+                                    new SelectListItem {Text = "(Wybierz Historie Nadrzędne)", Value = "-1"}
+                                }, new {id = "ddlParentIds"})
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="book_edit_part_editor_field">
+                            <div id="divParentIdsContainer" class="tags_container"> </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="book_edit_part_editor_label">
+                            @Html.Label("ChildrenIds", "Historie Podrzędne: ")
+                        </td>
+                        <td class="book_edit_part_editor_field">
+                            <div style="max-height: 27px;">
+                                @Html.DropDownList("ChildrenIds", new List<SelectListItem>
+                                {
+                                    new SelectListItem {Text = "(Wybierz Historie Podrzędne)", Value = "-1"}
+                                }, new {id = "ddlChildrenIds"})
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="book_edit_part_editor_field">
+                            <div id="divChildrenIdsContainer" class="tags_container"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="book_edit_part_editor_field book_edit_part_textareacontainer" colspan="2">
+                            @Html.Label("Story", "Historia: ", new {@style = "display: block; padding-bottom: 5px"})
+                            @Html.TextArea("Story", null, new {@id = "taStory"})
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="book_edit_part_saverequest">
+                            <input type="button" id="btnCancel" value="Anuluj" style="margin-right: 5px;"/>
+                            <input type="button" id="btnSave" value="Zapisz Zmiany"/>
+                        </td>
+                    </tr>
+                </table>
+
+            </fieldset>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/Scripts/Book/Edit.js"></script>
+}

@@ -134,7 +134,7 @@ namespace MVCDemo.Models
                 
                 tempDdlSortBy.AddRange(typeof(Book)
                     .GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly)
-                    .Where(p => !"Id|AdditionDate|Thumbnail|IsPublic|AuthorId".ToLower().Split('|').Contains(p.Name.ToLower()))
+                    .Where(p => !"Id|AdditionDate|Path|IsPublic|AuthorId".ToLower().Split('|').Contains(p.Name.ToLower()))
                     .Select(p =>
                         new SelectListItem
                         {

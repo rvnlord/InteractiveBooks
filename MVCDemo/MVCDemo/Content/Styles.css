@@ -92,7 +92,7 @@ div#Background {
     width: 1024px;
     margin: 0 auto;
     margin-top: 0;
-    background-color: black;
+    background-color: rgb(15, 15, 15);
     -ms-opacity: 0.8;
     opacity: 0.8;
     min-height: 800px;
@@ -164,6 +164,15 @@ fieldset legend {
 textarea {
     width: 30em;
     height: 7em;
+    background-color: transparent;
+    border: 1px solid darkgreen;
+    color: yellow;
+    font-size: 16px;
+    overflow: auto;
+    -ms-overflow-style: none;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 input[type=text],
@@ -173,7 +182,6 @@ input[type=date],
 input[type=datetime] {
     width: 200px;
     height: 20px;
-    border: 1px solid black;
     background-color: transparent;
     border: 1px solid darkgreen;
     color: yellow;
@@ -184,7 +192,8 @@ input[type=text]:focus,
 input[type=password]:focus,
 input[type=number]:focus,
 input[type=date]:focus,
-input[type=datetime]:focus {
+input[type=datetime]:focus,
+textarea:focus {
      border: 1px solid white;
 }
 
@@ -342,15 +351,23 @@ input.input-validation-error {
     vertical-align: top;
 }
 
-.autocomplete_item_thumbnail {
+/*.autocomplete_item_thumbnail {
     height: 60px;
     padding-right: 3px;
     display: inline-block;
-}
+}*/
 
 .autocomplete_item_imagecontainer {
+    -ms-background-size: contain;
+    background-size: contain;
+    background-position: center top;
+    background-repeat: no-repeat;
     width: 100px;
     max-width: 100px;
+}
+
+.autocomplete_item_imagerightmargin {
+    width: 10px;
 }
 
 .autocomplete_loading_container {
@@ -986,3 +1003,243 @@ input.input-validation-error {
     padding: 0;
     font-size: 0;
 }
+
+/* BOOK DETAILS */
+
+.book_details_title {
+    text-align: center;
+    vertical-align: middle;
+    color: white;
+    font-size: 34px;
+    height: 68px;
+    line-height: 60px;
+    padding: 10px;
+}
+
+.book_details_author {
+    text-align: center;
+    vertical-align: middle;
+    color: rgb(178, 178, 178);
+    font-size: 26px;
+    height: 68px;
+    line-height: 60px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.book_details_other {
+    text-align: left;
+    color: rgb(128, 128, 128);
+    font-style: italic;
+    padding: 10px;
+    font-size: 18px;
+}
+
+.book_details_description {
+    text-indent: 50px;
+    text-align: left;
+    color: rgb(78, 78, 78);
+    font-style: italic;
+    padding: 10px;
+    font-size: 18px;
+}
+
+.book_details_placeholder {
+    background-image: url('../Images/book_details_placeholder_background.png');
+    background-position: center center;
+    background-repeat: no-repeat;
+    height: 48px;
+}
+
+.book_details_placeholder_empty {
+    height: 10px;
+}
+
+.book_details_cover {
+    background-position: center center;
+    background-repeat: no-repeat;
+    -ms-background-size: contain;
+    background-size: contain;
+}
+
+.book_details_content {
+    text-align: left;
+    color: rgb(200, 180, 0);
+    padding: 10px;
+    font-size: 18px;
+}
+
+.book_details_content p.indented {
+    text-indent: 50px;
+}
+
+.book_details_editoptions {
+    text-align: left;
+    font-size: 18px;
+}
+
+.book_details_content_chapter {
+    text-align: center;
+    vertical-align: middle;
+    font-size: 26px;
+    height: 100px;
+    line-height: 100px;
+}
+
+.book_details_content_story {
+    text-align: left;
+    margin-bottom: 20px;
+    line-height: 1.5em;
+}
+
+.book_details_content_choice {
+    margin-bottom: 20px;
+}
+
+.book_details_content_choice li {
+    margin-bottom: 10px;
+}
+
+.book_page_separator {
+    text-align: center;
+    vertical-align: middle;
+    font-size: 20px;
+    height: 50px;
+    line-height: 50px;
+}
+
+.book_edit_tree {
+    height: 800px;
+    border: 1px solid blue;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.book_edit_placeholder {
+    height: 10px;
+}
+
+.book_edit_part {
+    display: none;
+}
+
+.table_book_edit_part {
+    width: 100%;
+}
+
+.table_book_edit_part td {
+    vertical-align: middle;
+    color: white;
+    /*border: 1px solid green;*/
+    border-collapse: collapse;
+}
+
+.book_edit_part_editor_label {
+    padding-right: 20px;
+    padding-bottom: 10px;
+    width: 150px;
+    vertical-align: middle;
+}
+
+.book_edit_part_editor_field {
+    padding-bottom: 10px;
+    vertical-align: middle;
+}
+
+.book_edit_part_saverequest {
+    text-align: right;
+    padding-bottom: 0;
+} 
+
+textarea#taDescription {
+    width: 100%;
+    height: 15em;
+    line-height: 1.5em;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: rgb(190, 190, 190);
+    font-style: italic;
+    padding: 10px;
+    -moz-resize: none;
+    -ms-resize: none;
+    -o-resize: none;
+    resize: none;
+}
+
+textarea#taStory {
+    width: 100%;
+    height: 45em;
+    line-height: 1.5em;
+    font-size: 18px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: rgb(220, 220, 220);
+    padding: 10px;
+    -moz-resize: none;
+    -ms-resize: none;
+    -o-resize: none;
+    resize: none;
+}
+
+#ddlParentIds, #ddlChildrenIds {
+
+}
+
+#divParentIdsContainer, #divChildrenIdsContainer {
+    
+}
+
+.tags_container {
+    border: 1px solid rgb(90, 90, 90);
+    -ms-border-radius: 5px;
+    border-radius: 5px;
+    padding: 5px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.tag_container {
+    background-color: rgb(30, 30, 30);
+    -ms-border-radius: 5px;
+    border-radius: 5px;
+    margin: 5px;
+    padding: 5px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.tag_content {
+    display: inline-block;
+    line-height: 1.25em;
+    /*border: 1px solid white;*/
+    margin: 5px 0 5px 5px;
+    text-align: left;
+    /*padding: 0.4em 0.5em;*/
+    max-width: 200px;
+}
+
+.delete_tag {
+    background: url("../Images/delete_tag.png")  center center no-repeat;
+    -ms-background-size: contain;
+    background-size: contain;
+    /*border: 1px solid white;*/
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    margin: 5px;
+    vertical-align: top;
+    margin-bottom: -1px;
+    margin-left: 3px;
+    margin-top: 3px;
+    -ms-opacity: 0.4;
+    opacity: 0.4;
+}
+
+
+/*svg, .book_edit_tree_content {
+    width: 100%; 
+    height: 100%;
+    position: absolute;
+    overflow: hidden;
+    margin: 0;
+}*/

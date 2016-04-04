@@ -1,0 +1,35 @@
+﻿@model MVCDemo.Models.BookContentPart
+
+@{
+    var choiceParentChapter = ViewBag.ChoiceParentChapter;
+    var storyArr = Model.Story.Split(new[] { "[p]" }, StringSplitOptions.None);
+    var children = Model.Children;
+    var parents = Model.Parents;
+    var chapter = Model.Chapter;
+}
+
+@if (parents == null || parents.Count <= 0 || choiceParentChapter != chapter.Number) // parents.Count(p => p.Chapter.Number == chapter.Number) == parents.Count)
+{
+    <div class="book_details_content_chapter">
+        Rozdział @Model.Chapter.Number: @Model.Chapter.Title
+    </div>
+}
+<div class="book_details_content_story">
+    @foreach (var s in storyArr)
+    {
+        <p class="indented">@s</p>
+    }
+</div>
+<div class="book_details_content_choice" choice-parent="@Model.Id">
+    <ul>
+        @if (children != null)
+        {
+            foreach (var option in children)
+            {
+                <li>
+                    <span class="book_details_content_choice_option linklike" style="text-decoration: none" choice-num="@option.Id">@option.Choice</span>
+                </li>
+            }
+        }
+    </ul>
+</div>

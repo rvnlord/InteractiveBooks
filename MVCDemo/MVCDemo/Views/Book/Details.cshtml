@@ -1,0 +1,48 @@
+﻿@using MVCDemo.Controllers
+@model MVCDemo.Models.Book
+
+@{
+    var thumb = Model.Path + "/Cover.jpg";
+    string height;
+    if (!File.Exists(Server.MapPath(thumb)))
+    {
+        thumb = "~/Data/Books/No_Image_Available.png";
+        height = "200px";
+    }
+    else
+    {
+        var img = System.Drawing.Image.FromFile(Server.MapPath(thumb));
+        var multiplier = 1004.0 / img.Width;
+        height = (multiplier >= 1 ? img.Height : (int)(img.Height * multiplier)) + "px";
+    }
+    var time = $"dnia {Model.AdditionDate?.ToString("dd-MM-yyyy")} o godzinie {Model.AdditionDate?.ToString("hh:mm")}";
+}
+
+<div>
+    <h1>Test - Book/Details/@Model.Id</h1>
+    <br />
+
+    <div id="divBookDetailsContainer">
+        <div class="book_details_editoptions">
+            @{ Html.RenderAction("GetBookEditOptions", "Book", new { book = Model }); }
+        </div>
+        <div class="book_details_title">@Model.Title</div>
+        <div class="book_details_author">@Model.Author.UserName</div>
+        <div class="book_details_other">Dodano @time w kategorii @Model.Category</div>
+        <div class="book_details_placeholder"></div>
+        <div class="book_details_description">@Model.Description</div>
+        <div class="book_details_placeholder"></div>
+        <div class="book_details_placeholder_empty"></div>
+        <div class="book_details_cover" style="background-image: Url('@Url.Content(thumb)'); height: @height"></div>
+        <div class="book_details_placeholder_empty"></div>
+        <div class="book_details_placeholder"></div>
+        <div class="book_details_content" id="divBookDetailsContent"></div>
+        <div class="book_details_placeholder"></div>
+    </div>
+</div>
+
+
+@section Scripts
+{
+    <script src="~/Scripts/Book/Details.js"></script>
+}

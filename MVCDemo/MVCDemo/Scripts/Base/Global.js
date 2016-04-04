@@ -109,7 +109,7 @@ function setDefaultAndIsChangedProperties(currProp, currValues, oldValues, vResu
         vResults[currProp].ischanged = oldValues[currProp] !== currValues[currProp];
     }
 
-    return { currValues: currValues, vResults: vResults }
+    return { currValues: currValues, vResults: vResults };
 }
 
 function removeJsonNulls(jsonObj) {
@@ -808,7 +808,60 @@ function toggleUniversalMessage(args) {
     }
 }
 
+function resolveReferences(json) {
+    if (typeof json === 'string')
+        json = JSON.parse(json);
+
+    var byid = {}, // all objects by id
+        refs = []; // references to objects that could not be resolved
+    json = (function recurse(obj, prop, parent) {
+        if (typeof obj !== 'object' || !obj) // a primitive value
+            return obj;
+        if (Object.prototype.toString.call(obj) === '[object Array]') {
+            for (var i = 0; i < obj.length; i++)
+                // check also if the array element is not a primitive value
+                if (typeof obj[i] !== 'object' || !obj[i]) // a primitive value
+                    continue;
+                else if ("$ref" in obj[i])
+                    obj[i] = recurse(obj[i], i, obj);
+                else
+                    obj[i] = recurse(obj[i], prop, obj);
+            return obj;
+        }
+        if ("$ref" in obj) { // a reference
+            var ref = obj.$ref;
+            if (ref in byid)
+                return byid[ref];
+            // else we have to make it lazy:
+            refs.push([parent, prop, ref]);
+            return;
+        } else if ("$id" in obj) {
+            var id = obj.$id;
+            delete obj.$id;
+            if ("$values" in obj) // an array
+                obj = obj.$values.map(recurse);
+            else // a plain object
+                for (var prop in obj)
+                    obj[prop] = recurse(obj[prop], prop, obj);
+            byid[id] = obj;
+        }
+        return obj;
+    })(json); // run it!
+
+    for (var i = 0; i < refs.length; i++) { // resolve previously unknown references
+        var ref = refs[i];
+        ref[0][ref[1]] = byid[ref[2]];
+        // Notice that this throws if you put in a reference at top-level
+    }
+    return json;
+}
+
 // Rozszerzone funkcje
+if (typeof Array.prototype.diff != "function") { // ReSharper disable once NativeTypePrototypeExtending
+    Array.prototype.diff = function (a) { 
+        return this.filter(function (i) { return a.indexOf(i) < 0; });
+    };
+}
 
 if (typeof String.prototype.startsWith != "function") { // ReSharper disable once NativeTypePrototypeExtending
     String.prototype.startsWith = function (prefix) {
@@ -829,7 +882,7 @@ function isNullOrEmpty(str) {
 function keysToLowerCase(obj) {
     var key, keys = Object.keys(obj);
     var n = keys.length;
-    var newobj = {}
+    var newobj = {};
     while (n--) {
         key = keys[n];
         newobj[key.toLowerCase()] = obj[key];
@@ -839,36 +892,13 @@ function keysToLowerCase(obj) {
     //return obj.replace(/"([^"]+)":/g, function ($0, $1) { return ('"' + $1.toLowerCase() + '":'); });
 }
 
-(function ($) {
-    $.eventReport = function (selector, root) {
-        var s = [];
-        $(selector || "*", root).andSelf().each(function () {
-            // the following line is the only change
-            var e = $.data(this, "events");
-            if (!e) return;
-            s.push(this.tagName);
-            if (this.id) s.push("#", this.id);
-            if (this.className) s.push(".", this.className.replace(/ +/g, "."));
-            for (var p in e) {
-                if (e.hasOwnProperty(p)) {
-                    var r = e[p],
-                        h = r.length - r.delegateCount;
-                    if (h)
-                        s.push("\n", h, " ", p, " handler", h > 1 ? "s" : "");
-                    if (r.delegateCount) {
-                        for (var q = 0; q < r.length; q++)
-                            if (r[q].selector) s.push("\n", p, " for ", r[q].selector);
-                    }
-                }
-            }
-            s.push("\n\n");
-        });
-        return s.join("");
-    }
-    $.fn.eventReport = function (selector) {
-        return $.eventReport(selector, this);
-    }
-})(jQuery);
+function sortDdl(selectId) {
+    var foption = $("#"+ selectId + " option:first");
+    var soptions = $("#"+ selectId + " option:not(:first)").sort(function(a, b) {
+       return a.text === b.text ? 0 : a.text < b.text ? -1 : 1;
+    });
+    $("#" + selectId).html(soptions).prepend(foption);              
+};
 
 // Jquery validate - rozszerzenie additional methods
 
@@ -894,6 +924,37 @@ function checkVisible(elm, evalType) {
 }
 
 $(document).ready(function () {
+
+    $.eventReport = function (selector, root) {
+        var s = [];
+        $(selector || "*", root).andSelf().each(function () {
+            // the following line is the only change
+            var e = $.data(this, "events");
+            if (!e) return;
+            s.push(this.tagName);
+            if (this.id) s.push("#", this.id);
+            if (this.className) s.push(".", this.className.replace(/ +/g, "."));
+            for (var p in e) {
+                if (e.hasOwnProperty(p)) {
+                    var r = e[p],
+                        h = r.length - r.delegateCount;
+                    if (h)
+                        s.push("\n", h, " ", p, " handler", h > 1 ? "s" : "");
+                    if (r.delegateCount) {
+                        for (var q = 0; q < r.length; q++)
+                            if (r[q].selector) s.push("\n", p, " for ", r[q].selector);
+                    }
+                }
+            }
+            s.push("\n\n");
+        });
+        return s.join("");
+    };
+    $.fn.eventReport = function (selector) {
+        return $.eventReport(selector, this);
+    };
+
+    //
 
     $("#btnSearchSubmit").prop("disabled", false);
     $("#btnLoginSubmit").prop("disabled", false);
@@ -971,8 +1032,7 @@ $(document).ready(function () {
         var dRegEx = /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/;
 
         return dRegEx.test(value) && mDate && d;
-    }
-
+    };
     $("input:text.date").datepicker({
         dateFormat: "dd-mm-yy"
     });
@@ -1137,8 +1197,7 @@ $(document).ready(function () {
             var currValues = {
                 searchterm: $("#txtSearch").val(),
                 includeauthor: $("#cbIncludeAuthor").prop("checked")
-            }
-
+            };
             var validation = validateSearchProperties({
                 props: ["searchterm", "includeauthor"],
                 currvalues: currValues
@@ -1290,6 +1349,37 @@ $(document).ready(function () {
         $("#btnLoginSubmit").click();
     });
 
+    function toggleBookEditOptions(args) {
+        args = args || {};
+        var option = args.option || null;
+
+        if (option === "show") {
+            $.ajax({
+                async: true,
+                url: siteroot + "Book/GetBookEditOptionsAjax",
+                method: "post",
+                contentType: "application/json;charset=utf-8",
+                data: JSON.stringify({ Id: $.id }),
+                dataType: "json",
+                success: function (data) {
+                    var sBookEditOptionsView = data.PartialView.replace(/(\r\n|\n|\r)/gm, ""); //.replace(" ", "&nbsp;") //|\s\s+
+                    var bookEditOptionsView = $.parseHTML(sBookEditOptionsView);
+                    $(".book_details_editoptions").empty();
+                    $(bookEditOptionsView).appendTo($(".book_details_editoptions").first());
+                    positionBackground();
+                    resizeBackground();
+                },
+                error: function (err) {
+                    $("html").html(err.responseText);
+                }
+            });
+        } else if (option === "hide") {
+            $(".book_details_editoptions").empty();
+            positionBackground();
+            resizeBackground();
+        }
+    }
+
     //$("#btnLoginSubmit").on("click keydown", function(e) {
     $(document).on("click", "#btnLoginSubmit", function (e) {
         $("#btnLoginSubmit").prop("disabled", true);
@@ -1307,15 +1397,22 @@ $(document).ready(function () {
             }),
             dataType: "json",
             success: function (data) {
+                var message = data.LoginMessage;
                 var sLoginPanelView = data.PartialView.replace(/(\r\n|\n|\r)/gm, ""); //.replace(" ", "&nbsp;") //|\s\s+
                 var loginPanelView = $.parseHTML(sLoginPanelView);
                 $("#divLoginPanelContainer").empty();
                 $(loginPanelView).appendTo($("#divLoginPanelContainer"));
-                updateLoginPanelOnComplete(data.LoginMessage);
+                updateLoginPanelOnComplete(message);
                 formatMenuSearchAndLoginPanel();
                 positionBackground();
                 resizeBackground();
                 $("#btnLoginSubmit").prop("disabled", false);
+
+                if (!message && $.controller.toLowerCase() === "book" && $.action.toLowerCase() === "details") {
+                    toggleBookEditOptions({
+                        option: "show"
+                    });
+                }
             },
             error: function (err) {
                 $("html").html(err.responseText);
@@ -1354,13 +1451,18 @@ $(document).ready(function () {
                 positionBackground();
                 resizeBackground();
                 $("#btnLoginSubmit").prop("disabled", false);
+
+                if ($.controller.toLowerCase() === "book" && $.action.toLowerCase() === "details") {
+                    toggleBookEditOptions({
+                        option: "hide"
+                    });
+                }
             },
             error: function (err) {
                 $("html").html(err.responseText);
             }
         });
     });
-
 
     // Formatowanie tła
 

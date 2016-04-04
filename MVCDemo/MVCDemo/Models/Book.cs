@@ -26,7 +26,7 @@ namespace MVCDemo.Models
         public Guid? AuthorId { get; set; }
 
         [StringLength(257)]
-        public string Thumbnail { get; set; }
+        public string Path { get; set; }
 
         public DateTime? AdditionDate { get; set; }
 
