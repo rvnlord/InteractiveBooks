@@ -98,6 +98,7 @@ namespace MVCDemo.Controllers
             var user = new User();
             AutoMapperConfiguration.Mapper.Map(userToRegister, user);
             var registrationResult = user.Register();
+            Session["EmailData"] = Server.MapPath("~/Data/Email.xml");
             var sendActivationResult = user.SendActivationLink();
             
             if (registrationResult == UserActionResult.DatabaseError || sendActivationResult == UserActionResult.DatabaseError)
@@ -200,6 +201,7 @@ namespace MVCDemo.Controllers
                 
             var user = new User();
             AutoMapperConfiguration.Mapper.Map(userToSendActivationCode, user);
+            Session["EmailData"] = Server.MapPath("~/Data/Email.xml");
             var sendActivationResult = user.SendActivationLink();
 
             if (sendActivationResult == UserActionResult.DatabaseError)
@@ -293,9 +295,10 @@ namespace MVCDemo.Controllers
 
             var user = new User();
             AutoMapperConfiguration.Mapper.Map(userToSendRemindPasswordRequest, user);
-            var sendActivationResult = user.SendRemindPasswordRequest();
+            Session["EmailData"] = Server.MapPath("~/Data/Email.xml");
+            var sendRemindPasswordResult = user.SendRemindPasswordRequest();
 
-            if (sendActivationResult == UserActionResult.DatabaseError)
+            if (sendRemindPasswordResult == UserActionResult.DatabaseError)
             {
                 return JsonConvert.SerializeObject(new
                 {
@@ -305,7 +308,7 @@ namespace MVCDemo.Controllers
                 });
             }
 
-            if (sendActivationResult == UserActionResult.SendingEmailFailure)
+            if (sendRemindPasswordResult == UserActionResult.SendingEmailFailure)
             {
                 return JsonConvert.SerializeObject(new
                 {
@@ -315,7 +318,7 @@ namespace MVCDemo.Controllers
                 });
             }
 
-            if (sendActivationResult == UserActionResult.Success)
+            if (sendRemindPasswordResult == UserActionResult.Success)
             {
                 return JsonConvert.SerializeObject(new
                 {

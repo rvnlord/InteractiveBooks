@@ -58,6 +58,10 @@
       <HintPath>..\packages\AutoMapper.EF6.0.3.0\lib\net45\AutoMapper.EF6.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.1.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\packages\BouncyCastle.Crypto.dll.1.8.1\lib\BouncyCastle.Crypto.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="DelegateDecompiler, Version=1.0.0.0, Culture=neutral, PublicKeyToken=93b26a10a04705bd, processorArchitecture=MSIL">
       <HintPath>..\packages\DelegateDecompiler.0.17.0\lib\net40-Client\DelegateDecompiler.dll</HintPath>
       <Private>True</Private>
@@ -462,6 +466,9 @@
     <Content Include="Data\Books\e039cc94-8315-11e5-91da-d43d7ef137da\Cover.jpg" />
     <Content Include="Data\Books\f3451066-a594-11e5-be13-00ff23f4a6cf\Cover.jpg" />
     <Content Include="Data\Books\No_Image_Available.png" />
+    <Content Include="Data\Email.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="CodeTemplates\MvcViewWithoutModel\Imports.include.t4" />
@@ -575,6 +582,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Common\AtLeastOnePropertyAttribute.cs" />
+    <Compile Include="Common\Extensions.cs" />
     <Compile Include="Common\Helpers.cs" />
     <Compile Include="Common\MatchPatternAttribute.cs" />
     <Compile Include="Common\MatchPropertiesAttribute.cs" />
@@ -595,6 +603,7 @@
     <Compile Include="Models\Book.cs" />
     <Compile Include="Models\BookContent.cs" />
     <Compile Include="Models\Encryption.cs" />
+    <Compile Include="Models\Key.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Models\ProjectDbContext.cs" />
     <Compile Include="Models\RemindPasswordRequest.cs" />

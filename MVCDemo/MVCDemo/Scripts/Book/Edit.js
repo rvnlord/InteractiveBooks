@@ -351,48 +351,77 @@ $(document).ready(function () {
             });
         });
 
-        cy.on("tap", "#create", function () {
+        function addTag(bookPart, tagsContainer) {
+            var $tagContainer = $("<span class='tag_container' node-id='" + bookPart.Id + "' />");
+            $tagContainer.appendTo($(tagsContainer));
+            var $tagContent = $("<span class='tag_content' />");
+            var $deleteTag = $("<span class='delete_tag' />");
+            $tagContent.appendTo($tagContainer);
+            $deleteTag.appendTo($tagContainer);
+            $("<span style='color: rgb(0, 0, 255); font-style: italic;'>Rozdział " + bookPart.Chapter.Number + ": " + bookPart.Chapter.Title + "</span><br /><br />").appendTo($tagContent);
+            $("<span style='color: rgb(220, 220, 220)'>" + bookPart.Choice + "</span><br /><br />").appendTo($tagContent);
+            $("<span style='color: rgb(190, 190, 190)'>" + bookPart.Description + "</span>").appendTo($tagContent);
+            positionBackground();
+            resizeBackground();
 
-            //
-
-            cy.$(".confirm_node").remove();
-            cy.$(".crud_node").remove();
-
-            $("#divBookEditTreeContent").slideUp(500);
-            $("#divBookEditPartContent").slideDown(500, function() {
+            $deleteTag.on("click", function (e) {
+                $("#ddlParentIds, #ddlChildrenIds").append($("<option/>", {
+                    "class": "ddl_node_option",
+                    value: bookPart.Id,
+                    text: "(Rozdział " + bookPart.Chapter.Number + ": " + bookPart.Chapter.Title + ") "
+                        + bookPart.Choice + " - " + bookPart.Description.split(" ").slice(0, 10).join(" ") + "..."
+                }));
+                sortDdl("ddlParentIds");
+                sortDdl("ddlChildrenIds");
+                $("#ddlParentIds, #ddlChildrenIds").selectmenu("refresh");
+                $(e.target).parent().remove();
                 positionBackground();
                 resizeBackground();
             });
-        });
 
-        cy.on("tap", "#edit", function () {
-            var node = this;
-            var editedNodeId = parseInt(node.predecessors().sources().first().id());
-            var edited = $.Enumerable.From(bookContent).Single(function(part) {
-                return part.Id === editedNodeId;
+            $deleteTag.on("mouseover", function (e) {
+                $(e.target).stop(true, true).animate({
+                    "opacity": 1
+                }, 250);
+                $(e.target).parent().stop(true, true).animate({
+                    "background-color": "rgb(120, 0, 0)"
+                }, 250);
             });
 
+            $deleteTag.on("mouseout", function (e) {
+                $(e.target).stop(true, true).animate({
+                    "opacity": 0.4
+                }, 250);
+                $(e.target).parent().stop(true, true).animate({
+                    "background-color": "rgb(30, 30, 30)"
+                }, 250);
+            });
+        }
+
+        function fillEditPanel(editedNode) {
+            var nodeToModifyId = parseInt(editedNode.Id);
+
             $(".chapter_fullname").text("Edytuj wybraną część");
-            $("#hdId").val(edited.Id);
-            $("#txtChapterNumber").val(edited.Chapter.Number);
-            $("#txtChapterTitle").val(edited.Chapter.Title);
-            $("#txtChoice").val(edited.Choice);
-            $("#taDescription").val(edited.Description);
-            $("#taStory").val(edited.Story);
+            $("#hdId").val(editedNode.Id);
+            $("#txtChapterNumber").val(editedNode.Chapter.Number);
+            $("#txtChapterTitle").val(editedNode.Chapter.Title);
+            $("#txtChoice").val(editedNode.Choice);
+            $("#taDescription").val(editedNode.Description);
+            $("#taStory").val(editedNode.Story);
 
             var notEdited = $.Enumerable.From(bookContent).Where(function (part) {
-                return part.Id !== editedNodeId;
+                return part.Id !== nodeToModifyId;
             }).ToArray();
 
             $("#ddlParentIds, #ddlChildrenIds").children(".ddl_node_option").remove();
             $("#divParentIdsContainer").empty();
             $("#divChildrenIdsContainer").empty();
 
-            var related = (edited.Children || []).concat(edited.Parents);
+            var related = (editedNode.Children || []).concat(editedNode.Parents);
             var notRelated = related ? notEdited.diff(related) : notEdited;
 
             if (notRelated) {
-                $.each(notRelated, function(i, v) {
+                $.each(notRelated, function (i, v) {
                     $("#ddlParentIds, #ddlChildrenIds").append($("<option/>", {
                         "class": "ddl_node_option",
                         value: v.Id,
@@ -402,57 +431,14 @@ $(document).ready(function () {
                 });
             }
 
-            function addTag(bookPart, tagsContainer) {
-                var $tagContainer = $("<span class='tag_container' node-id='" + bookPart.Id + "' />");
-                $tagContainer.appendTo($(tagsContainer));
-                var $tagContent = $("<span class='tag_content' />");
-                var $deleteTag = $("<span class='delete_tag' />");
-                $tagContent.appendTo($tagContainer);
-                $deleteTag.appendTo($tagContainer);
-                $("<span style='color: rgb(0, 0, 255); font-style: italic;'>Rozdział " + bookPart.Chapter.Number + ": " + bookPart.Chapter.Title + "</span><br /><br />").appendTo($tagContent);
-                $("<span style='color: rgb(220, 220, 220)'>" + bookPart.Choice + "</span><br /><br />").appendTo($tagContent);
-                $("<span style='color: rgb(190, 190, 190)'>" + bookPart.Description + "</span>").appendTo($tagContent);
-
-                $deleteTag.on("click", function (e) {
-                    $("#ddlParentIds, #ddlChildrenIds").append($("<option/>", {
-                        "class": "ddl_node_option",
-                        value: bookPart.Id,
-                        text: "(Rozdział " + bookPart.Chapter.Number + ": " + bookPart.Chapter.Title + ") "
-                            + bookPart.Choice + " - " + bookPart.Description.split(" ").slice(0, 10).join(" ") + "..."
-                    }));
-                    sortDdl("ddlParentIds");
-                    sortDdl("ddlChildrenIds");
-                    $("#ddlParentIds, #ddlChildrenIds").selectmenu("refresh");
-                    $(e.target).parent().remove();
-                });
-
-                $deleteTag.on("mouseover", function(e) {
-                    $(e.target).stop(true, true).animate({
-                        "opacity": 1
-                    }, 250);
-                    $(e.target).parent().stop(true, true).animate({
-                        "background-color": "rgb(120, 0, 0)"
-                    }, 250);
-                });
-
-                $deleteTag.on("mouseout", function (e) {
-                    $(e.target).stop(true, true).animate({
-                        "opacity": 0.4
-                    }, 250);
-                    $(e.target).parent().stop(true, true).animate({
-                        "background-color": "rgb(30, 30, 30)"
-                    }, 250);
-                });
-            }
-
-            if (edited.Parents) {
-                $.each(edited.Parents, function(i, v) {
+            if (editedNode.Parents) {
+                $.each(editedNode.Parents, function (i, v) {
                     addTag(v, "#divParentIdsContainer");
                 });
             }
 
-            if (edited.Children) {
-                $.each(edited.Children, function (i, v) {
+            if (editedNode.Children) {
+                $.each(editedNode.Children, function (i, v) {
                     addTag(v, "#divChildrenIdsContainer");
                 });
             }
@@ -478,10 +464,59 @@ $(document).ready(function () {
             cy.$(".crud_node").remove();
 
             $("#divBookEditTreeContent").slideUp(500);
-            $("#divBookEditPartContent").slideDown(500, function() {
+            $("#divBookEditPartContent").slideDown(500, function () {
                 positionBackground();
                 resizeBackground();
             });
+        }
+
+        cy.on("tap", "#create", function () {
+            var node = this;
+
+            var parentNodeId = parseInt(node.predecessors().sources().first().id());
+            var parent = $.Enumerable.From(bookContent).Single(function (part) {
+                return part.Id === parentNodeId;
+            });
+
+            var allNodesById = $.Enumerable.From(bookContent).OrderBy(function (part) {
+                return part.Id;
+            }).ToArray();
+
+            var lastNode = $.Enumerable.From(bookContent).OrderBy(function (part) {
+                return part.Id;
+            }).Last();
+
+            var createdNodeId = parseInt(lastNode.Id) + 1;
+
+            for (var i = 0; i < lastNode.Id - 1; i++) {
+                if (allNodesById[i + 1].Id - allNodesById[i].Id > 1) {
+                    createdNodeId = allNodesById[i].Id + 1;
+                }
+            }
+
+            var created = {
+                Id: createdNodeId,
+                Parents: [ parent ],
+                ParentIds: [ parentNodeId ],
+                Children: null,
+                ChildrenIds: null,
+                Choice: "",
+                Chapter: { Number: parent.Chapter.Number, Title: parent.Chapter.Title },
+                Story: "Nowa przykładowa Historia " + createdNodeId,
+                Description: "Opis przykładowej Historii " + createdNodeId
+            };
+
+            fillEditPanel(created);
+        });
+
+        cy.on("tap", "#edit", function () {
+            var node = this;
+            var editedNodeId = parseInt(node.predecessors().sources().first().id());
+            var edited = $.Enumerable.From(bookContent).Single(function(part) {
+                return part.Id === editedNodeId;
+            });
+
+            fillEditPanel(edited);
         });
 
         $("#btnCancel").on("click", function() {

@@ -31,7 +31,7 @@ CREATE TABLE tblBooks
   Category VARCHAR(100),
   Description TEXT,
   AuthorId CHAR(36),
-  Thumbnail VARCHAR(255),
+  Path VARCHAR(255),
   AdditionDate DATETIME,
   IsPublic BIT,
   CONSTRAINT pk_users_id PRIMARY KEY (Id), 
@@ -64,37 +64,42 @@ TRUNCATE TABLE tblBooks;
 DROP PROCEDURE IF EXISTS sp_InsertSampleBooks;
 CREATE PROCEDURE sp_InsertSampleBooks()
 BEGIN
-  INSERT INTO tblBooks (tblBooks.Id, tblBooks.Title, tblBooks.Category, tblBooks.Description, tblBooks.AuthorId, tblBooks.Thumbnail, tblBooks.AdditionDate, tblBooks.IsPublic)
-    VALUES ("231f4f0c-80be-11e5-87be-d43d7ef137da", "Dzieñ Smoka", "Fantastyka", "ksi¹¿ka w œwiecie Warcrafta", "748cea8f-80be-11e5-87be-d43d7ef137da", "~/Data/Books/231f4f0c-80be-11e5-87be-d43d7ef137da/Cover.jpg", "2015-11-01 22:52:47", 1);
-  INSERT INTO tblBooks (tblBooks.Id, tblBooks.Title, tblBooks.Category, tblBooks.Description, tblBooks.AuthorId, tblBooks.Thumbnail, tblBooks.AdditionDate, tblBooks.IsPublic)
-    VALUES ("d91aabca-8314-11e5-91da-d43d7ef137da", "Noc Smoka", "Fantastyka", "Kolejna ksi¹¿ka w œwiecie Warcrafta", "748cea8f-80be-11e5-87be-d43d7ef137da", "~/Data/Books/d91aabca-8314-11e5-91da-d43d7ef137da/Cover.jpg", "2015-11-04 22:53:47", 1);
-  INSERT INTO tblBooks (tblBooks.Id, tblBooks.Title, tblBooks.Category, tblBooks.Description, tblBooks.AuthorId, tblBooks.Thumbnail, tblBooks.AdditionDate, tblBooks.IsPublic)
-    VALUES ("e039cc94-8315-11e5-91da-d43d7ef137da", "Ostatni Stra¿nik", "Fantastyka", "Jeszcze jedna ksi¹¿ka w œwiecie Warcrafta", "748cea8f-80be-11e5-87be-d43d7ef137da", "~/Data/Books/e039cc94-8315-11e5-91da-d43d7ef137da/Cover.jpg", "2015-11-04 22:54:47", 1);
-  INSERT INTO tblBooks (tblBooks.Id, tblBooks.Title, tblBooks.Category, tblBooks.Description, tblBooks.AuthorId, tblBooks.Thumbnail, tblBooks.AdditionDate, tblBooks.IsPublic)
-    VALUES ("bd4cff46-8316-11e5-91da-d43d7ef137da", "W³adca Klanów", "Fantastyka", "Jeszcze jedna ksi¹¿ka w œwiecie Warcrafta", "748cea8f-80be-11e5-87be-d43d7ef137da", "~/Data/Books/bd4cff46-8316-11e5-91da-d43d7ef137da/Cover.jpg", "2015-11-04 22:54:47", 1);
-  INSERT INTO tblBooks (tblBooks.Id, tblBooks.Title, tblBooks.Category, tblBooks.Description, tblBooks.AuthorId, tblBooks.Thumbnail, tblBooks.AdditionDate, tblBooks.IsPublic)
-    VALUES ("261f79ef-8317-11e5-91da-d43d7ef137da", "Studnia Wiecznoœci", "Fantastyka", "Jeszcze jedna ksi¹¿ka w œwiecie Warcrafta", "748cea8f-80be-11e5-87be-d43d7ef137da", "~/Data/Books/261f79ef-8317-11e5-91da-d43d7ef137da/Cover.jpg", "2015-11-04 22:54:47", 1);
-  INSERT INTO tblBooks (tblBooks.Id, tblBooks.Title, tblBooks.Category, tblBooks.Description, tblBooks.AuthorId, tblBooks.Thumbnail, tblBooks.AdditionDate, tblBooks.IsPublic)
-    VALUES ("1181f40d-a58e-11e5-be13-00ff23f4a6cf", "WiedŸmin: Dom ze Szk³a", "Fantastyka", "Historia Geralta, który podczas wêdrówki skrajem Czarnego Lasu, spotyka owdowia³ego myœliwego. Wspólnie wyruszaj¹ w dalsz¹ podró¿. Leœne œcie¿ki, a mo¿e i przeznaczenie prowadz¹ ich do tytu³owego domu ze szk³a, wielkiego i pe³nego tajemnic dworu, w którym mieszka zmar³a ¿ona Jakuba oraz wiele innych dziwnych mrocznych postaci.", "748cea8f-80be-11e5-87be-d43d7ef137da", "~/Data/Books/1181f40d-a58e-11e5-be13-00ff23f4a6cf/Cover.jpg", "2015-12-18 22:54:47", 1);
-  INSERT INTO tblBooks (tblBooks.Id, tblBooks.Title, tblBooks.Category, tblBooks.Description, tblBooks.AuthorId, tblBooks.Thumbnail, tblBooks.AdditionDate, tblBooks.IsPublic)
-    VALUES ("569a000d-a590-11e5-be13-00ff23f4a6cf", "WiedŸmin: Ostatnie ¯yczenie", "Fantastyka", "Pierwszy z cykli opowiadañ o Geralcie z Rivii.", "748cea8f-80be-11e5-87be-d43d7ef137da", "~/Data/Books/569a000d-a590-11e5-be13-00ff23f4a6cf/Cover.jpg", "2015-12-18 22:54:47", 1);
-  INSERT INTO tblBooks (tblBooks.Id, tblBooks.Title, tblBooks.Category, tblBooks.Description, tblBooks.AuthorId, tblBooks.Thumbnail, tblBooks.AdditionDate, tblBooks.IsPublic)
-    VALUES ("ae28a1ba-a590-11e5-be13-00ff23f4a6cf", "WiedŸmin: Miecz Przeznaczenia", "Fantastyka", "Drugi z cykli opowiadañ o Geralcie z Rivii.", "748cea8f-80be-11e5-87be-d43d7ef137da", "~/Data/Books/ae28a1ba-a590-11e5-be13-00ff23f4a6cf/Cover.jpg", "2015-12-18 22:54:47", 1);
-  INSERT INTO tblBooks (tblBooks.Id, tblBooks.Title, tblBooks.Category, tblBooks.Description, tblBooks.AuthorId, tblBooks.Thumbnail, tblBooks.AdditionDate, tblBooks.IsPublic)
-    VALUES ("2feb687b-a591-11e5-be13-00ff23f4a6cf", "WiedŸmin: Krew Elfów", "Fantastyka", "Pierwsza czêœæ sagi o Geralcie z Rivii.", "748cea8f-80be-11e5-87be-d43d7ef137da", "~/Data/Books/2feb687b-a591-11e5-be13-00ff23f4a6cf/Cover.jpg", "2015-12-18 22:54:47", 1);
-  INSERT INTO tblBooks (tblBooks.Id, tblBooks.Title, tblBooks.Category, tblBooks.Description, tblBooks.AuthorId, tblBooks.Thumbnail, tblBooks.AdditionDate, tblBooks.IsPublic)
-    VALUES ("b31d78ec-a591-11e5-be13-00ff23f4a6cf", "WiedŸmin: Czas Pogardy", "Fantastyka", "Druga czêœæ sagi o Geralcie z Rivii.", "748cea8f-80be-11e5-87be-d43d7ef137da", "~/Data/Books/b31d78ec-a591-11e5-be13-00ff23f4a6cf/Cover.jpg", "2015-12-18 22:54:47", 1);
-  INSERT INTO tblBooks (tblBooks.Id, tblBooks.Title, tblBooks.Category, tblBooks.Description, tblBooks.AuthorId, tblBooks.Thumbnail, tblBooks.AdditionDate, tblBooks.IsPublic)
-    VALUES ("5a914551-a592-11e5-be13-00ff23f4a6cf", "WiedŸmin: Chrzest Ognia", "Fantastyka", "Trzecia czêœæ sagi o Geralcie z Rivii.", "748cea8f-80be-11e5-87be-d43d7ef137da", "~/Data/Books/5a914551-a592-11e5-be13-00ff23f4a6cf/Cover.jpg", "2015-12-18 22:54:47", 1);
-  INSERT INTO tblBooks (tblBooks.Id, tblBooks.Title, tblBooks.Category, tblBooks.Description, tblBooks.AuthorId, tblBooks.Thumbnail, tblBooks.AdditionDate, tblBooks.IsPublic)
-    VALUES ("b3e378d6-a592-11e5-be13-00ff23f4a6cf", "WiedŸmin: Wie¿a Jaskó³ki", "Fantastyka", "Czwarta czêœæ sagi o Geralcie z Rivii.", "748cea8f-80be-11e5-87be-d43d7ef137da", "~/Data/Books/b3e378d6-a592-11e5-be13-00ff23f4a6cf/Cover.jpg", "2015-12-18 22:54:47", 1);
-  INSERT INTO tblBooks (tblBooks.Id, tblBooks.Title, tblBooks.Category, tblBooks.Description, tblBooks.AuthorId, tblBooks.Thumbnail, tblBooks.AdditionDate, tblBooks.IsPublic)
-    VALUES ("b351f7a2-a594-11e5-be13-00ff23f4a6cf", "WiedŸmin: Pani Jeziora", "Fantastyka", "Pi¹ta czêœæ sagi o Geralcie z Rivii.", "748cea8f-80be-11e5-87be-d43d7ef137da", "~/Data/Books/b351f7a2-a594-11e5-be13-00ff23f4a6cf/Cover.jpg", "2015-12-18 22:54:47", 1);
-  INSERT INTO tblBooks (tblBooks.Id, tblBooks.Title, tblBooks.Category, tblBooks.Description, tblBooks.AuthorId, tblBooks.Thumbnail, tblBooks.AdditionDate, tblBooks.IsPublic)
-    VALUES ("f3451066-a594-11e5-be13-00ff23f4a6cf", "WiedŸmin: Sezon Burz", "Fantastyka", "Geralt stacza walkê z niebezpiecznym potworem, którego jedynym celem w ¿yciu jest zabijanie ludzi. Krótko po tym zostaje aresztowany, co skutkuje utrat¹ jego dwóch bezcennych, kutych na miarê mieczy wiedŸmiñskich. Z ma³¹ pomoc¹ swojego przyjaciela, Jaskra i jego koneksji, robi wszystko, by odzyskaæ swoje narzêdzia pracy. W miêdzyczasie wdaje siê w romans z czarodziejk¹ Lytt¹ Neyd (o pseudonimie Koral), poznaje wp³ywowe persony oraz margines spo³eczny zwi¹zany z pañstwem, w którym utraci³ swoje miecze - Kerack. Te wydarzenia oraz nieukrywana i odwzajemniona niechêæ magów do Geralta (którzy okazuj¹ siê byæ powi¹zani z t¹ histori¹) sprawiaj¹, ¿e ca³oœæ uk³ada siê w pasmo niepowodzeñ, podczas których bohater zmuszony jest do podejmowania trudnych decyzji i naginania jedynego zbioru zasad, którymi powinien kierowaæ siê \"wzorowy\" wiedŸmin - Kodeksu.", "748cea8f-80be-11e5-87be-d43d7ef137da", "~/Data/Books/f3451066-a594-11e5-be13-00ff23f4a6cf/Cover.jpg", "2015-12-18 22:54:47", 1);
-  INSERT INTO tblBooks (tblBooks.Id, tblBooks.Title, tblBooks.Category, tblBooks.Description, tblBooks.AuthorId, tblBooks.Thumbnail, tblBooks.AdditionDate, tblBooks.IsPublic)
-    VALUES ("3b5771e2-d32a-11e5-b200-00ff23f4a6cf", "World of Warcraft: Kr¹g Nienawiœci", "Fantastyka", "P³on¹cy Legion zosta³ pokonany i wschodnie rejony Kalimdoru zamieszkuj¹ dwa narody orki z Durotaru pod wodz¹ szlachetnego Thralla i ludzie z Theramore, którymi rz¹dzi jeden z najpotê¿niejszych ¿yj¹cych magów, lady Jaina Proudmoore. ", "748cea8f-80be-11e5-87be-d43d7ef137da", "~/Data/Books/3b5771e2-d32a-11e5-b200-00ff23f4a6cf/Cover.jpg", "2016-02-14 15:57:47", 1);
+  DELETE FROM tblBooks;
+  INSERT INTO tblBooks (tblBooks.Id, tblBooks.Title, tblBooks.Category, tblBooks.Description, tblBooks.AuthorId, tblBooks.Path, tblBooks.AdditionDate, tblBooks.IsPublic)
+    VALUES ("231f4f0c-80be-11e5-87be-d43d7ef137da", "Dzieñ Smoka", "Fantastyka", "ksi¹¿ka w œwiecie Warcrafta", "748cea8f-80be-11e5-87be-d43d7ef137da", "~/Data/Books/231f4f0c-80be-11e5-87be-d43d7ef137da", "2015-11-01 22:52:47", 1);
+  INSERT INTO tblBooks (tblBooks.Id, tblBooks.Title, tblBooks.Category, tblBooks.Description, tblBooks.AuthorId, tblBooks.Path, tblBooks.AdditionDate, tblBooks.IsPublic)
+    VALUES ("d91aabca-8314-11e5-91da-d43d7ef137da", "Noc Smoka", "Fantastyka", "Kolejna ksi¹¿ka w œwiecie Warcrafta", "748cea8f-80be-11e5-87be-d43d7ef137da", "~/Data/Books/d91aabca-8314-11e5-91da-d43d7ef137da", "2015-11-04 22:53:47", 1);
+  INSERT INTO tblBooks (tblBooks.Id, tblBooks.Title, tblBooks.Category, tblBooks.Description, tblBooks.AuthorId, tblBooks.Path, tblBooks.AdditionDate, tblBooks.IsPublic)
+    VALUES ("e039cc94-8315-11e5-91da-d43d7ef137da", "Ostatni Stra¿nik", "Fantastyka", "Jeszcze jedna ksi¹¿ka w œwiecie Warcrafta", "748cea8f-80be-11e5-87be-d43d7ef137da", "~/Data/Books/e039cc94-8315-11e5-91da-d43d7ef137da", "2015-11-04 22:54:47", 1);
+  INSERT INTO tblBooks (tblBooks.Id, tblBooks.Title, tblBooks.Category, tblBooks.Description, tblBooks.AuthorId, tblBooks.Path, tblBooks.AdditionDate, tblBooks.IsPublic)
+    VALUES ("bd4cff46-8316-11e5-91da-d43d7ef137da", "W³adca Klanów", "Fantastyka", "Jeszcze jedna ksi¹¿ka w œwiecie Warcrafta", "748cea8f-80be-11e5-87be-d43d7ef137da", "~/Data/Books/bd4cff46-8316-11e5-91da-d43d7ef137da", "2015-11-04 22:54:47", 1);
+  INSERT INTO tblBooks (tblBooks.Id, tblBooks.Title, tblBooks.Category, tblBooks.Description, tblBooks.AuthorId, tblBooks.Path, tblBooks.AdditionDate, tblBooks.IsPublic)
+    VALUES ("261f79ef-8317-11e5-91da-d43d7ef137da", "Studnia Wiecznoœci", "Fantastyka", "Jeszcze jedna ksi¹¿ka w œwiecie Warcrafta", "748cea8f-80be-11e5-87be-d43d7ef137da", "~/Data/Books/261f79ef-8317-11e5-91da-d43d7ef137da", "2015-11-04 22:54:47", 1);
+  INSERT INTO tblBooks (tblBooks.Id, tblBooks.Title, tblBooks.Category, tblBooks.Description, tblBooks.AuthorId, tblBooks.Path, tblBooks.AdditionDate, tblBooks.IsPublic)
+    VALUES ("1181f40d-a58e-11e5-be13-00ff23f4a6cf", "WiedŸmin: Dom ze Szk³a", "Fantastyka", "Historia Geralta, który podczas wêdrówki skrajem Czarnego Lasu, spotyka owdowia³ego myœliwego. Wspólnie wyruszaj¹ w dalsz¹ podró¿. Leœne œcie¿ki, a mo¿e i przeznaczenie prowadz¹ ich do tytu³owego domu ze szk³a, wielkiego i pe³nego tajemnic dworu, w którym mieszka zmar³a ¿ona Jakuba oraz wiele innych dziwnych mrocznych postaci.", "748cea8f-80be-11e5-87be-d43d7ef137da", "~/Data/Books/1181f40d-a58e-11e5-be13-00ff23f4a6cf", "2015-12-18 22:54:47", 1);
+  INSERT INTO tblBooks (tblBooks.Id, tblBooks.Title, tblBooks.Category, tblBooks.Description, tblBooks.AuthorId, tblBooks.Path, tblBooks.AdditionDate, tblBooks.IsPublic)
+    VALUES ("569a000d-a590-11e5-be13-00ff23f4a6cf", "WiedŸmin: Ostatnie ¯yczenie", "Fantastyka", "Pierwszy z cykli opowiadañ o Geralcie z Rivii.", "748cea8f-80be-11e5-87be-d43d7ef137da", "~/Data/Books/569a000d-a590-11e5-be13-00ff23f4a6cf", "2015-12-18 22:54:47", 1);
+  INSERT INTO tblBooks (tblBooks.Id, tblBooks.Title, tblBooks.Category, tblBooks.Description, tblBooks.AuthorId, tblBooks.Path, tblBooks.AdditionDate, tblBooks.IsPublic)
+    VALUES ("ae28a1ba-a590-11e5-be13-00ff23f4a6cf", "WiedŸmin: Miecz Przeznaczenia", "Fantastyka", "Drugi z cykli opowiadañ o Geralcie z Rivii.", "748cea8f-80be-11e5-87be-d43d7ef137da", "~/Data/Books/ae28a1ba-a590-11e5-be13-00ff23f4a6cf", "2015-12-18 22:54:47", 1);
+  INSERT INTO tblBooks (tblBooks.Id, tblBooks.Title, tblBooks.Category, tblBooks.Description, tblBooks.AuthorId, tblBooks.Path, tblBooks.AdditionDate, tblBooks.IsPublic)
+    VALUES ("2feb687b-a591-11e5-be13-00ff23f4a6cf", "WiedŸmin: Krew Elfów", "Fantastyka", "Pierwsza czêœæ sagi o Geralcie z Rivii.", "748cea8f-80be-11e5-87be-d43d7ef137da", "~/Data/Books/2feb687b-a591-11e5-be13-00ff23f4a6cf", "2015-12-18 22:54:47", 1);
+  INSERT INTO tblBooks (tblBooks.Id, tblBooks.Title, tblBooks.Category, tblBooks.Description, tblBooks.AuthorId, tblBooks.Path, tblBooks.AdditionDate, tblBooks.IsPublic)
+    VALUES ("b31d78ec-a591-11e5-be13-00ff23f4a6cf", "WiedŸmin: Czas Pogardy", "Fantastyka", "Druga czêœæ sagi o Geralcie z Rivii.", "748cea8f-80be-11e5-87be-d43d7ef137da", "~/Data/Books/b31d78ec-a591-11e5-be13-00ff23f4a6cf", "2015-12-18 22:54:47", 1);
+  INSERT INTO tblBooks (tblBooks.Id, tblBooks.Title, tblBooks.Category, tblBooks.Description, tblBooks.AuthorId, tblBooks.Path, tblBooks.AdditionDate, tblBooks.IsPublic)
+    VALUES ("5a914551-a592-11e5-be13-00ff23f4a6cf", "WiedŸmin: Chrzest Ognia", "Fantastyka", "Trzecia czêœæ sagi o Geralcie z Rivii.", "748cea8f-80be-11e5-87be-d43d7ef137da", "~/Data/Books/5a914551-a592-11e5-be13-00ff23f4a6cf", "2015-12-18 22:54:47", 1);
+  INSERT INTO tblBooks (tblBooks.Id, tblBooks.Title, tblBooks.Category, tblBooks.Description, tblBooks.AuthorId, tblBooks.Path, tblBooks.AdditionDate, tblBooks.IsPublic)
+    VALUES ("b3e378d6-a592-11e5-be13-00ff23f4a6cf", "WiedŸmin: Wie¿a Jaskó³ki", "Fantastyka", "Czwarta czêœæ sagi o Geralcie z Rivii.", "748cea8f-80be-11e5-87be-d43d7ef137da", "~/Data/Books/b3e378d6-a592-11e5-be13-00ff23f4a6cf", "2015-12-18 22:54:47", 1);
+  INSERT INTO tblBooks (tblBooks.Id, tblBooks.Title, tblBooks.Category, tblBooks.Description, tblBooks.AuthorId, tblBooks.Path, tblBooks.AdditionDate, tblBooks.IsPublic)
+    VALUES ("b351f7a2-a594-11e5-be13-00ff23f4a6cf", "WiedŸmin: Pani Jeziora", "Fantastyka", "Pi¹ta czêœæ sagi o Geralcie z Rivii.", "748cea8f-80be-11e5-87be-d43d7ef137da", "~/Data/Books/b351f7a2-a594-11e5-be13-00ff23f4a6cf", "2015-12-18 22:54:47", 1);
+  INSERT INTO tblBooks (tblBooks.Id, tblBooks.Title, tblBooks.Category, tblBooks.Description, tblBooks.AuthorId, tblBooks.Path, tblBooks.AdditionDate, tblBooks.IsPublic)
+    VALUES ("f3451066-a594-11e5-be13-00ff23f4a6cf", "WiedŸmin: Sezon Burz", "Fantastyka", "Geralt stacza walkê z niebezpiecznym potworem, którego jedynym celem w ¿yciu jest zabijanie ludzi. Krótko po tym zostaje aresztowany, co skutkuje utrat¹ jego dwóch bezcennych, kutych na miarê mieczy wiedŸmiñskich. Z ma³¹ pomoc¹ swojego przyjaciela, Jaskra i jego koneksji, robi wszystko, by odzyskaæ swoje narzêdzia pracy. W miêdzyczasie wdaje siê w romans z czarodziejk¹ Lytt¹ Neyd (o pseudonimie Koral), poznaje wp³ywowe persony oraz margines spo³eczny zwi¹zany z pañstwem, w którym utraci³ swoje miecze - Kerack. Te wydarzenia oraz nieukrywana i odwzajemniona niechêæ magów do Geralta (którzy okazuj¹ siê byæ powi¹zani z t¹ histori¹) sprawiaj¹, ¿e ca³oœæ uk³ada siê w pasmo niepowodzeñ, podczas których bohater zmuszony jest do podejmowania trudnych decyzji i naginania jedynego zbioru zasad, którymi powinien kierowaæ siê \"wzorowy\" wiedŸmin - Kodeksu.", "748cea8f-80be-11e5-87be-d43d7ef137da", "~/Data/Books/f3451066-a594-11e5-be13-00ff23f4a6cf", "2015-12-18 22:54:47", 1);
+  INSERT INTO tblBooks (tblBooks.Id, tblBooks.Title, tblBooks.Category, tblBooks.Description, tblBooks.AuthorId, tblBooks.Path, tblBooks.AdditionDate, tblBooks.IsPublic)
+    VALUES ("3b5771e2-d32a-11e5-b200-00ff23f4a6cf", "World of Warcraft: Kr¹g Nienawiœci", "Fantastyka", "P³on¹cy Legion zosta³ pokonany i wschodnie rejony Kalimdoru zamieszkuj¹ dwa narody orki z Durotaru pod wodz¹ szlachetnego Thralla i ludzie z Theramore, którymi rz¹dzi jeden z najpotê¿niejszych ¿yj¹cych magów, lady Jaina Proudmoore. ", "748cea8f-80be-11e5-87be-d43d7ef137da", "~/Data/Books/3b5771e2-d32a-11e5-b200-00ff23f4a6cf", "2016-02-14 15:57:47", 1);
+  INSERT INTO tblBooks (tblBooks.Id, tblBooks.Title, tblBooks.Category, tblBooks.Description, tblBooks.AuthorId, tblBooks.Path, tblBooks.AdditionDate, tblBooks.IsPublic)
+    VALUES ("7bcba4ed-f28c-11e5-9c77-00ff23f4a6cf", "Przyk³adowa Ksi¹¿ka", "Krymina³", "Przyk³adowa ksi¹¿ka 1", "748cea8f-80be-11e5-87be-d43d7ef137da", "~/Data/Books/7bcba4ed-f28c-11e5-9c77-00ff23f4a6cf", "2016-03-25 14:24:00", 1);
 END;
+
+CALL sp_InsertSampleBooks();
 
 TRUNCATE TABLE tblBooks;
 
@@ -113,6 +118,7 @@ UPDATE tblBooks
   WHERE tblBooks.Id = UuidToBin("261f79ef-8317-11e5-91da-d43d7ef137da");
 
 ALTER TABLE tblBooks CHANGE ThumbnailPath Thumbnail VARCHAR(257);
+ALTER TABLE tblBooks CHANGE Thumbnail Path VARCHAR(257);
 
 SET GLOBAL log_bin_trust_function_creators = 1;
 
@@ -170,7 +176,7 @@ BEGIN
   DROP TEMPORARY TABLE IF EXISTS temp_tblSearchResults;
   SET @v_statement = CONCAT(
     'CREATE TEMPORARY TABLE temp_tblSearchResults AS ', 
-      'SELECT b.Id, b.Title, b.Category, b.Description, b.AuthorId, b.Thumbnail, b.AdditionDate, b.IsPublic FROM tblBooks b ', 
+      'SELECT b.Id, b.Title, b.Category, b.Description, b.AuthorId, b.Path, b.AdditionDate, b.IsPublic FROM tblBooks b ', 
         'WHERE b.Id IN ( ', 
           'SELECT sm.Id ',  
             'FROM temp_tblSearchMatches sm ', 
@@ -231,7 +237,20 @@ CREATE TABLE tblRemindPasswordRequests
   FOREIGN KEY (UserId) REFERENCES tblUsers(Id)
 );
 
+-- NOWE
+
+CREATE TABLE tblKeys
+(
+  Id VARCHAR(30) PRIMARY KEY,
+  Value VARCHAR(1500)
+);
+
+INSERT INTO tblKeys (tblKeys.Id, tblKeys.Value) VALUES ("email_private", "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBALXOaXgwm2ZIszHDtw6DJojSxLlWgA4r2ewC+0VLkz1zr/gpU2COmbvntLhKbFE2MZQAoHm/AYV+0xOjzBInUv3uQJwK5caMLhaYBKJdWlRzxYhbMTMWThHIebN1iCbNCTK8MNlEQBX2Ila6hhluu3wgP0jx+8h7eKK2Hc5MwA8LAgMBAAECgYAbhk6Ndb5xM9x9UkYqmkyBNne2H5RvkNADXUgxa4m1KgigJ5GJ8szvl9rSc+IGQZAr+hRRmkterJ7EQG4q6W0050NhlmvlW3lNwkzbM23p9j9fpSDoHOlPzdMsrsbmZ+cOb8ruPxrnzfMj1zfQCpgSD1UDis2bNW3gs5U+Q9OmkQJBANn0sawCJ93b//vQ7rJo288GNwSA8tO48IJPX3E6x8E8qBiTIwM0PTeleCMyHwbaWlxvk8pDjJREIwItefhBwm0CQQDVimJaAA779yIGR+QqrqlnW4VxtsXCrL7WuvT3XFtpx/Cv3LeysmVj897JzeHiVEqzei4DT23T4LFo9jdNRWxXAkEAv+i1nFfVlILGtYo08oBjsritLtj/dq7rjkGnLwLrqdjnxaOge4y+rkWTL6JNMXKHh8Zy4fByUoZgMOWr9IyqTQJAPvyRpCBuSw4LYDTmbVyVpWIOi4sw7ApOREJjLW91m08ZhJYjLTeHxqLRbU8oOL1KR4RbfCh6qcuWKPKvP0CiAwJBAJA0VM4BFhiLrefKg+8Pvw6B+yGVd9TON4sVkeAVg8G4DPvLK7CcrD7hYNumpqeXklRl4Q4rPIGrP53wDF7Yxu4=");
+INSERT INTO tblKeys (tblKeys.Id, tblKeys.Value) VALUES ("email_public", "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC1zml4MJtmSLMxw7cOgyaI0sS5VoAOK9nsAvtFS5M9c6/4KVNgjpm757S4SmxRNjGUAKB5vwGFftMTo8wSJ1L97kCcCuXGjC4WmASiXVpUc8WIWzEzFk4RyHmzdYgmzQkyvDDZREAV9iJWuoYZbrt8ID9I8fvIe3iith3OTMAPCwIDAQAB");
+
 -- ================================================================================================
+
+DELETE FROM tblKeys;
 
 CALL sp_SearchBooks("", 1, 0, 0, 1, 4, 12, 'title', 'asc');
 
@@ -241,14 +260,16 @@ SELECT @p_ResultsCounter;
 SELECT SUBSTRING_INDEX(SUBSTRING_INDEX("wyraz1 wyraz2 wyraz3 end;", ' ', 3), ' ', -1) AS v;
 
 DELETE FROM tblActivationRequests;
-DELETE FROM tblUsers WHERE LOWER(tblUsers.UserName) != 'rvnlord';
+DELETE FROM tblUsers WHERE LOWER(tblUsers.UserName) != 'rvnlord' && LOWER(tblUsers.UserName) != 'koverss';
 
 SELECT * FROM tblActivationRequests ar;
 SELECT * FROM tblremindpasswordrequests rp;
 SELECT * FROM tblUsers;
 SELECT * FROM tblBooks;
+SELECT * FROM tblKeys k;
 
 UPDATE tblUsers u SET u.IsActivated = 1;
+UPDATE tblUsers u SET u.Email = "bbabczynski@gmail.com" WHERE u.UserName = "koverss";
 
 UPDATE tblUsers u 
   SET u.Password = "O5g9a46GBK4pa1XIj9HI2u16Lr9pM7kbvs14O/76Jnpceb/EUUF0ln31rpXwUr3OEOaMa42XsAqyEoCKkS3eTfTkQBo=" 

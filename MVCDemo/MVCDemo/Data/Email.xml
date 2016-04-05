@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<smtp deliveryMethod="Network" from="Interaktywne Książki &lt;rvnlord@gmail.com&gt;">
+  <network host="smtp.gmail.com" password="QXhYL2IbiJ1uuoCQZQ6Zhy7a6dfH+6PYj1lLSCr50b2mvIg+15mi+XC9mWi1KxMjpkHmZPt+JeKjZBux1KJVt7vDCPwfn+FeKMj7RttTF9iea+R6mRriommwkPOL0OkG0rlMSaJxxMclLIhgYwXh2PhBY71aqPXUcNtYduI1b5g=" port="587" userName="rvnlord@gmail.com" enableSsl="true" />
+</smtp>

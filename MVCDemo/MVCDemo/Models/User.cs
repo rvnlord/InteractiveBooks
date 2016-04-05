@@ -11,9 +11,12 @@ using System.Linq;
 using System.Data.Entity.Spatial;
 using System.Net.Configuration;
 using System.Net.Mail;
+using System.Security.Cryptography;
 using System.Text;
+using System.Web;
 using System.Web.Mvc;
 using System.Xml;
+using System.Xml.Linq;
 using MVCDemo.Common;
 using MySql.Data.MySqlClient;
 
@@ -393,40 +396,61 @@ namespace MVCDemo.Models
 
         private UserActionResult SendEmail(string emailSubject, string emailBody)
         {
-            try
+            using (var db = new ProjectDbContext())
             {
-                var smtpSection = (SmtpSection)ConfigurationManager.GetSection("system.net/mailSettings/smtp");
-
-                var host = smtpSection.Network.Host;
-                var port = smtpSection.Network.Port;
-                var address = smtpSection.From;
-                var userName = smtpSection.Network.UserName;
-                var password = smtpSection.Network.Password;
-                var enableSsl = smtpSection.Network.EnableSsl;
-
-                var mailMessage = new MailMessage(address, Email)
+                try
                 {
-                    IsBodyHtml = true,
-                    Body = emailBody,
-                    Subject = emailSubject
-                };
+                    var enc = new Encryption();
+                    var dbPrivateKey = db.Keys.Single(k => k.Id == "email_private");
+                    var dbPublicKey = db.Keys.Single(k => k.Id == "email_public");
+                    var privateKey = dbPrivateKey.Value;
 
-                var smtpClient = new SmtpClient(host, port)
-                {
-                    Credentials = new System.Net.NetworkCredential()
+                    var xmlPath = HttpContext.Current.Session["EmailData"].ToString();
+                    var doc = XDocument.Load(xmlPath);
+                    var smtp = doc.Element("smtp");
+                    var network = smtp?.Element("network");
+
+                    var host = network?.Attribute("host").Value;
+                    var port = Convert.ToInt32(network?.Attribute("port").Value);
+                    var address = smtp?.Attribute("from").Value ?? "";
+                    var userName = network?.Attribute("userName").Value;
+                    var password = enc.RsaDecryptWithPrivate(network?.Attribute("password").Value, privateKey);
+                    var enableSsl = network?.Attribute("enableSsl").Value;
+
+                    var keys = enc.RsaGenerateKeys();
+                    network?.SetAttributeValue("password", enc.RsaEncryptWithPublic(password, keys.Public));
+                    doc.Save(xmlPath);
+
+                    dbPrivateKey.Value = keys.Private;
+                    dbPublicKey.Value = keys.Public;
+                    db.SaveChanges();
+
+                    var mailMessage = new MailMessage(address, Email)
                     {
-                        UserName = userName,
-                        Password = password
-                    },
-                    EnableSsl = Convert.ToBoolean(enableSsl)
-                };
+                        IsBodyHtml = true,
+                        Body = emailBody,
+                        Subject = emailSubject
+                    };
 
-                smtpClient.Send(mailMessage);
-                return UserActionResult.Success;
-            }
-            catch (Exception)
-            {
-                return UserActionResult.SendingEmailFailure;
+                    var smtpClient = new SmtpClient(host, port)
+                    {
+                        Credentials = new System.Net.NetworkCredential()
+                        {
+                            UserName = userName,
+                            Password = password
+                        },
+                        EnableSsl = Convert.ToBoolean(enableSsl)
+                    };
+
+                    smtpClient.Send(mailMessage);
+                    return UserActionResult.Success;
+                }
+                catch (Exception)
+                {
+                    if (db.Database.Connection.State == ConnectionState.Open)
+                        db.Database.Connection.Close();
+                    return UserActionResult.SendingEmailFailure;
+                }
             }
         }
     }

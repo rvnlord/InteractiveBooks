@@ -11,8 +11,7 @@ using System.Xml.Linq;
 
 namespace MVCDemo.Models
 {
-    //[DbConfigurationType(typeof(MySqlEFConfiguration))]
-    public partial class ProjectDbContext : DbContext
+    public class ProjectDbContext : DbContext
     {
         public ProjectDbContext() : base("name=DBCS")
         { }
@@ -21,17 +20,10 @@ namespace MVCDemo.Models
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<ActivationRequest> ActivationRequests { get; set; }
         public virtual DbSet<RemindPasswordRequest> RemindPasswordRequests { get; set; }
+        public virtual DbSet<Key> Keys { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            //modelBuilder.Types().Configure(c =>
-            //{
-            //    var properties = c.ClrType.GetProperties(BindingFlags.NonPublic | BindingFlags.Instance)
-            //        .Where(p => p.Name == "IdBinary");
-            //    foreach (var p in properties)
-            //        c.Property(p).HasColumnName("Id");
-            //});
-
             // Books
 
             modelBuilder.Entity<Book>()
@@ -98,6 +90,12 @@ namespace MVCDemo.Models
             modelBuilder.Entity<RemindPasswordRequest>()
                 .HasKey(e => e.Id)
                 .ToTable("tblremindpasswordRequests");
+
+            // keys
+
+            modelBuilder.Entity<Key>()
+                .HasKey(e => e.Id)
+                .ToTable("tblkeys");
         }
 
         protected override DbEntityValidationResult ValidateEntity(DbEntityEntry entityEntry, IDictionary<object, object> items)

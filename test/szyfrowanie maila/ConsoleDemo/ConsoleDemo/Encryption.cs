@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
-using System.Security.Cryptography;
+using System.Linq;
 using System.Text;
-using MVCDemo.Common;
+using System.Security.Cryptography;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Encodings;
 using Org.BouncyCastle.Crypto.Engines;
@@ -13,7 +13,7 @@ using Org.BouncyCastle.Pkcs;
 using Org.BouncyCastle.Security;
 using Org.BouncyCastle.X509;
 
-namespace MVCDemo.Models
+namespace ConsoleDemo
 {
     public class Encryption
     {
@@ -29,7 +29,7 @@ namespace MVCDemo.Models
                 const int maxSaltSize = 8;
 
                 // Generate a random number for the size of the salt.
-                var random = new Random();
+                Random random = new Random();
                 var saltSize = random.Next(minSaltSize, maxSaltSize);
 
                 // Allocate a byte array, which will hold the salt.
@@ -58,6 +58,10 @@ namespace MVCDemo.Models
                 plainTextWithSaltBytes[plainTextBytes.Length + i] = saltBytes[i];
 
             HashAlgorithm hash;
+
+            // Make sure hashing algorithm name is specified.
+            //if (hashAlgorithm == null)
+            //    hashAlgorithm = "";
 
             // Initialize appropriate hashing algorithm class.
             switch (hashAlgorithm)
@@ -106,6 +110,10 @@ namespace MVCDemo.Models
             // We must know size of hash (without salt).
             int hashSizeInBits;
 
+            // Make sure that hashing algorithm name is specified.
+            //if (hashAlgorithm == null)
+            //    hashAlgorithm = "";
+
             // Size of hash is based on the specified algorithm.
             // Initialize appropriate hashing algorithm class.
             switch (hashAlgorithm)
@@ -129,6 +137,7 @@ namespace MVCDemo.Models
 
             // Make sure that the specified hash value is long enough.
             if (hashWithSaltBytes.Length < hashSizeInBytes)
+                //return false;
                 return string.Empty;
 
             // Allocate array to hold original salt bytes retrieved from hash.
@@ -141,6 +150,10 @@ namespace MVCDemo.Models
             // Compute a new hash string.
             var expectedHashString = ComputeHash(plainText, hashAlgorithm, saltBytes);
 
+            // If the computed hash matches the specified hash,
+            // the plain text value must be correct.
+            //return (hashValue == expectedHashString);
+
             return expectedHashString;
         }
 
@@ -152,12 +165,32 @@ namespace MVCDemo.Models
             kpgen.Init(new KeyGenerationParameters(new SecureRandom(new CryptoApiRandomGenerator()), 1024));
 
             var keyPair = kpgen.GenerateKeyPair();
+            //string privateKey, publicKey;
 
             var pkInfo = PrivateKeyInfoFactory.CreatePrivateKeyInfo(keyPair.Private);
             var privateKey = Convert.ToBase64String(pkInfo.GetDerEncoded());
 
             var info = SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(keyPair.Public);
             var publicKey = Convert.ToBase64String(info.GetDerEncoded());
+
+            //using (TextWriter txtWriter = new StringWriter())
+            //{
+            //    var pemWriter = new PemWriter(txtWriter);
+
+            //    pemWriter.WriteObject(keyPair.Public);
+            //    pemWriter.Writer.Flush();
+            //    var t = txtWriter.ToString();
+            //    publicKey = txtWriter.ToString().Trim().Replace("\r\n", "").Split(new[] { "-----" }, StringSplitOptions.None).Where(s => !string.IsNullOrWhiteSpace(s)).ToList()[1].Trim();
+            //}
+
+            //using (TextWriter txtWriter = new StringWriter())
+            //{
+            //    var pemWriter = new PemWriter(txtWriter);
+
+            //    pemWriter.WriteObject(keyPair.Private);
+            //    pemWriter.Writer.Flush();
+            //    privateKey = txtWriter.ToString().Trim().Replace("\r\n", "").Split(new[] { "-----" }, StringSplitOptions.None).Where(s => !string.IsNullOrWhiteSpace(s)).ToList()[1].Trim();
+            //}
 
             return new AssymetricKeys { Private = privateKey, Public = publicKey };
         }
@@ -246,7 +279,7 @@ namespace MVCDemo.Models
         public string Public { get; set; }
         public string Private { get; set; }
     }
-
+    
     public enum HashAlgorithmType
     {
         // ReSharper disable once InconsistentNaming
