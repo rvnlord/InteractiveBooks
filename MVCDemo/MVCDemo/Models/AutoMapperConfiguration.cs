@@ -31,6 +31,10 @@ namespace MVCDemo.Models
             cfg.CreateMap<UserToSendActivationCodeViewModel, User>();
             cfg.CreateMap<UserToSendRemindPasswordRequestViewModel, User>();
             cfg.CreateMap<User, User>().ForAllMembers(opt => opt.Condition(c => !c.IsSourceValueNull));
+            cfg.CreateMap<BookContentPart, BookContentPart>();
+            cfg.CreateMap<Book, Book>();
+            cfg.CreateMap<BookToUpdateViewModel, Book>();
+            cfg.CreateMap<BookToCreateViewModel, Book>();
         }
     }
 }

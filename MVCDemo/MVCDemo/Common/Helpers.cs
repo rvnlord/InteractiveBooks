@@ -1,31 +1,46 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Reflection;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Data.Entity.Core.Objects.DataClasses;
-using System.Data.Entity.Core.Objects;
-using System.Text;
-using Newtonsoft.Json.Linq;
 
 namespace MVCDemo.Common
 {
+    public class GlobalHelper
+    {
+        private const int TimedOutExceptionCode = -2147467259;
+        public static bool IsMaxRequestExceededException(Exception e)
+        {
+            Exception main;
+            var unhandled = e as HttpUnhandledException;
+
+            if (unhandled != null && unhandled.ErrorCode == TimedOutExceptionCode)
+            {
+                main = unhandled.InnerException;
+            }
+            else
+                main = e;
+            
+            var http = main as HttpException;
+
+            if (http == null || http.ErrorCode != TimedOutExceptionCode)
+                return false;
+            // Nie istnieje metoda identyfikacji błędu RequestExceeded ponieważ jest on traktowany jako Timeout
+            return http.StackTrace.Contains("GetEntireRawContent");
+        }
+    }
+
     public class DisplayNameHelper
     {
         public static string GetDisplayName(object obj, string propertyName)
         {
-            if (obj == null) return null;
-            return GetDisplayName(obj.GetType(), propertyName);
+            return obj == null ? null : GetDisplayName(obj.GetType(), propertyName);
         }
 
         public static string GetDisplayName(Type type, string propertyName)
         {
             var property = type.GetProperty(propertyName);
-            if (property == null) return null;
-
-            return GetDisplayName(property);
+            return property == null ? null : GetDisplayName(property);
         }
 
         public static string GetDisplayName(PropertyInfo property)
@@ -35,10 +50,7 @@ namespace MVCDemo.Common
                 return attrName;
 
             var metaName = GetMetaDisplayName(property);
-            if (!string.IsNullOrEmpty(metaName))
-                return metaName;
-
-            return property.Name;
+            return !string.IsNullOrEmpty(metaName) ? metaName : property.Name;
         }
 
         private static string GetAttributeDisplayName(PropertyInfo property)

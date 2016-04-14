@@ -1,20 +1,31 @@
-﻿@using MVCDemo.Controllers
+﻿@using MVCDemo.Common
 @model MVCDemo.Models.Book
 
 @{
-    var thumb = Model.Path + "/Cover.jpg";
+    var thumb = "~/Data/Books/No_Image_Available.png";
+    var pathNoExt = Server.MapPath(Model.Path) + @"\Cover";
+    var extensions = new[] { ".bmp", ".jpg", ".jpeg", ".png", ".gif" };
+    var covers = extensions
+        .Select(ext => $"{pathNoExt}{ext}")
+        .Where(File.Exists)
+        .Select(path => new FileInfo(path))
+        .OrderByDescending(f => f.LastWriteTime)
+        .Select(f => HttpContext.Current.Server.RelativePath(f.FullName, HttpContext.Current.Request))
+        .ToList();
+
     string height;
-    if (!File.Exists(Server.MapPath(thumb)))
+    if (covers.Count > 0)
     {
-        thumb = "~/Data/Books/No_Image_Available.png";
-        height = "200px";
-    }
-    else
-    {
+        thumb = covers.First();
         var img = System.Drawing.Image.FromFile(Server.MapPath(thumb));
         var multiplier = 1004.0 / img.Width;
         height = (multiplier >= 1 ? img.Height : (int)(img.Height * multiplier)) + "px";
     }
+    else
+    {
+        height = "200px";
+    }
+
     var time = $"dnia {Model.AdditionDate?.ToString("dd-MM-yyyy")} o godzinie {Model.AdditionDate?.ToString("hh:mm")}";
 }
 

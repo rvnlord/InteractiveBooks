@@ -1,5 +1,80 @@
 ﻿/// <reference path="../_references.js" />
 
+function btnDeleteBook_Click(e) {
+    $(e.target).off("click");
+
+    var $divDeleteLoader = $("<div id='divDeleteLoader' style='position: relative'></div>");
+    $(".book_details_editoptions").first().after($divDeleteLoader);
+
+    var loaderContainerId = "divDeleteLoader"; // pozycjonuj względem
+    var $appendToElement = $divDeleteLoader; // $("#divBookDetailsContainer"); // umieść w
+
+    $("#" + loaderContainerId).css({
+        "min-height": "100px"
+    });
+    positionBackground();
+    resizeBackground();
+
+    toggleUniversalLoader({
+        id: loaderContainerId,
+        option: "show",
+        loaderWidth: 64,
+        loaderHeight: 64,
+        appendToElement: $appendToElement
+    });
+
+    $.ajax({
+        async: true,
+        url: siteroot + "Book/DeleteBook",
+        method: "post",
+        contentType: "application/json;charset=utf-8",
+        data: JSON.stringify({
+            Id: $.id
+        }),
+        dataType: "json",
+        success: function (data) {
+            var status = (data.Status || "").toLowerCase();
+            var message = data.Message;
+            var msgColor = status === "success" ? msgColor = "#0b970d" : "#FF5468";
+
+            toggleUniversalLoader({
+                id: loaderContainerId,
+                option: "hide"
+            });
+
+            if (message) {
+                toggleUniversalMessage({
+                    id: loaderContainerId,
+                    option: "show",
+                    fadeout: status !== "success",
+                    fadetime: 1000,
+                    length: 1000,
+                    message: message,
+                    messageColor: msgColor,
+                    appendToElement: $appendToElement
+                });
+            }
+
+            if (status !== "success") {
+                $(e.target).off("click").on("click", function (evt) {
+                    btnDeleteBook_Click(evt);
+                });
+                $("#" + loaderContainerId).css({
+                    "min-height": "auto"
+                });
+                $divDeleteLoader.remove();
+                positionBackground();
+                resizeBackground();
+            } else {
+                $("#divBookDetailsContainer").children("div").not("#divDeleteLoader").remove();
+            }
+        },
+        error: function (err) {
+            $("html").html(err.responseText);
+        }
+    });
+}
+
 $(document).ready(function () {
 
     function formatBookContent() {
@@ -90,7 +165,7 @@ $(document).ready(function () {
     }
 
     function getLinesNumber() {
-        var $storyContainerP = $(".book_details_content_story").children("p");
+        var $storyContainerP = $(".book_details_content_story").children("p").not(".stars");
         var totalHeight = 0;
         $storyContainerP.each(function (i, el) {
             totalHeight += $(el).innerHeight();
@@ -106,7 +181,7 @@ $(document).ready(function () {
         var choiceParent = args.choiceParent || null;
 
         $("#divBookDetailsContentLoader").remove();
-        var $divLoader = $("<div id='divBookDetailsContentLoader'></div>");
+        var $divLoader = $("<div id='divBookDetailsContentLoader' style='position: relative'></div>");
         $("#divBookDetailsContent").append($divLoader);
         $divLoader.css({
             "height": "100px"
@@ -117,7 +192,7 @@ $(document).ready(function () {
             option: "show",
             loaderWidth: 64,
             loaderHeight: 64,
-            appendToElement: $("#divBookDetailsContainer")
+            appendToElement: $("#divBookDetailsContentLoader") //$("#divBookDetailsContainer")
         });
 
         $.ajax({
@@ -135,6 +210,11 @@ $(document).ready(function () {
                 var bookContentView = $.parseHTML(data.PartialView.replace(/(\r\n|\n|\r)/gm, ""));
                 $(bookContentView).appendTo($("#divBookDetailsContent"));
 
+                toggleUniversalLoader({
+                    id: "divBookDetailsContentLoader",
+                    option: "hide"
+                });
+
                 var message = data.Message;
                 if (message) {
                     toggleUniversalMessage({
@@ -143,17 +223,12 @@ $(document).ready(function () {
                         fadeout: false,
                         message: message,
                         messageColor: "#FF5468",
-                        appendToElement: $("#divBookDetailsContainer")
+                        appendToElement: $("#divBookDetailsContentLoader")
                     });
                 } else {
                     $divLoader.remove();
                     formatBookContent();
                 }
-
-                toggleUniversalLoader({
-                    id: "divBookDetailsContentLoader",
-                    option: "hide"
-                });
 
                 positionBackground();
                 resizeBackground();
@@ -172,6 +247,10 @@ $(document).ready(function () {
             nodeNumber: $(e.target).attr("choice-num"),
             choiceParent: $(e.target).closest(".book_details_content_choice").attr("choice-parent")
         });
+    });
+
+    $("#lnkbtnDeleteBook").on("click", function (e) {
+        btnDeleteBook_Click(e);
     });
 
     //$(document).on("click", ".book_details_content_loadpages", function () {

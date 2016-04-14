@@ -12,10 +12,10 @@ namespace MVCDemo.Controllers
 {
     public class UserController : BaseController
     {
-        public ActionResult Index()
-        {
-            return View();
-        }
+        //public ActionResult Index()
+        //{
+        //    return View();
+        //}
 
         [HttpGet]
         public ViewResult Register(bool displayRegisterPanel, bool displayActivateAccountPanel, bool displayRemindPasswordPanel)
@@ -28,15 +28,6 @@ namespace MVCDemo.Controllers
             };
             return View();
         }
-
-        //[HttpPost]
-        //public ActionResult Register([Bind(Include = "UserName,Password,ConfirmPassword,Email")] User user)
-        //{
-        //    if (!ModelState.IsValid)
-        //        return View(user);
-
-        //    return RedirectToAction("Index", "Home");
-        //}
 
         public string GetRegisterPanel()
         {
@@ -101,43 +92,43 @@ namespace MVCDemo.Controllers
             Session["EmailData"] = Server.MapPath("~/Data/Email.xml");
             var sendActivationResult = user.SendActivationLink();
             
-            if (registrationResult == UserActionResult.DatabaseError || sendActivationResult == UserActionResult.DatabaseError)
+            if (registrationResult == ActionStatus.DatabaseError || sendActivationResult == ActionStatus.DatabaseError)
             {
                 return JsonConvert.SerializeObject(new
                 {
                     Message = "Baza danych nie odpowiada",
-                    Result = UserActionResult.DatabaseError,
-                    ResultString = Enum.GetName(typeof (UserActionResult), UserActionResult.DatabaseError)
+                    Result = ActionStatus.DatabaseError,
+                    ResultString = Enum.GetName(typeof (ActionStatus), ActionStatus.DatabaseError)
                 });
             }
 
-            if (sendActivationResult == UserActionResult.AccountAlreadyActivated)
+            if (sendActivationResult == ActionStatus.AccountAlreadyActivated)
             {
                 return JsonConvert.SerializeObject(new
                 {
                     Message = "Użytkownik został już aktywowany",
-                    Result = UserActionResult.AccountAlreadyActivated,
-                    ResultString = Enum.GetName(typeof(UserActionResult), UserActionResult.AccountAlreadyActivated)
+                    Result = ActionStatus.AccountAlreadyActivated,
+                    ResultString = Enum.GetName(typeof(ActionStatus), ActionStatus.AccountAlreadyActivated)
                 });
             }
 
-            if (sendActivationResult == UserActionResult.SendingEmailFailure)
+            if (sendActivationResult == ActionStatus.SendingEmailFailure)
             {
                 return JsonConvert.SerializeObject(new
                 {
                     Message = "Rejestracja poprawna, ale Email aktywacyjny nie został wysłany",
-                    Result = UserActionResult.SendingEmailFailure,
-                    ResultString = Enum.GetName(typeof (UserActionResult), UserActionResult.SendingEmailFailure)
+                    Result = ActionStatus.SendingEmailFailure,
+                    ResultString = Enum.GetName(typeof (ActionStatus), ActionStatus.SendingEmailFailure)
                 });
             }
 
-            if (registrationResult == UserActionResult.Success && sendActivationResult == UserActionResult.Success)
+            if (registrationResult == ActionStatus.Success && sendActivationResult == ActionStatus.Success)
             {
                 return JsonConvert.SerializeObject(new
                 {
                     Message = $"Rejestracja prawidłowa, link aktywacyjny wysłano do: {user.Email}",
-                    Result = UserActionResult.Success,
-                    ResultString = Enum.GetName(typeof (UserActionResult), UserActionResult.Success)
+                    Result = ActionStatus.Success,
+                    ResultString = Enum.GetName(typeof (ActionStatus), ActionStatus.Success)
                 });
             }
 
@@ -158,31 +149,31 @@ namespace MVCDemo.Controllers
 
             switch (activationResult)
             {
-                case UserActionResult.Success:
+                case ActionStatus.Success:
                 {
                     return JsonConvert.SerializeObject(new
                     {
                         Message = $"Konto <span class=\"linklike\">{user.UserName}</span> zostało Aktywowane",
-                        Result = UserActionResult.Success,
-                        ResultString = Enum.GetName(typeof(UserActionResult), UserActionResult.Success)
+                        Result = ActionStatus.Success,
+                        ResultString = Enum.GetName(typeof(ActionStatus), ActionStatus.Success)
                     });
                 }
-                case UserActionResult.DatabaseError:
+                case ActionStatus.DatabaseError:
                 {
                     return JsonConvert.SerializeObject(new
                     {
                         Message = "Baza danych nie odpowiada",
-                        Result = UserActionResult.DatabaseError,
-                        ResultString = Enum.GetName(typeof(UserActionResult), UserActionResult.DatabaseError)
+                        Result = ActionStatus.DatabaseError,
+                        ResultString = Enum.GetName(typeof(ActionStatus), ActionStatus.DatabaseError)
                     });
                 }
-                case UserActionResult.AccountAlreadyActivated:
+                case ActionStatus.AccountAlreadyActivated:
                 {
                     return JsonConvert.SerializeObject(new
                     {
                         Message = "Użytkownik został już aktywowany",
-                        Result = UserActionResult.AccountAlreadyActivated,
-                        ResultString = Enum.GetName(typeof(UserActionResult), UserActionResult.AccountAlreadyActivated)
+                        Result = ActionStatus.AccountAlreadyActivated,
+                        ResultString = Enum.GetName(typeof(ActionStatus), ActionStatus.AccountAlreadyActivated)
                     });
                 }
                 default:
@@ -204,43 +195,43 @@ namespace MVCDemo.Controllers
             Session["EmailData"] = Server.MapPath("~/Data/Email.xml");
             var sendActivationResult = user.SendActivationLink();
 
-            if (sendActivationResult == UserActionResult.DatabaseError)
+            if (sendActivationResult == ActionStatus.DatabaseError)
             {
                 return JsonConvert.SerializeObject(new
                 {
                     Message = "Baza danych nie odpowiada",
-                    Result = UserActionResult.DatabaseError,
-                    ResultString = Enum.GetName(typeof(UserActionResult), UserActionResult.DatabaseError)
+                    Result = ActionStatus.DatabaseError,
+                    ResultString = Enum.GetName(typeof(ActionStatus), ActionStatus.DatabaseError)
                 });
             }
 
-            if (sendActivationResult == UserActionResult.AccountAlreadyActivated)
+            if (sendActivationResult == ActionStatus.AccountAlreadyActivated)
             {
                 return JsonConvert.SerializeObject(new
                 {
                     Message = "Użytkownik został już aktywowany",
-                    Result = UserActionResult.AccountAlreadyActivated,
-                    ResultString = Enum.GetName(typeof(UserActionResult), UserActionResult.AccountAlreadyActivated)
+                    Result = ActionStatus.AccountAlreadyActivated,
+                    ResultString = Enum.GetName(typeof(ActionStatus), ActionStatus.AccountAlreadyActivated)
                 });
             }
 
-            if (sendActivationResult == UserActionResult.SendingEmailFailure)
+            if (sendActivationResult == ActionStatus.SendingEmailFailure)
             {
                 return JsonConvert.SerializeObject(new
                 {
                     Message = "Email aktywacyjny nie został wysłany",
-                    Result = UserActionResult.SendingEmailFailure,
-                    ResultString = Enum.GetName(typeof(UserActionResult), UserActionResult.SendingEmailFailure)
+                    Result = ActionStatus.SendingEmailFailure,
+                    ResultString = Enum.GetName(typeof(ActionStatus), ActionStatus.SendingEmailFailure)
                 });
             }
 
-            if (sendActivationResult == UserActionResult.Success)
+            if (sendActivationResult == ActionStatus.Success)
             {
                 return JsonConvert.SerializeObject(new
                 {
                     Message = $"Link aktywacyjny wysłano do: <span class=\"linklike\">{user.ActivationEmail}</span>",
-                    Result = UserActionResult.Success,
-                    ResultString = Enum.GetName(typeof(UserActionResult), UserActionResult.Success)
+                    Result = ActionStatus.Success,
+                    ResultString = Enum.GetName(typeof(ActionStatus), ActionStatus.Success)
                 });
             }
 
@@ -261,22 +252,22 @@ namespace MVCDemo.Controllers
 
             switch (activationResult)
             {
-                case UserActionResult.Success:
+                case ActionStatus.Success:
                 {
                     return JsonConvert.SerializeObject(new
                     {
                         Message = $"Hasło do konta użytkownika: <span class=\"linklike\">{user.UserName}</span> zostało Zmienione",
-                        Result = UserActionResult.Success,
-                        ResultString = Enum.GetName(typeof(UserActionResult), UserActionResult.Success)
+                        Result = ActionStatus.Success,
+                        ResultString = Enum.GetName(typeof(ActionStatus), ActionStatus.Success)
                     });
                 }
-                case UserActionResult.DatabaseError:
+                case ActionStatus.DatabaseError:
                 {
                     return JsonConvert.SerializeObject(new
                     {
                         Message = "Baza danych nie odpowiada",
-                        Result = UserActionResult.DatabaseError,
-                        ResultString = Enum.GetName(typeof(UserActionResult), UserActionResult.DatabaseError)
+                        Result = ActionStatus.DatabaseError,
+                        ResultString = Enum.GetName(typeof(ActionStatus), ActionStatus.DatabaseError)
                     });
                 }
                 default:
@@ -298,33 +289,33 @@ namespace MVCDemo.Controllers
             Session["EmailData"] = Server.MapPath("~/Data/Email.xml");
             var sendRemindPasswordResult = user.SendRemindPasswordRequest();
 
-            if (sendRemindPasswordResult == UserActionResult.DatabaseError)
+            if (sendRemindPasswordResult == ActionStatus.DatabaseError)
             {
                 return JsonConvert.SerializeObject(new
                 {
                     Message = "Baza danych nie odpowiada",
-                    Result = UserActionResult.DatabaseError,
-                    ResultString = Enum.GetName(typeof(UserActionResult), UserActionResult.DatabaseError)
+                    Result = ActionStatus.DatabaseError,
+                    ResultString = Enum.GetName(typeof(ActionStatus), ActionStatus.DatabaseError)
                 });
             }
 
-            if (sendRemindPasswordResult == UserActionResult.SendingEmailFailure)
+            if (sendRemindPasswordResult == ActionStatus.SendingEmailFailure)
             {
                 return JsonConvert.SerializeObject(new
                 {
                     Message = "Email z kodem weryfikacyjnym nie został wysłany",
-                    Result = UserActionResult.SendingEmailFailure,
-                    ResultString = Enum.GetName(typeof(UserActionResult), UserActionResult.SendingEmailFailure)
+                    Result = ActionStatus.SendingEmailFailure,
+                    ResultString = Enum.GetName(typeof(ActionStatus), ActionStatus.SendingEmailFailure)
                 });
             }
 
-            if (sendRemindPasswordResult == UserActionResult.Success)
+            if (sendRemindPasswordResult == ActionStatus.Success)
             {
                 return JsonConvert.SerializeObject(new
                 {
                     Message = $"Kod weryfikacyjny wysłano do: <span class=\"linklike\">{user.RemindPasswordEmail}</span>",
-                    Result = UserActionResult.Success,
-                    ResultString = Enum.GetName(typeof(UserActionResult), UserActionResult.Success)
+                    Result = ActionStatus.Success,
+                    ResultString = Enum.GetName(typeof(ActionStatus), ActionStatus.Success)
                 });
             }
 
@@ -342,17 +333,17 @@ namespace MVCDemo.Controllers
                     return JsonConvert.SerializeObject(new
                     {
                         Message = isUserNameAvailable ? "" : "Nazwa Użytkownika jest już używana",
-                        Result = isUserNameAvailable ? UserActionResult.Success : UserActionResult.Failure,
-                        ResultString = isUserNameAvailable ? Enum.GetName(typeof (UserActionResult), UserActionResult.Success) : Enum.GetName(typeof (UserActionResult), UserActionResult.Failure)
+                        Result = isUserNameAvailable ? ActionStatus.Success : ActionStatus.Failure,
+                        ResultString = isUserNameAvailable ? Enum.GetName(typeof (ActionStatus), ActionStatus.Success) : Enum.GetName(typeof (ActionStatus), ActionStatus.Failure)
                     });
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return JsonConvert.SerializeObject(new
                     {
                         Message = "Baza Danych nie odpowiada",
-                        Result = UserActionResult.DatabaseError,
-                        ResultString = Enum.GetName(typeof (UserActionResult), UserActionResult.DatabaseError)
+                        Result = ActionStatus.DatabaseError,
+                        ResultString = Enum.GetName(typeof (ActionStatus), ActionStatus.DatabaseError)
                     });
                 }
                 finally
@@ -374,8 +365,8 @@ namespace MVCDemo.Controllers
                     return JsonConvert.SerializeObject(new
                     {
                         Message = isEmailAvailable ? "" : "Email jest już używany",
-                        Result = isEmailAvailable ? UserActionResult.Success : UserActionResult.Failure,
-                        ResultString = isEmailAvailable ? Enum.GetName(typeof (UserActionResult), UserActionResult.Success) : Enum.GetName(typeof (UserActionResult), UserActionResult.Failure)
+                        Result = isEmailAvailable ? ActionStatus.Success : ActionStatus.Failure,
+                        ResultString = isEmailAvailable ? Enum.GetName(typeof (ActionStatus), ActionStatus.Success) : Enum.GetName(typeof (ActionStatus), ActionStatus.Failure)
                     });
                 }
                 catch (Exception)
@@ -383,8 +374,8 @@ namespace MVCDemo.Controllers
                     return JsonConvert.SerializeObject(new
                     {
                         Message = "Baza Danych nie odpowiada",
-                        Result = UserActionResult.DatabaseError,
-                        ResultString = Enum.GetName(typeof (UserActionResult), UserActionResult.DatabaseError)
+                        Result = ActionStatus.DatabaseError,
+                        ResultString = Enum.GetName(typeof (ActionStatus), ActionStatus.DatabaseError)
                     });
                 }
                 finally
@@ -414,8 +405,8 @@ namespace MVCDemo.Controllers
                     return JsonConvert.SerializeObject(new
                     {
                         Message = isEmailInDatabase ? "" : "Email nie znajduje się w Bazie Danych",
-                        Result = isEmailInDatabase ? UserActionResult.Success : UserActionResult.Failure,
-                        ResultString = isEmailInDatabase ? Enum.GetName(typeof (UserActionResult), UserActionResult.Success) : Enum.GetName(typeof (UserActionResult), UserActionResult.Failure)
+                        Result = isEmailInDatabase ? ActionStatus.Success : ActionStatus.Failure,
+                        ResultString = isEmailInDatabase ? Enum.GetName(typeof (ActionStatus), ActionStatus.Success) : Enum.GetName(typeof (ActionStatus), ActionStatus.Failure)
                     });
                 }
                 catch (Exception)
@@ -423,8 +414,8 @@ namespace MVCDemo.Controllers
                     return JsonConvert.SerializeObject(new
                     {
                         Message = "Baza Danych nie odpowiada",
-                        Result = UserActionResult.DatabaseError,
-                        ResultString = Enum.GetName(typeof (UserActionResult), UserActionResult.DatabaseError)
+                        Result = ActionStatus.DatabaseError,
+                        ResultString = Enum.GetName(typeof (ActionStatus), ActionStatus.DatabaseError)
                     });
                 }
                 finally
@@ -460,8 +451,8 @@ namespace MVCDemo.Controllers
                                 return JsonConvert.SerializeObject(new
                                 {
                                     Message = "",
-                                    Result = UserActionResult.Success,
-                                    ResultString = Enum.GetName(typeof (UserActionResult), UserActionResult.Success)
+                                    Result = ActionStatus.Success,
+                                    ResultString = Enum.GetName(typeof (ActionStatus), ActionStatus.Success)
                                 });
                             }
                         }
@@ -470,8 +461,8 @@ namespace MVCDemo.Controllers
                     return JsonConvert.SerializeObject(new
                     {
                         Message = "Kod aktywacyjny dla podanego Emaila jest błędny",
-                        Result = UserActionResult.Failure,
-                        ResultString = Enum.GetName(typeof (UserActionResult), UserActionResult.Failure)
+                        Result = ActionStatus.Failure,
+                        ResultString = Enum.GetName(typeof (ActionStatus), ActionStatus.Failure)
                     });
                 }
                 catch (Exception)
@@ -479,8 +470,8 @@ namespace MVCDemo.Controllers
                     return JsonConvert.SerializeObject(new
                     {
                         Message = "Baza Danych nie odpowiada",
-                        Result = UserActionResult.DatabaseError,
-                        ResultString = Enum.GetName(typeof (UserActionResult), UserActionResult.DatabaseError)
+                        Result = ActionStatus.DatabaseError,
+                        ResultString = Enum.GetName(typeof (ActionStatus), ActionStatus.DatabaseError)
                     });
                 }
                 finally
@@ -516,8 +507,8 @@ namespace MVCDemo.Controllers
                                 return JsonConvert.SerializeObject(new
                                 {
                                     Message = "",
-                                    Result = UserActionResult.Success,
-                                    ResultString = Enum.GetName(typeof(UserActionResult), UserActionResult.Success)
+                                    Result = ActionStatus.Success,
+                                    ResultString = Enum.GetName(typeof(ActionStatus), ActionStatus.Success)
                                 });
                             }
                         }
@@ -526,8 +517,8 @@ namespace MVCDemo.Controllers
                     return JsonConvert.SerializeObject(new
                     {
                         Message = "Kod Weryfikacyjny dla podanego Emaila jest błędny",
-                        Result = UserActionResult.Failure,
-                        ResultString = Enum.GetName(typeof(UserActionResult), UserActionResult.Failure)
+                        Result = ActionStatus.Failure,
+                        ResultString = Enum.GetName(typeof(ActionStatus), ActionStatus.Failure)
                     });
                 }
                 catch (Exception)
@@ -535,8 +526,8 @@ namespace MVCDemo.Controllers
                     return JsonConvert.SerializeObject(new
                     {
                         Message = "Baza Danych nie odpowiada",
-                        Result = UserActionResult.DatabaseError,
-                        ResultString = Enum.GetName(typeof(UserActionResult), UserActionResult.DatabaseError)
+                        Result = ActionStatus.DatabaseError,
+                        ResultString = Enum.GetName(typeof(ActionStatus), ActionStatus.DatabaseError)
                     });
                 }
                 finally
@@ -572,8 +563,8 @@ namespace MVCDemo.Controllers
                                 return JsonConvert.SerializeObject(new
                                 {
                                     Message = "",
-                                    Result = UserActionResult.Success,
-                                    ResultString = Enum.GetName(typeof(UserActionResult), UserActionResult.Success)
+                                    Result = ActionStatus.Success,
+                                    ResultString = Enum.GetName(typeof(ActionStatus), ActionStatus.Success)
                                 });
                             }
                         }
@@ -582,8 +573,8 @@ namespace MVCDemo.Controllers
                     return JsonConvert.SerializeObject(new
                     {
                         Message = "Stare Hasło dla użytkownika o podanym Emailu jest błędne",
-                        Result = UserActionResult.Failure,
-                        ResultString = Enum.GetName(typeof(UserActionResult), UserActionResult.Failure)
+                        Result = ActionStatus.Failure,
+                        ResultString = Enum.GetName(typeof(ActionStatus), ActionStatus.Failure)
                     });
                 }
                 catch (Exception)
@@ -591,8 +582,8 @@ namespace MVCDemo.Controllers
                     return JsonConvert.SerializeObject(new
                     {
                         Message = "Baza Danych nie odpowiada",
-                        Result = UserActionResult.DatabaseError,
-                        ResultString = Enum.GetName(typeof(UserActionResult), UserActionResult.DatabaseError)
+                        Result = ActionStatus.DatabaseError,
+                        ResultString = Enum.GetName(typeof(ActionStatus), ActionStatus.DatabaseError)
                     });
                 }
                 finally

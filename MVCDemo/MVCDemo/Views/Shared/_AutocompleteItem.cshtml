@@ -1,10 +1,21 @@
-﻿@model MVCDemo.Models.Book
+﻿@using MVCDemo.Common
+@model MVCDemo.Models.Book
 
 @{
-    var thumb = Model.Path + "/Cover.jpg";
-    if (!File.Exists(Server.MapPath(thumb)))
+    var thumb = "~/Data/Books/No_Image_Available.png";
+    var pathNoExt = Server.MapPath(Model.Path) + @"\Cover";
+    var extensions = new[] {".bmp", ".jpg", ".jpeg", ".png", ".gif"};
+    var covers = extensions
+        .Select(ext => $"{pathNoExt}{ext}")
+        .Where(File.Exists)
+        .Select(path => new FileInfo(path))
+        .OrderByDescending(f => f.LastWriteTime)
+        .Select(f => HttpContext.Current.Server.RelativePath(f.FullName, HttpContext.Current.Request))
+        .ToList();
+
+    if (covers.Count > 0)
     {
-        thumb = "~/Data/Books/No_Image_Available.png";
+        thumb = covers.First();
     }
 }
 

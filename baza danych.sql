@@ -237,8 +237,6 @@ CREATE TABLE tblRemindPasswordRequests
   FOREIGN KEY (UserId) REFERENCES tblUsers(Id)
 );
 
--- NOWE
-
 CREATE TABLE tblKeys
 (
   Id VARCHAR(30) PRIMARY KEY,
@@ -248,7 +246,23 @@ CREATE TABLE tblKeys
 INSERT INTO tblKeys (tblKeys.Id, tblKeys.Value) VALUES ("email_private", "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBALXOaXgwm2ZIszHDtw6DJojSxLlWgA4r2ewC+0VLkz1zr/gpU2COmbvntLhKbFE2MZQAoHm/AYV+0xOjzBInUv3uQJwK5caMLhaYBKJdWlRzxYhbMTMWThHIebN1iCbNCTK8MNlEQBX2Ila6hhluu3wgP0jx+8h7eKK2Hc5MwA8LAgMBAAECgYAbhk6Ndb5xM9x9UkYqmkyBNne2H5RvkNADXUgxa4m1KgigJ5GJ8szvl9rSc+IGQZAr+hRRmkterJ7EQG4q6W0050NhlmvlW3lNwkzbM23p9j9fpSDoHOlPzdMsrsbmZ+cOb8ruPxrnzfMj1zfQCpgSD1UDis2bNW3gs5U+Q9OmkQJBANn0sawCJ93b//vQ7rJo288GNwSA8tO48IJPX3E6x8E8qBiTIwM0PTeleCMyHwbaWlxvk8pDjJREIwItefhBwm0CQQDVimJaAA779yIGR+QqrqlnW4VxtsXCrL7WuvT3XFtpx/Cv3LeysmVj897JzeHiVEqzei4DT23T4LFo9jdNRWxXAkEAv+i1nFfVlILGtYo08oBjsritLtj/dq7rjkGnLwLrqdjnxaOge4y+rkWTL6JNMXKHh8Zy4fByUoZgMOWr9IyqTQJAPvyRpCBuSw4LYDTmbVyVpWIOi4sw7ApOREJjLW91m08ZhJYjLTeHxqLRbU8oOL1KR4RbfCh6qcuWKPKvP0CiAwJBAJA0VM4BFhiLrefKg+8Pvw6B+yGVd9TON4sVkeAVg8G4DPvLK7CcrD7hYNumpqeXklRl4Q4rPIGrP53wDF7Yxu4=");
 INSERT INTO tblKeys (tblKeys.Id, tblKeys.Value) VALUES ("email_public", "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC1zml4MJtmSLMxw7cOgyaI0sS5VoAOK9nsAvtFS5M9c6/4KVNgjpm757S4SmxRNjGUAKB5vwGFftMTo8wSJ1L97kCcCuXGjC4WmASiXVpUc8WIWzEzFk4RyHmzdYgmzQkyvDDZREAV9iJWuoYZbrt8ID9I8fvIe3iith3OTMAPCwIDAQAB");
 
+Update tblBooks 
+  SET 
+    tblBooks.Title = "Przyk³adowa Ksi¹¿ka", 
+    tblBooks.Category = "Krymina³", 
+    tblBooks.Description = "Przyk³adowa ksi¹¿ka 1", 
+    tblBooks.AuthorId = "748cea8f-80be-11e5-87be-d43d7ef137da", 
+    tblBooks.Path = "~/Data/Books/7bcba4ed-f28c-11e5-9c77-00ff23f4a6cf", 
+    tblBooks.AdditionDate = "2016-03-25 14:24:00", 
+    tblBooks.IsPublic = 1
+  WHERE 
+    tblBooks.Id = "7bcba4ed-f28c-11e5-9c77-00ff23f4a6cf";
+
+-- NOWE
+
 -- ================================================================================================
+
+DELETE FROM tblBooks WHERE tblBooks.Category IS NULL;
 
 DELETE FROM tblKeys;
 

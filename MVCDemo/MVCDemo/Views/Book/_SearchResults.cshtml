@@ -1,17 +1,29 @@
-﻿@model IEnumerable<MVCDemo.Models.Book>
+﻿@using MVCDemo.Common
+@model IEnumerable<MVCDemo.Models.Book>
 
 @foreach (var book in Model)
 {
-    var thumb = book.Path + "/Cover.jpg";
-    if (!File.Exists(Server.MapPath(thumb)))
+    var thumb = "~/Data/Books/No_Image_Available.png";
+    var pathNoExt = Server.MapPath(book.Path) + @"\Cover";
+    var extensions = new[] { ".bmp", ".jpg", ".jpeg", ".png", ".gif" };
+    var covers = extensions
+        .Select(ext => $"{pathNoExt}{ext}")
+        .Where(File.Exists)
+        .Select(path => new FileInfo(path))
+        .OrderByDescending(f => f.LastWriteTime)
+        .Select(f => HttpContext.Current.Server.RelativePath(f.FullName, HttpContext.Current.Request))
+        .ToList();
+
+    if (covers.Count > 0)
     {
-        thumb = "~/Data/Books/No_Image_Available.png";
-        <div class="searchresult_background" style="background-image: Url('@Url.Content(thumb)'); -ms-background-size: contain; background-size: contain;"></div>
+        thumb = covers.First();
+        <div class="searchresult_background" style="background-image: Url('@Url.Content(thumb)')"></div>
     }
     else
     {
-        <div class="searchresult_background" style="background-image: Url('@Url.Content(thumb)')"></div>
+        <div class="searchresult_background" style="background-image: Url('@Url.Content(thumb)'); -ms-background-size: contain; background-size: contain;"></div>
     }
+
     <a href="@Url.Action("Details", "Book", new { id = book.Id }, Request.Url?.Scheme)">
         <div class="searchresult_cover"></div>
     </a>

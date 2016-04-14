@@ -25,12 +25,30 @@ namespace MVCDemo.Models
 
         public void Add(BookContentPart part)
         {
+            if (_bookContent.Count(x => x.Id == part.Id) != 0)
+                throw new Exception("Element o podanym Id już istnieje");
+
             _bookContent.Add(part);
         }
 
         public void Remove(BookContentPart part)
         {
-            _bookContent.Add(part);
+            _bookContent.Remove(part);
+        }
+
+        public void RemoveAt(int index)
+        {
+            _bookContent.Remove(this[index]);
+        }
+
+        public IEnumerable<Chapter> GetChapters()
+        {
+            return _bookContent.Select(bc => bc.Chapter).Distinct();
+        }
+
+        public IEnumerable<BookContentPart> GetNodes(Chapter chapter)
+        {
+            return _bookContent.Where(part => part.Chapter.Equals(chapter));
         }
 
         public BookContent()
@@ -66,6 +84,25 @@ namespace MVCDemo.Models
     {
         public int Number { get; set; }
         public string Title { get; set; }
+
+        public Chapter (int number, string title)
+        {
+            Number = number;
+            Title = title;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is Chapter))
+                return false;
+            var chapter = (Chapter) obj;
+            return Number == chapter.Number && Title == chapter.Title;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 
     public class BookContentEnumerator : IEnumerator

@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using MVCDemo.Controllers;
 using MVCDemo.Models;
 using Newtonsoft.Json;
 
@@ -60,17 +61,17 @@ namespace MVCDemo.Common
             if (result == null)
                 throw new Exception("Rezultat metody w RemoteClientServerAttribute zwrócił null");
 
-            switch ((UserActionResult)result)
+            switch ((ActionStatus)result)
             {
-                case UserActionResult.Success:
+                case ActionStatus.Success:
                 {
                     return ValidationResult.Success;
                 }
-                case UserActionResult.Failure:
+                case ActionStatus.Failure:
                 {
                     return new ValidationResult(ErrorMessage); // zwróć wiadomość użytkownika
                 }
-                case UserActionResult.DatabaseError:
+                case ActionStatus.DatabaseError:
                 {
                     return new ValidationResult(message); // Zwróć wiadomość serwera
                 }

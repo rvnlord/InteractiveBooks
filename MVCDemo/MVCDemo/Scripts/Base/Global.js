@@ -856,11 +856,27 @@ function resolveReferences(json) {
     return json;
 }
 
+function contains(a, obj) {
+    for (var i = 0; i < a.length; i++) {
+        if (a[i] === obj) {
+            return true;
+        }
+    }
+    return false;
+}
+
 // Rozszerzone funkcje
 if (typeof Array.prototype.diff != "function") { // ReSharper disable once NativeTypePrototypeExtending
     Array.prototype.diff = function (a) { 
         return this.filter(function (i) { return a.indexOf(i) < 0; });
     };
+}
+
+if (typeof String.prototype.repeat != "function") { // ReSharper disable once NativeTypePrototypeExtending
+    String.prototype.repeat = function(n){
+        n = n || 1;
+        return Array(n+1).join(this);
+    }
 }
 
 if (typeof String.prototype.startsWith != "function") { // ReSharper disable once NativeTypePrototypeExtending
@@ -1448,8 +1464,7 @@ $(document).ready(function () {
                     option: "hide"
                 });
                 formatMenuSearchAndLoginPanel();
-                positionBackground();
-                resizeBackground();
+
                 $("#btnLoginSubmit").prop("disabled", false);
 
                 if ($.controller.toLowerCase() === "book" && $.action.toLowerCase() === "details") {
@@ -1457,6 +1472,17 @@ $(document).ready(function () {
                         option: "hide"
                     });
                 }
+
+                if ($.controller.toLowerCase() === "book" && $.action.toLowerCase() === "edit") {
+                    $("#divBookEditContainer").remove();
+                }
+
+                if ($.controller.toLowerCase() === "book" && $.action.toLowerCase() === "create") {
+                    $("#divBookCreateContainer").remove();
+                }
+
+                positionBackground();
+                resizeBackground();
             },
             error: function (err) {
                 $("html").html(err.responseText);

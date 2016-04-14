@@ -1,8 +1,8 @@
-﻿@model MVCDemo.Models.BookContentPart
+﻿@using MVCDemo.Controllers
+@model MVCDemo.Models.BookContentPart
 
 @{
     var choiceParentChapter = ViewBag.ChoiceParentChapter;
-    var storyArr = Model.Story.Split(new[] { "[p]" }, StringSplitOptions.None);
     var children = Model.Children;
     var parents = Model.Parents;
     var chapter = Model.Chapter;
@@ -15,10 +15,8 @@
     </div>
 }
 <div class="book_details_content_story">
-    @foreach (var s in storyArr)
-    {
-        <p class="indented">@s</p>
-    }
+    @*@(((BookController) ViewContext.Controller).ParseStoryFromXmlToHtml(Model.Story))*@
+    @{ Html.RenderAction("ParseStoryFromXmlToHtmlPartial", "Book", new { Model.Story }); }
 </div>
 <div class="book_details_content_choice" choice-parent="@Model.Id">
     <ul>

@@ -121,7 +121,7 @@ namespace MVCDemo.Controllers
                         }
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     error = true;
                     return books; // fallback, zwróć pusty zestaw
@@ -135,160 +135,15 @@ namespace MVCDemo.Controllers
                 return books;
             }
         }
-
-        protected List<Book> GetBooksAlternate(Search search) // NIEUŻYWANE
-        {
-            var db = new ProjectDbContext();
-            var books = db.Books;
-
-            var listTerms = search.SearchTerm.Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries)
-                .Where(s => s.Length >= 3).ToList().ConvertAll(t => t.ToLower().Replace("|", ""));
-
-            var searchedBooks = books
-                .Where(delegate (Book book)
-                {
-                    if (book.IsPublic != true)
-                        return false;
-
-                    if (listTerms.Count <= 0)
-                        return true;
-
-                    var sbWhereToSearch = new StringBuilder();
-                    var titleValue = book.Title;
-                    var authorValue = db.Users.Single(u => u.Id == book.AuthorId).UserName;
-                    var categoryValue = book.Category;
-                    var descriptionValue = book.Description;
-
-                    if (search.IncludeTitle)
-                        sbWhereToSearch.Append(titleValue + " ");
-
-                    if (search.IncludeAuthor)
-                        sbWhereToSearch.Append(authorValue + " ");
-
-                    if (search.IncludeCategory)
-                        sbWhereToSearch.Append(categoryValue + " ");
-
-                    if (search.IncludeDescription)
-                        sbWhereToSearch.Append(descriptionValue + " ");
-
-                    if (sbWhereToSearch.Length == 0) // jeśli nic nie zostało wybrane
-                        sbWhereToSearch.Append(titleValue + " ");
-
-                    return listTerms.All(sbWhereToSearch.ToString().ToLower().Contains); // true jeśli zawiera wszystkie elementy z wpisanych przez usera
-                });
-
-            var sortedBooks = searchedBooks.OrderBy(search.SortBy + " " + search.SortOrder.ToLower()); // dynamic LINQ query helper
-
-            var pagedBooks = search.HowMuchSkip >= 0 ?
-                sortedBooks.Skip(search.HowMuchSkip).Take(search.HowMuchTake) :
-                Enumerable.Empty<Book>().AsQueryable();
-
-            return pagedBooks.ToList();
-        }
-
-        protected List<Book> GetBooksDynamicLinqExpressions(Search search) // NIEUŻYWANE
-        {
-            var db = new ProjectDbContext();
-            var books = db.Books;//.Include(b => b.Author);
-
-            var listTerms = search.SearchTerm.Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries)
-                .Where(s => s.Length >= 3).ToList().ConvertAll(t => t.ToLower().Replace("|", ""));
-
-            var searchedBooks = books;
-            //.AsQueryable().Where(delegate (Book book)
-            //{
-            //    if (book.IsPublic != true)
-            //        return false;
-
-            //    if (listTerms.Count <= 0)
-            //        return true;
-
-            //    var sbWhereToSearch = new StringBuilder();
-            //    var titleValue = book.Title;
-            //    var authorValue = db.Users.Single(u => u.Id == book.AuthorId).UserName;
-            //    var categoryValue = book.Category;
-            //    var descriptionValue = book.Description;
-
-            //    if (search.IncludeTitle)
-            //        sbWhereToSearch.Append(titleValue + " ");
-
-            //    if (search.IncludeAuthor)
-            //        sbWhereToSearch.Append(authorValue + " ");
-
-            //    if (search.IncludeCategory)
-            //        sbWhereToSearch.Append(categoryValue + " ");
-
-            //    if (search.IncludeDescription)
-            //        sbWhereToSearch.Append(descriptionValue + " ");
-
-            //    if (sbWhereToSearch.Length == 0) // jeśli nic nie zostało wybrane
-            //        sbWhereToSearch.Append(titleValue + " ");
-
-            //    return listTerms.All(s => sbWhereToSearch.ToString().ToLower().Contains(s));
-            //});
-
-            //// Drzewo wyrażenia reprezentujące parametr predykatu
-            //ParameterExpression pe = Expression.Parameter(typeof(Book), "book");
-            //LabelTarget returnTarget = Expression.Label(typeof(bool));
-
-            //// if (book.IsPublic != true)
-            ////     return false;
-            //Expression ifBookNotPublic = Expression.IfThen(
-            //    Expression.NotEqual(
-            //        Expression.Property(pe, typeof(Book).GetProperty("IsPublic")), 
-            //        Expression.Constant(true)), 
-            //    Expression.Return(returnTarget, Expression.Constant(false)));
-
-            //// if (listTerms.Count <= 0)
-            ////     return true;
-            //Expression paramListTerms = Expression.Constant(listTerms);
-            //Expression ifListTermsCountLessOrEqualThanZero = Expression.IfThen(
-            //    Expression.LessThanOrEqual(
-            //        Expression.Property(paramListTerms, typeof(List<string>).GetProperty("Count")),
-            //        Expression.Constant(0, typeof(int))), 
-            //    Expression.Return(returnTarget, Expression.Constant(true)));
-
-            //// listTerms.All(s => sbWhereToSearch.ToString().ToLower().Contains(s));
-            //ParameterExpression pTerm = Expression.Parameter(typeof(string), "s");
-            //Expression paramSearch = Expression.Constant(search);
-
-            //// if (search.IncludeTitle)
-            ////     sbWhereToSearch.Append(titleValue + " ");
-            //Expression ifSearchIncludeTitleThenConcat = Expression.IfThen(
-            //    Expression.Equal(
-            //        Expression.Property(paramSearch, typeof(Search).GetProperty("IncludeTitle")),
-            //        Expression.Constant(true)),
-            //    Expression. WHAT NOW? );
-
-
-            //// ===================================
-            //var exprBlock = Expression.Block(); // Expression Calls here
-            //var searchedBooks = books.AsQueryable().Where(Expression.Lambda<Func<Book, bool>>(exprBlock, pe)); // książki, takie dla których cały blok zwraca true
-
-            var sortedBooks = searchedBooks.OrderBy(search.SortBy + " " + search.SortOrder.ToLower()); // dynamic LINQ query helper
-
-            var pagedBooks = search.HowMuchSkip >= 0 ?
-                sortedBooks.Skip(search.HowMuchSkip).Take(search.HowMuchTake) :
-                Enumerable.Empty<Book>().AsQueryable();
-
-            //var sql = ((ObjectQuery)pagedBooks).ToTraceString();
-            //var linq = pagedBooks.ToString();
-
-            // całe procedurą z LIMIT search.HowMuchSkip OFFSET search.HowMuchTake
-            // E:\Program Files\XAMPP\mysql\data\Szymon.log
-
-            return pagedBooks.ToList(); // Error: LINQ to Entities does not recognize the method 'Boolean CheckWhatToSearch(MVCDemo.Models.Book, MVCDemo.Models.Search, System.Collections.Generic.List`1[System.String])' method, and this method cannot be translated into a store expression.
-        }
-
+        
         public PartialViewResult GetAutocompleteItem(string item) // wywoływany w JS, otrzymuje po kolei itemy pobrane z bazy danych
         {
             var js = new JavaScriptSerializer();
             var dictItem = (Dictionary<string, object>)js.DeserializeObject(item);
             var db = new ProjectDbContext();
-            //var users = db.Users.ToList();
             var authorGuid = new Guid(dictItem["AuthorId"].ToString());
 
-            var book = new Book
+            var book = new Book // TODO: wtf serializer
             {
                 Id = new Guid(dictItem["Id"].ToString()),
                 Title = dictItem["Title"].ToString(),
@@ -454,7 +309,7 @@ namespace MVCDemo.Controllers
 
             switch (isAuthenticated)
             {
-                case UserActionResult.Success:
+                case ActionStatus.Success:
                 {
                     userToLogin.Id = user.Id;
 
@@ -477,7 +332,7 @@ namespace MVCDemo.Controllers
                         PartialView = RenderPartialView("_LoginPanelLogged", userToLogin)
                     });
                 }
-                case UserActionResult.Failure:
+                case ActionStatus.Failure:
                 {
                     return JsonConvert.SerializeObject(new
                     {
@@ -485,7 +340,7 @@ namespace MVCDemo.Controllers
                         PartialView = RenderPartialView("_LoginPanel", userToLogin)
                     });
                 }
-                case UserActionResult.UserDoesNotExist:
+                case ActionStatus.UserDoesNotExist:
                 {
                     return JsonConvert.SerializeObject(new
                     {
@@ -493,7 +348,7 @@ namespace MVCDemo.Controllers
                         PartialView = RenderPartialView("_LoginPanel", userToLogin)
                     });
                 }
-                case UserActionResult.AccountNotActivated:
+                case ActionStatus.AccountNotActivated:
                 {
                     return JsonConvert.SerializeObject(new
                     {
@@ -501,7 +356,7 @@ namespace MVCDemo.Controllers
                         PartialView = RenderPartialView("_LoginPanel", userToLogin)
                     });
                 }
-                case UserActionResult.AccountLocked:
+                case ActionStatus.AccountLocked:
                 {
                     int? secondsToUnlock = null;
                     if (user.LockedDateTime != null)
@@ -519,7 +374,7 @@ namespace MVCDemo.Controllers
                         PartialView = RenderPartialView("_LoginPanel", userToLogin)
                     });
                 }
-                case UserActionResult.DatabaseError:
+                case ActionStatus.DatabaseError:
                 {
                     return JsonConvert.SerializeObject(new
                     {
@@ -563,7 +418,7 @@ namespace MVCDemo.Controllers
                 var userToLogin = JsonConvert.DeserializeObject<UserToLoginViewModel>(userCookie.Value);
                 var user = new User();
                 AutoMapperConfiguration.Mapper.Map(userToLogin, user);
-                if (user.Authenticate(true) == UserActionResult.Success) // (przy użyciu Hasha z cookie, a nie czystego hasła)
+                if (user.Authenticate(true) == ActionStatus.Success) // (przy użyciu Hasha z cookie, a nie czystego hasła)
                     return userToLogin;
             }
             else if (userSession != null)
@@ -571,11 +426,23 @@ namespace MVCDemo.Controllers
                 var userToLogin = userSession;
                 var user = new User();
                 AutoMapperConfiguration.Mapper.Map(userToLogin, user);
-                if (user.Authenticate(true) == UserActionResult.Success)
+                if (user.Authenticate(true) == ActionStatus.Success)
                     return userToLogin;
             }
 
             return null;
         }
+    }
+
+    public enum ActionStatus
+    {
+        Success = 0,
+        Failure = 1,
+        DatabaseError = 2,
+        AccountLocked = 3,
+        AccountNotActivated = 4,
+        SendingEmailFailure = 5,
+        UserDoesNotExist = 6,
+        AccountAlreadyActivated = 7
     }
 }

@@ -1,0 +1,47 @@
+﻿@using MVCDemo.Common
+@using MVCDemo.Controllers
+@using MVCDemo.Models
+@model Book
+
+@{
+    var titleDisplayName = DisplayNameHelper.GetDisplayName(typeof(Book).GetProperty(nameof(Model.Title)));
+
+    var authUser = ((BookController)ViewContext.Controller).GetAuthenticatedUser();
+    var isUserAuthorized = authUser != null;
+}
+
+<div>
+    <h1>Test - Book/Create</h1>
+    <br/>
+
+    @if (isUserAuthorized)
+    {
+        <div id="divBookCreateContainer">
+            <div class="book_create_fields" id="divBookCreateFields">
+                <table class="table_book_create" id="tableBookCreate">
+                    <tr>
+                        <td class="book_create_editor_label">
+                            @Html.LabelFor(m => m.Title, $"{titleDisplayName}: ")
+                        </td>
+                        <td class="book_create_editor_field" colspan="2">
+                            @Html.TextBoxFor(m => m.Title, new {@id = "txtTitle", @placeholder = $"{titleDisplayName}...", @maxlength = "100"})
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="book_edit_saverequest">
+                            <input type="button" id="btnCreateBook" value="Dodaj Książkę" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    }
+</div>
+
+@if (isUserAuthorized)
+{
+    @section Scripts
+    {
+        <script src="~/Scripts/Book/Create.js"></script>
+    }
+}

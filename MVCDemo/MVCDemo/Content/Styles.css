@@ -1006,6 +1006,14 @@ input.input-validation-error {
 
 /* BOOK DETAILS */
 
+#divBookDetailsContainer {
+    position: relative;
+}
+
+#divBookDetailsContentLoader {
+    /*border: 1px solid white;*/
+}
+
 .book_details_title {
     text-align: center;
     vertical-align: middle;
@@ -1069,8 +1077,15 @@ input.input-validation-error {
     font-size: 18px;
 }
 
-.book_details_content p.indented {
+p.indented {
     text-indent: 50px;
+}
+
+p.stars {
+    text-align: center;
+    vertical-align: middle;
+    height: 40px;
+    line-height: 40px;
 }
 
 .book_details_editoptions {
@@ -1116,9 +1131,42 @@ input.input-validation-error {
     box-sizing: border-box;
 }
 
-.book_edit_placeholder {
-    height: 10px;
+.book_edit_detailslinks {
+    text-align: left;
+    font-size: 18px;
 }
+
+.book_edit_placeholder {
+    height: 20px;
+}
+
+.table_book_edit td {
+    vertical-align: middle;
+    color: white;
+    /*border: 1px solid green;*/
+    border-collapse: collapse;
+}
+
+.table_book_edit {
+    width: 100%;
+}
+
+.book_edit_editor_label {
+    padding-right: 20px;
+    padding-bottom: 5px;
+    width: 150px;
+    vertical-align: middle;
+}
+
+.book_edit_editor_field {
+    padding-bottom: 5px;
+    vertical-align: middle;
+}
+
+.book_edit_saverequest {
+    text-align: right;
+    padding-bottom: 5px;
+} 
 
 .book_edit_part {
     display: none;
@@ -1178,6 +1226,59 @@ textarea#taStory {
     -ms-resize: none;
     -o-resize: none;
     resize: none;
+}
+
+/*placeholdery (na ctrl + C)*/
+
+textarea#taStory::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    line-height: 1.5em;
+    font-size: 18px;
+}
+textarea#taStory:-moz-placeholder{ /* Mozilla Firefox 4 to 18 */
+    line-height: 1.5em;
+    font-size: 18px;
+}
+textarea#taStory::-moz-placeholder { /* Mozilla Firefox 19+ */
+    line-height: 1.5em;
+    font-size: 18px;
+}
+textarea#taStory:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    line-height: 1.5em !important;
+    font-size: 18px !important;
+}
+textarea#taStory::-ms-input-placeholder { /* Edge */
+    line-height: 1.5em;
+    font-size: 18px;
+}
+textarea#taStory:placeholder-shown { /* Standard */
+    line-height: 1.5em;
+    font-size: 18px;
+}
+
+
+textarea#taDescription::-webkit-input-placeholder, textarea#taBookDescription::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    line-height: 1.5em;
+    font-size: 16px;
+}
+textarea#taDescription:-moz-placeholder, textarea#taBookDescription:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    line-height: 1.5em;
+    font-size: 16px;
+}
+textarea#taDescription::-moz-placeholder, textarea#taBookDescription::-moz-placeholder { /* Mozilla Firefox 19+ */
+    line-height: 1.5em;
+    font-size: 16px;
+}
+textarea#taDescription:-ms-input-placeholder, textarea#taBookDescription:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    line-height: 1.5em !important;
+    font-size: 16px !important;
+}
+textarea#taDescription::-ms-input-placeholder, textarea#taBookDescription::-ms-input-placeholder { /* Edge */
+    line-height: 1.5em;
+    font-size: 16px;
+}
+textarea#taDescription:placeholder-shown, textarea#taBookDescription:placeholder-shown { /* Standard */
+    line-height: 1.5em;
+    font-size: 16px;
 }
 
 #ddlParentIds, #ddlChildrenIds {
@@ -1243,3 +1344,223 @@ textarea#taStory {
     overflow: hidden;
     margin: 0;
 }*/
+
+/* edycja książki - pola */
+
+#btnSaveTitle {
+    margin-left: 10px;
+}
+
+textarea#taBookDescription {
+    width: 100%;
+    height: 15em;
+    line-height: 1.5em;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: rgb(190, 190, 190);
+    font-style: italic;
+    padding: 10px;
+    -moz-resize: none;
+    -ms-resize: none;
+    -o-resize: none;
+    resize: none;
+}
+
+/* edycja książki - okładka */
+
+#divCoverDnDHandler {
+    border: 2px dotted #0B85A1;
+    width: auto;
+    height: 100px;
+    line-height: 100px;
+    color: #92AAB0;
+    text-align: center;
+    vertical-align: middle;
+    margin-right: 5px;
+    font-size: 26px;
+    font-family: Cambria, Cochin, Georgia, Times, Times New Roman, serif;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+#divCover {
+    width: 100px;
+    height: 100px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    -ms-background-size: contain;
+    background-size: contain;
+    border: 2px groove #0B85A1;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+#divDeleteCover {
+    background: url("../Images/delete_tag.png") center center no-repeat;
+    -ms-background-size: contain;
+    background-size: contain;
+    /*border: 1px solid white;*/
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 3px;
+    margin-top: 3px;
+    margin-bottom: -1px;
+    -ms-opacity: 0.4;
+    opacity: 0.4;
+    float: right;
+}
+
+#tdCoverContainer {
+    width: 100px;
+    height: 100px;
+}
+
+#divStatusInfo {
+    /*border: 1px solid blue;*/
+    margin-top: 5px;
+}
+
+.progressBar {
+    width: 200px;
+    height: 24px;
+    border: 1px solid #ddd;
+    -ms-border-radius: 5px;
+    border-radius: 5px;
+    overflow: hidden;
+    display: inline-block;
+    /*margin: 0 10px 5px 5px;*/
+    vertical-align: top;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.progressBar div {
+    height: 100%;
+    color: #fff;
+    text-align: right;
+    line-height: 24px; /* same as #progressBar height if we want text middle aligned */
+    width: 0;
+    background-color: #085b66;
+    -ms-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.percentage {
+    /*border: 1px solid white;*/
+    position: absolute;
+    width: 200px;
+    height: 24px;
+    line-height: 24px;
+    vertical-align: middle;
+    text-align: center;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.statusbar {
+    border-top: 1px solid white;
+    min-height: 24px;
+    width: auto;
+    padding: 10px 10px 10px 10px;
+    vertical-align: top;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+/*.statusbar:nth-child(odd) {
+        background: #181818;
+    }*/
+
+.filename {
+    display: inline-block;
+    width: 250px;
+    height: 24px;
+    line-height: 24px;
+    vertical-align: middle;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.filesize {
+    display: inline-block;
+    color: #4ea662;
+    width: 100px;
+    margin-left: 10px;
+    margin-right: 5px;
+    height: 24px;
+    line-height: 24px;
+    vertical-align: middle;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.abort {
+    background-color: #A8352F;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -ms-border-radius: 4px;
+    border-radius: 4px;
+    display: inline-block;
+    color: #fff;
+    font-family: arial;
+    font-size: 13px;
+    font-weight: normal;
+    /*padding: 4px 15px;*/
+    height: 24px;
+    line-height: 24px;
+    width: 60px;
+    vertical-align: middle;
+    text-align: center;
+    cursor: pointer;
+    vertical-align: top;
+    margin-left: 10px;
+}
+
+/* BOOK CREATE *//*.book_create_fields*/
+/*#divBookCreateFields { 
+    border: 1px solid white;
+}*/
+
+.table_book_create td {
+    vertical-align: middle;
+    color: white;
+    border-collapse: collapse;
+}
+
+.book_create_editlinks {
+    text-align: left;
+    font-size: 18px;
+}
+
+.book_create_placeholder {
+    height: 20px;
+}
+
+.book_create_editor_label {
+    padding-right: 20px;
+    padding-bottom: 5px;
+    width: 150px;
+    vertical-align: middle;
+}
+
+.book_create_editor_field {
+    padding-bottom: 5px;
+    vertical-align: middle;
+}
+
+.book_create_saverequest {
+    text-align: right;
+    padding-bottom: 5px;
+} 

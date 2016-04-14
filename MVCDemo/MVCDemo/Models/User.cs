@@ -18,6 +18,7 @@ using System.Web.Mvc;
 using System.Xml;
 using System.Xml.Linq;
 using MVCDemo.Common;
+using MVCDemo.Controllers;
 using MySql.Data.MySqlClient;
 
 namespace MVCDemo.Models
@@ -86,7 +87,7 @@ namespace MVCDemo.Models
         [NotMapped]
         public bool RememberMe { get; set; }
 
-        public UserActionResult Authenticate(bool useHash = false)
+        public ActionStatus Authenticate(bool useHash = false)
         {
             using (var db = new ProjectDbContext())
             {
@@ -97,7 +98,7 @@ namespace MVCDemo.Models
                     var dbUserCount = dbUsers.Count;
 
                     if (dbUserCount < 1)
-                        return UserActionResult.UserDoesNotExist;
+                        return ActionStatus.UserDoesNotExist;
                     if (dbUserCount > 1)
                         throw new Exception("Istnieje więcej niż jeden użytkownik o podanej nazwie");
 
@@ -124,7 +125,7 @@ namespace MVCDemo.Models
                             throw new NullReferenceException();
 
                         if (secondsToUnlock >= 0)
-                            return UserActionResult.AccountLocked;
+                            return ActionStatus.AccountLocked;
 
                         dbUser.IsLocked = 0;
                         dbUser.RetryAttempts = 0;
@@ -133,7 +134,7 @@ namespace MVCDemo.Models
                     }
 
                     if (!Convert.ToBoolean(dbUser.IsActivated)) // Konto Nieaktywowane
-                        return UserActionResult.AccountNotActivated;
+                        return ActionStatus.AccountNotActivated;
                     
                     if (dbUser.Password == password) // Hasło Poprawne i Konto bez flag
                     {
@@ -145,7 +146,7 @@ namespace MVCDemo.Models
 
                         Password = password;
                         
-                        return UserActionResult.Success;
+                        return ActionStatus.Success;
                     }
 
                     if (dbUser.RetryAttempts == null)
@@ -157,7 +158,7 @@ namespace MVCDemo.Models
                     if (dbUser.RetryAttempts <= 3) // Hasło Niepoprawne i liczba prób mniejsza lub równa 3
                     {
                         db.SaveChanges();
-                        return UserActionResult.Failure;
+                        return ActionStatus.Failure;
                     }
 
                     dbUser.LockedDateTime = DateTime.Now; // Hasło Niepoprawne i liczba prób większa niż 3
@@ -166,11 +167,11 @@ namespace MVCDemo.Models
                     IsLocked = dbUser.IsLocked;
                     db.SaveChanges();
                     db.Configuration.ValidateOnSaveEnabled = true;
-                    return UserActionResult.AccountLocked;
+                    return ActionStatus.AccountLocked;
                 }
                 catch (Exception)
                 {
-                    return UserActionResult.DatabaseError;
+                    return ActionStatus.DatabaseError;
                 }
                 finally
                 {
@@ -180,7 +181,7 @@ namespace MVCDemo.Models
             }
         }
 
-        public UserActionResult Register()
+        public ActionStatus Register()
         {
             using (var db = new ProjectDbContext())
             {
@@ -201,11 +202,11 @@ namespace MVCDemo.Models
                     db.Users.Add(this);
                     db.SaveChanges();
 
-                    return UserActionResult.Success;
+                    return ActionStatus.Success;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    return UserActionResult.DatabaseError;
+                    return ActionStatus.DatabaseError;
                 }
                 finally
                 {
@@ -215,7 +216,7 @@ namespace MVCDemo.Models
             }
         }
 
-        public UserActionResult Activate()
+        public ActionStatus Activate()
         {
             using (var db = new ProjectDbContext())
             {
@@ -225,7 +226,7 @@ namespace MVCDemo.Models
                     var dbUser = db.Users.Single(u => u.Id == lastReq.UserId);
 
                     if (Convert.ToBoolean(dbUser.IsActivated))
-                        return UserActionResult.AccountAlreadyActivated;
+                        return ActionStatus.AccountAlreadyActivated;
 
                     dbUser.IsActivated = 1;
 
@@ -242,11 +243,11 @@ namespace MVCDemo.Models
                     db.ActivationRequests.Remove(lastReq);
                     db.SaveChanges();
 
-                    return UserActionResult.Success;
+                    return ActionStatus.Success;
                 }
                 catch (Exception)
                 {
-                    return UserActionResult.DatabaseError;
+                    return ActionStatus.DatabaseError;
                 }
                 finally
                 {
@@ -256,7 +257,7 @@ namespace MVCDemo.Models
             }
         }
 
-        public UserActionResult SendActivationLink()
+        public ActionStatus SendActivationLink()
         {
             using (var db = new ProjectDbContext())
             {
@@ -267,7 +268,7 @@ namespace MVCDemo.Models
                 {
                     var dbUser = db.Users.Single(u => u.Email == ActivationEmail);
                     if (Convert.ToBoolean(dbUser.IsActivated))
-                        return UserActionResult.AccountAlreadyActivated;
+                        return ActionStatus.AccountAlreadyActivated;
 
                     Id = dbUser.Id;
                     UserName = dbUser.UserName;
@@ -287,7 +288,7 @@ namespace MVCDemo.Models
 
                     var sendEmailResult = SendEmail("Interaktywne Książki - Aktywacja Konta", sbEmailBody.ToString());
 
-                    if (sendEmailResult == UserActionResult.SendingEmailFailure)
+                    if (sendEmailResult == ActionStatus.SendingEmailFailure)
                         return sendEmailResult;
                     
                     db.ActivationRequests.Add(new ActivationRequest()
@@ -298,11 +299,11 @@ namespace MVCDemo.Models
                     });
                     db.SaveChanges();
 
-                    return UserActionResult.Success;
+                    return ActionStatus.Success;
                 }
                 catch (Exception)
                 {
-                    return UserActionResult.DatabaseError;
+                    return ActionStatus.DatabaseError;
                 }
                 finally
                 {
@@ -312,7 +313,7 @@ namespace MVCDemo.Models
             }
         }
 
-        public UserActionResult RemindPassword()
+        public ActionStatus RemindPassword()
         {
             using (var db = new ProjectDbContext())
             {
@@ -328,11 +329,11 @@ namespace MVCDemo.Models
                     db.RemindPasswordRequests.Remove(lastReq);
                     db.SaveChanges();
 
-                    return UserActionResult.Success;
+                    return ActionStatus.Success;
                 }
                 catch (Exception)
                 {
-                    return UserActionResult.DatabaseError;
+                    return ActionStatus.DatabaseError;
                 }
                 finally
                 {
@@ -342,7 +343,7 @@ namespace MVCDemo.Models
             }
         }
 
-        public UserActionResult SendRemindPasswordRequest()
+        public ActionStatus SendRemindPasswordRequest()
         {
             using (var db = new ProjectDbContext())
             {
@@ -369,7 +370,7 @@ namespace MVCDemo.Models
 
                     var sendEmailResult = SendEmail("Interaktywne Książki - Zmiana Hasła", sbEmailBody.ToString());
 
-                    if (sendEmailResult == UserActionResult.SendingEmailFailure)
+                    if (sendEmailResult == ActionStatus.SendingEmailFailure)
                         return sendEmailResult;
 
                     db.RemindPasswordRequests.Add(new RemindPasswordRequest()
@@ -380,11 +381,11 @@ namespace MVCDemo.Models
                     });
                     db.SaveChanges();
 
-                    return UserActionResult.Success;
+                    return ActionStatus.Success;
                 }
                 catch (Exception)
                 {
-                    return UserActionResult.DatabaseError;
+                    return ActionStatus.DatabaseError;
                 }
                 finally
                 {
@@ -394,7 +395,7 @@ namespace MVCDemo.Models
             }
         }
 
-        private UserActionResult SendEmail(string emailSubject, string emailBody)
+        private ActionStatus SendEmail(string emailSubject, string emailBody)
         {
             using (var db = new ProjectDbContext())
             {
@@ -443,27 +444,15 @@ namespace MVCDemo.Models
                     };
 
                     smtpClient.Send(mailMessage);
-                    return UserActionResult.Success;
+                    return ActionStatus.Success;
                 }
                 catch (Exception)
                 {
                     if (db.Database.Connection.State == ConnectionState.Open)
                         db.Database.Connection.Close();
-                    return UserActionResult.SendingEmailFailure;
+                    return ActionStatus.SendingEmailFailure;
                 }
             }
         }
-    }
-
-    public enum UserActionResult
-    {
-        Success = 0,
-        Failure = 1,
-        DatabaseError = 2,
-        AccountLocked = 3,
-        AccountNotActivated = 4,
-        SendingEmailFailure = 5,
-        UserDoesNotExist = 6,
-        AccountAlreadyActivated = 7
     }
 }
