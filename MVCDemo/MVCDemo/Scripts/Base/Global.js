@@ -1167,7 +1167,7 @@ $(document).ready(function () {
                 method: "post",
                 contentType: "application/json;charset=utf-8",
                 data: JSON.stringify({
-                    item: JSON.stringify(item)
+                    book: item
                 }),
                 dataType: "html",
                 success: function (data) {
@@ -1424,18 +1424,29 @@ $(document).ready(function () {
                 resizeBackground();
                 $("#btnLoginSubmit").prop("disabled", false);
 
+                $("#divMenu").find("div[requires-authentication='true']").show();
+
                 if (!message && $.controller.toLowerCase() === "book" && $.action.toLowerCase() === "details") {
                     toggleBookEditOptions({
                         option: "show"
                     });
                 }
+
+                if ($.controller.toLowerCase() === "book" && $.action.toLowerCase() === "edit") {
+                    $("#divBookEditContainer").show();
+                }
+
+                if ($.controller.toLowerCase() === "book" && $.action.toLowerCase() === "create") {
+                    $("#divBookCreateContainer").show();
+                }
+
+                positionBackground();
+                resizeBackground();
             },
             error: function (err) {
                 $("html").html(err.responseText);
             }
         });
-
-        //e.preventDefault();
     });
 
     $(document).on("click", "#lnkbtnLogout", function (e) {
@@ -1467,6 +1478,8 @@ $(document).ready(function () {
 
                 $("#btnLoginSubmit").prop("disabled", false);
 
+                $("#divMenu").find("div[requires-authentication='true']").hide();
+
                 if ($.controller.toLowerCase() === "book" && $.action.toLowerCase() === "details") {
                     toggleBookEditOptions({
                         option: "hide"
@@ -1474,11 +1487,11 @@ $(document).ready(function () {
                 }
 
                 if ($.controller.toLowerCase() === "book" && $.action.toLowerCase() === "edit") {
-                    $("#divBookEditContainer").remove();
+                    $("#divBookEditContainer").hide();
                 }
 
                 if ($.controller.toLowerCase() === "book" && $.action.toLowerCase() === "create") {
-                    $("#divBookCreateContainer").remove();
+                    $("#divBookCreateContainer").hide();
                 }
 
                 positionBackground();

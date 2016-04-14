@@ -1,30 +1,36 @@
 ﻿@using System.Drawing
+@using MVCDemo.Controllers
 
 @model IEnumerable<MVCDemo.Models.MenuItem>
 
 <div id="divMenu">
     @{
         var currLoc = new Point(0, 0);
-        var higlightImage = "style=\"background-image:url(" + Url.Content("~/") + "images/menu_item_active.jpg); background-repeat: no-repeat; background-position: center center;\"";
-        var highlightColor = "style=\"color:#383D41;\"";
+        var higlightImage = "background-image:url(" + Url.Content("~/") + "images/menu_item_active.jpg); background-repeat: no-repeat; background-position: center center;";
+        var highlightColor = "color:#383D41;";
+        var authuser = ((BaseController) ViewContext.Controller).GetAuthenticatedUser();
 
         foreach (var mainMenuItem in Model.Where(mi => mi.AncestorId == null))
         {
-            @Html.Raw("<div id=\"divMenu_Level" + mainMenuItem.Level + "_" + mainMenuItem.Text + "_Container\" class=\"menu_mainlvl_container\" style=\"left: " + currLoc.X + "px; top: " + currLoc.Y + "px;\">")
+            var hideMainMenuItem = mainMenuItem.RequiresAuthentication && authuser == null;
 
-            @Html.Raw("<div id=\"divMenu_Level" + mainMenuItem.Level + "_" + mainMenuItem.Text + "_Item\" class=\"menu_mainlvl_item " + (mainMenuItem.Checked ? "menu_selected_item" : string.Empty) + "\"" + (mainMenuItem.Checked ? higlightImage : string.Empty) + ">")
-                @Html.Raw("<a id=\"lnkbtnMenuItem_" + mainMenuItem.Text + "\" " + (mainMenuItem.Checked ? highlightColor : string.Empty) + " href=\"" + mainMenuItem.NavigateUrl + "\">" + mainMenuItem.Text + "</a>")
+            @Html.Raw("<div id='divMenu_Level" + mainMenuItem.Level + "_" + mainMenuItem.Text + "_Container' class='menu_mainlvl_container' style='left: " + currLoc.X + "px; top: " + currLoc.Y + "px;'>")
+
+            @Html.Raw("<div id='divMenu_Level" + mainMenuItem.Level + "_" + mainMenuItem.Text + "_Item' class='menu_mainlvl_item " + (mainMenuItem.Checked ? "menu_selected_item" : string.Empty) + "' style='" + (mainMenuItem.Checked ? higlightImage : string.Empty) + " " + (hideMainMenuItem ? "display: none;" : string.Empty) + "' requires-authentication='" + mainMenuItem.RequiresAuthentication.ToString().ToLower() + "'>")
+                @Html.Raw("<a id='lnkbtnMenuItem_" + mainMenuItem.Text + "' style='" + (mainMenuItem.Checked ? highlightColor : string.Empty) + "' href='" + mainMenuItem.NavigateUrl + "'>" + mainMenuItem.Text + "</a>")
             @Html.Raw("</div>")
 
             var subMenuItems = Model.Where(mi => mi.AncestorId == mainMenuItem.Id).ToList();
             if (subMenuItems.Count > 0)
             {
-                @Html.Raw("<div id=\"divMenu_Level" + mainMenuItem.Level + "_" + mainMenuItem.Text + "_ItemsContainer\" class=\"menu_sublvl_container\">")
+                @Html.Raw("<div id='divMenu_Level" + mainMenuItem.Level + "_" + mainMenuItem.Text + "_ItemsContainer' class='menu_sublvl_container'>")
 
                 foreach (var subMenuItem in subMenuItems)
                 {
-                    @Html.Raw("<div id=\"divMenu_Level" + subMenuItem.Level + "_" + subMenuItem.Text + "_Item\" class=\"menu_sublvl_item" + (subMenuItem.Checked ? " menu_selected_item" : string.Empty) + "\"" + (subMenuItem.Checked ? higlightImage : string.Empty) + ">")
-                        @Html.Raw("<a id=\"lnkbtnMenuItem_" + subMenuItem.Text + "\" " + (subMenuItem.Checked ? highlightColor : string.Empty) + " href=\"" + subMenuItem.NavigateUrl + "\">" + subMenuItem.Text + "</a>")
+                    var hideSubMenuItem = subMenuItem.RequiresAuthentication && authuser == null;
+
+                    @Html.Raw("<div id='divMenu_Level" + subMenuItem.Level + "_" + subMenuItem.Text + "_Item' class='menu_sublvl_item" + (subMenuItem.Checked ? " menu_selected_item" : string.Empty) + "' style='" + (subMenuItem.Checked ? higlightImage : string.Empty) + " " + (hideSubMenuItem ? "display: none;" : string.Empty) + "' requires-authentication='" + subMenuItem.RequiresAuthentication.ToString().ToLower() + "'>")
+                        @Html.Raw("<a id='lnkbtnMenuItem_" + subMenuItem.Text + "' style='" + (subMenuItem.Checked ? highlightColor : string.Empty) + "' href='" + subMenuItem.NavigateUrl + "'>" + subMenuItem.Text + "</a>")
                     @Html.Raw("</div>")
                 }
 

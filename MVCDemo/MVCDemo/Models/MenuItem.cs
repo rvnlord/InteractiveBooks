@@ -14,5 +14,6 @@ namespace MVCDemo.Models
         public bool Checked { get; set; }
         public int? AncestorId { get; set; }
         public int Level { get; set; }
+        public bool RequiresAuthentication { get; set; }
     }
 }

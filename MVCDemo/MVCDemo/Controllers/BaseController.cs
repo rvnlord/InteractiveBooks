@@ -136,27 +136,8 @@ namespace MVCDemo.Controllers
             }
         }
         
-        public PartialViewResult GetAutocompleteItem(string item) // wywoływany w JS, otrzymuje po kolei itemy pobrane z bazy danych
+        public PartialViewResult GetAutocompleteItem(Book book) // wywoływany w JS, otrzymuje po kolei itemy pobrane z bazy danych
         {
-            var js = new JavaScriptSerializer();
-            var dictItem = (Dictionary<string, object>)js.DeserializeObject(item);
-            var db = new ProjectDbContext();
-            var authorGuid = new Guid(dictItem["AuthorId"].ToString());
-
-            var book = new Book // TODO: wtf serializer
-            {
-                Id = new Guid(dictItem["Id"].ToString()),
-                Title = dictItem["Title"].ToString(),
-                Category = dictItem["Category"].ToString(),
-                AuthorId = authorGuid,
-                Description = dictItem["Description"].ToString(),
-                AdditionDate = Convert.ToDateTime(dictItem["AdditionDate"].ToString()),
-                Path = dictItem["Path"].ToString(),
-                IsPublic = Convert.ToBoolean(dictItem["IsPublic"]),
-                // Navigation Properties - (added with include)
-                Author = db.Users.Single(u => u.Id == authorGuid)
-            };
-
             return PartialView("_AutocompleteItem", book);
         }
 
@@ -193,11 +174,11 @@ namespace MVCDemo.Controllers
         }
 
         /// <summary>
-        /// Render a PartialView into a string that contain the Html to display to the browser.
+        /// Renderuje Widok Częściowy do stringa zawierającego kod Html do wyświetlenia w przeglądarce.
         /// </summary>
-        /// <param name="partialViewName">The name of the partial view to render</param>
-        /// <param name="model">The model to bind to the partial view</param>
-        /// <returns>The html rendered partial view</returns>
+        /// <param name="partialViewName">Nazwa Widoku Częściowego do wyświetlenia</param>
+        /// <param name="model">Model związany z Widokiem Częściowym</param>
+        /// <returns>Kod Html renderowany jako Widok Częsciowy</returns>
         public virtual string RenderPartialView(string partialViewName, object model)
         {
             if (ControllerContext == null)
@@ -238,22 +219,28 @@ namespace MVCDemo.Controllers
 
             if (System.IO.File.Exists(xmlUrl) && new FileInfo(xmlUrl).Length > 0)
             {
+                var authuser = GetAuthenticatedUser();
+
                 var actionController = controller + "/" + action;
                 var url = Url.Content("~/");
                 
                 var doc = XDocument.Load(Server.MapPath("~/MenuItems.xml"));
                 var root = doc.Element("MenuItems");
-                var descendants = (root?.Descendants() ?? Enumerable.Empty<XElement>()).ToList();
+                var xDescendants = (root?.Descendants() ?? Enumerable.Empty<XElement>()).ToList();
                 
-                if (root != null && descendants.Count > 0)
+                if (root != null && xDescendants.Count > 0)
                 {
-                    foreach (var node in descendants)
+                    foreach (var xDesc in xDescendants)
                     {
-                        var id = Convert.ToInt32(node.Attribute("Id").Value);
-                        if (menuItems.Select(item => item.Id).Any(x => x == id))
+                        var descAuth = (string)xDesc.Attribute("Authenticated") != null && Convert.ToBoolean(xDesc.Attribute("Authenticated").Value);
+                        //if (descAuth && authuser == null)
+                        //    continue;
+
+                        var descId = Convert.ToInt32(xDesc.Attribute("Id").Value);
+                        if (menuItems.Select(item => item.Id).Any(id => id == descId))
                             continue;
 
-                        var nodNavUrl = node.Attribute("NavigateUrl").Value;
+                        var nodNavUrl = xDesc.Attribute("NavigateUrl").Value;
                         while (url.EndsWith("/"))
                             url = url.Substring(0, url.Length - 1);
                         while (nodNavUrl.StartsWith("/") || nodNavUrl.StartsWith("~"))
@@ -261,15 +248,16 @@ namespace MVCDemo.Controllers
                             
                         menuItems.Add(new MenuItem
                         {
-                            Id = id,
-                            Text = node.Attribute("Text").Value,
+                            Id = descId,
+                            Text = xDesc.Attribute("Text").Value,
                             NavigateUrl = Url.Content("~/" + nodNavUrl),
                             Checked = nodNavUrl.Equals(actionController),
                             AncestorId =
-                                node.Parent != null && node.Parent.Name == "MenuItem"
-                                    ? (int?)Convert.ToInt32(node.Parent.Attribute("Id").Value)
+                                xDesc.Parent != null && xDesc.Parent.Name == "MenuItem"
+                                    ? (int?)Convert.ToInt32(xDesc.Parent.Attribute("Id").Value)
                                     : null,
-                            Level = node.Ancestors().Count() // ilość przodków w pionie
+                            Level = xDesc.Ancestors().Count(), // ilość przodków w pionie
+                            RequiresAuthentication = descAuth
                         });
                     }
 

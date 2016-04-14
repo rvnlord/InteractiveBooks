@@ -812,8 +812,8 @@ namespace MVCDemo.Controllers
                     db.Books.Add(dbBook);
                     db.SaveChanges();
                     var controller = ControllerContext.RouteData.Values["controller"].ToString();
-                    var path = $"{VirtualPathUtility.ToAbsolute("~/ ")}{controller}/Edit/{dbBook.Id}"; //$"{Request.ApplicationPath}/{controller}/Edit/{dbBook.Id}"
-
+                    var path = $"{Url.Content("~/")}{controller}/Edit/{dbBook.Id}"; //$"{Request.ApplicationPath}/{controller}/Edit/{dbBook.Id}"
+                    
                     return JsonConvert.SerializeObject(new
                     {
                         Message = "Książka Została Dodana",

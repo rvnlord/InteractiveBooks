@@ -56,7 +56,7 @@
         $("#" + contentId).stop(true, true).remove();
 
         var $bookFirstContent = $("#divListBooks .book_row").first().children().first(".book_content");
-        var $divNoSearchResults = $("<div id='" + containerId + "'></div>");
+        var $divNoSearchResults = $("<div id='" + containerId + "' class='search_message'></div>");
         $divNoSearchResults.appendTo($("#divSearchResults"));
         $divNoSearchResults
             .css({
@@ -67,11 +67,6 @@
                 top: $bookFirstContent.offset().top,
                 left: $bookFirstContent.offset().left
             });
-            //.position({
-            //    my: "left top",
-            //    at: "left top",
-            //    of: $bookFirstContent
-            //});
         var $divSearchNoResultsContent = $("<div id='" + contentId + "'>" + message + "</div>");
         $divSearchNoResultsContent.appendTo($("#divSearchResults"));
         $divSearchNoResultsContent.position({
@@ -95,11 +90,16 @@
         }
     }
 
-    function hideSearchMessage(containerId, contentId, duration, delay) {
+    function hideSearchMessage(containerId, contentId, duration, delay, stopAnimation) {
         duration = duration !== 0 && !duration ? 1000 : duration;
         delay = delay !== 0 && !delay ? 1000 : delay;
         var $divNoSearchResults = $("#" + containerId);
         var $divSearchNoResultsContent = $("#" + contentId);
+
+        if (stopAnimation) {
+            $divNoSearchResults.stop(true, true);
+            $divSearchNoResultsContent.stop(true, true);
+        }
 
         $divNoSearchResults
             .delay(delay)
@@ -115,7 +115,7 @@
         var spinnerBgImage = "url('" + siteroot + "Images/Loading/loading3.gif')";
 
         if (option === "show") {
-            hideSearchMessage("divNoSearchResults", "divSearchNoResultsContent", 0, 0);
+            hideSearchMessage("divNoSearchResults", "divSearchNoResultsContent", 0, 0, true);
             $("#" + containerId).stop(true, true).remove();
             $("#" + contentId).stop(true, true).remove();
 
