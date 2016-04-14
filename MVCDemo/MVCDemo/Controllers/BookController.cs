@@ -811,9 +811,8 @@ namespace MVCDemo.Controllers
                     dbBook.AuthorId = db.Users.Single(u => u.Id == authUser.Id).Id;
                     db.Books.Add(dbBook);
                     db.SaveChanges();
-
                     var controller = ControllerContext.RouteData.Values["controller"].ToString();
-                    var path = $"{Request.ApplicationPath}/{controller}/Edit/{dbBook.Id}";
+                    var path = $"{VirtualPathUtility.ToAbsolute("~/ ")}{controller}/Edit/{dbBook.Id}"; //$"{Request.ApplicationPath}/{controller}/Edit/{dbBook.Id}"
 
                     return JsonConvert.SerializeObject(new
                     {
