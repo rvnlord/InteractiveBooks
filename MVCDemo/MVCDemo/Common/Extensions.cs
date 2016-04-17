@@ -6,7 +6,7 @@ using System.Web;
 
 namespace MVCDemo.Common
 {
-    public static class StringExtensions
+    public static class Extensions
     {
         public static IEnumerable<string> SplitInParts(this string s, int partLength)
         {

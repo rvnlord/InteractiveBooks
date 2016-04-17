@@ -484,6 +484,8 @@
     <Content Include="Images\book_details_placeholder_background.png" />
     <Content Include="Images\Correct.png" />
     <Content Include="Images\delete_tag.png" />
+    <Content Include="Images\Icons\favicon.ico" />
+    <Content Include="Images\Icons\favicon.png" />
     <Content Include="Images\Incorrect.png" />
     <Content Include="Images\Loading\loading4.gif" />
     <Content Include="Images\Loading\loading3.gif" />

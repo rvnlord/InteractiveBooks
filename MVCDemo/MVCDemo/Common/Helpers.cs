@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MVCDemo.Common
 {
-    public class GlobalHelper
+    public static class GlobalHelper
     {
         private const int TimedOutExceptionCode = -2147467259;
         public static bool IsMaxRequestExceededException(Exception e)
@@ -30,7 +30,7 @@ namespace MVCDemo.Common
         }
     }
 
-    public class DisplayNameHelper
+    public static class DisplayNameHelper
     {
         public static string GetDisplayName(object obj, string propertyName)
         {
@@ -66,8 +66,7 @@ namespace MVCDemo.Common
         {
             if (property.DeclaringType == null)
                 return null;
-            var atts = property.DeclaringType.GetCustomAttributes(
-                typeof(MetadataTypeAttribute), true);
+            var atts = property.DeclaringType.GetCustomAttributes(typeof(MetadataTypeAttribute), true);
             if (atts.Length == 0)
                 return null;
             var metaAttr = atts[0] as MetadataTypeAttribute;
