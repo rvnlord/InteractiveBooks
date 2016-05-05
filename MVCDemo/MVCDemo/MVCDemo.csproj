@@ -607,7 +607,7 @@
     <Compile Include="Models\BookContent.cs" />
     <Compile Include="Models\BookToCreateViewModel.cs" />
     <Compile Include="Models\BookToUpdateViewModel.cs" />
-    <Compile Include="Models\Encryption.cs" />
+    <Compile Include="Common\Encryption.cs" />
     <Compile Include="Models\Key.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Models\ProjectDbContext.cs" />

@@ -26,6 +26,7 @@ namespace MVCDemo.Models
         {
             cfg.CreateMap<UserToRegisterViewModel, User>();
             cfg.CreateMap<UserToLoginViewModel, User>();
+            cfg.CreateMap<User, UserToLoginViewModel>();
             cfg.CreateMap<UserToActivateViewModel, User>();
             cfg.CreateMap<UserToRemindPasswordViewModel, User>();
             cfg.CreateMap<UserToSendActivationCodeViewModel, User>();

@@ -6,7 +6,6 @@ namespace MVCDemo.Models
     public class Key
     {
         [StringLength(30)]
-        [DisplayName("Tytuł")]
         public string Id { get; set; }
 
         [StringLength(1500)]

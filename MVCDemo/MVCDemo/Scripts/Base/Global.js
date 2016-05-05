@@ -1146,6 +1146,8 @@ $(document).ready(function () {
                 });
                 if (isHovered) {
                     $("#txtSearch").tooltip("open");
+                } else {
+                    $("#txtSearch").tooltip("disable");
                 }
                 toggleSearchFieldSpinner("hide");
                 response();

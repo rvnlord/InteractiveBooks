@@ -15,9 +15,7 @@ namespace MVCDemo.Common
             var unhandled = e as HttpUnhandledException;
 
             if (unhandled != null && unhandled.ErrorCode == TimedOutExceptionCode)
-            {
                 main = unhandled.InnerException;
-            }
             else
                 main = e;
             

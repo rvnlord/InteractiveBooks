@@ -13,9 +13,9 @@ using Org.BouncyCastle.Pkcs;
 using Org.BouncyCastle.Security;
 using Org.BouncyCastle.X509;
 
-namespace MVCDemo.Models
+namespace MVCDemo.Common
 {
-    public class Encryption
+    public static class Encryption
     {
         // Funkcje Haszujące
 
@@ -146,7 +146,7 @@ namespace MVCDemo.Models
 
         // RSA - Generowanie Kluczy
 
-        public AssymetricKeys RsaGenerateKeys()
+        public static AssymetricKeys RsaGenerateKeys()
         {
             var kpgen = new RsaKeyPairGenerator();
             kpgen.Init(new KeyGenerationParameters(new SecureRandom(new CryptoApiRandomGenerator()), 1024));
@@ -162,7 +162,7 @@ namespace MVCDemo.Models
             return new AssymetricKeys { Private = privateKey, Public = publicKey };
         }
 
-        public AsymmetricCipherKeyPair RsaGenerateKeysRaw()
+        public static AsymmetricCipherKeyPair RsaGenerateKeysRaw()
         {
             var kpgen = new RsaKeyPairGenerator();
             kpgen.Init(new KeyGenerationParameters(new SecureRandom(new CryptoApiRandomGenerator()), 1024));
@@ -171,12 +171,12 @@ namespace MVCDemo.Models
 
         // RSA - Szyfrowanie
 
-        public string RsaEncryptWithPublic(string plainText, string publicKey)
+        public static string RsaEncryptWithPublic(string plainText, string publicKey)
         {
             return RsaEncrypt(plainText, ConvertKeyToPem(publicKey, KeyType.Public));
         }
 
-        public string RsaEncryptWithPrivate(string plainText, string privateKey)
+        public static string RsaEncryptWithPrivate(string plainText, string privateKey)
         {
             return RsaEncrypt(plainText, ConvertKeyToPem(privateKey, KeyType.Private));
         }
@@ -198,12 +198,12 @@ namespace MVCDemo.Models
 
         // RSA - Deszyfrowanie
 
-        public string RsaDecryptWithPrivate(string base64Input, string privateKey)
+        public static string RsaDecryptWithPrivate(string base64Input, string privateKey)
         {
             return RsaDecrypt(base64Input, ConvertKeyToPem(privateKey, KeyType.Private));
         }
 
-        public string RsaDecryptWithPublic(string base64Input, string publicKey)
+        public static string RsaDecryptWithPublic(string base64Input, string publicKey)
         {
             return RsaDecrypt(base64Input, ConvertKeyToPem(publicKey, KeyType.Public));
         }
@@ -223,7 +223,7 @@ namespace MVCDemo.Models
             return decrypted;
         }
 
-        public string ConvertKeyToPem(string key, KeyType keyType)
+        public static string ConvertKeyToPem(string key, KeyType keyType)
         {
             string prepend, append;
             if (keyType == KeyType.Public)

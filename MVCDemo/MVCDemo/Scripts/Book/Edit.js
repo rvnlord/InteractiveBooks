@@ -214,7 +214,7 @@ function document_DragOver(e) {
 }
 
 var rowCount = 0;
-function CreateStatusbar($divStatusInfo) {
+function Statusbar($divStatusInfo) {
     rowCount++;
     var row = "odd";
     if (rowCount % 2 === 0)
@@ -286,7 +286,7 @@ function handleFileUpload(file, obj) {
     fd.append("file", file);
     fd.append("id", $.id);
 
-    var status = new CreateStatusbar(obj); // Ten obiekt pozwoli ustawić postęp wysyłania
+    var status = new Statusbar(obj); // Ten obiekt pozwoli ustawić postęp wysyłania
     status.setFileNameSize(file.name, file.size);
     sendFileToServer(fd, status);
 }
@@ -571,7 +571,7 @@ $(document).ready(function () {
             autounselectify: true,
 
             style: cytoscape.stylesheet()
-                .selector("node")
+              .selector("node")
                 .css({
                     "height": 150,
                     "width": 150,
@@ -857,9 +857,7 @@ $(document).ready(function () {
             if (story) {
                 // Akapit
                 var p = " ".repeat(12);
-                //if (story.startsWith("[p]")) {
-                //    story = p + story;
-                //}
+
                 var storySplitByP = story.split("[p]");
                 if (storySplitByP && storySplitByP.length > 0 && storySplitByP[0].length === 0) {
                     storySplitByP.shift();

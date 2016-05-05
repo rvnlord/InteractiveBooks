@@ -78,7 +78,7 @@ function btnDeleteBook_Click(e) {
 $(document).ready(function () {
 
     function formatBookContent() {
-        $(".book_page_separator").each(function(i, el) {
+        $(".book_page_separator").each(function(i, el) { // usunięcie już istniejącego podziału na strony (w wypadku kliknięcia opcji dialogowej)
             var $prev = $(el).prev();
             var $next = $(el).next();
             if ($prev.is("p") && $next.is("p")) {
@@ -107,36 +107,36 @@ $(document).ready(function () {
 
         for (var i = pages; i > 1; i--) {
             var last = top[top.length - 1];
-            while (getLinesNumber() > (i - 1) * pageLines) {
-                if (!$(last.p).text()) {
+            while (getLinesNumber() > (i - 1) * pageLines) { // dopóki lcziba pozostałych do przetworzenia linii > od liczby linii na wcześniejszych stronach
+                if (!$(last.p).text()) { // jeżeli ostatni p nie zawiera już treści, skończ jego obsługę i pobierz kolejy
                     $(last.p).text(last.originalText);
                     $(last.p).remove();
                     $(last.p).addClass("paged");
                     bottom.unshift(top.pop());
+                    last = top[top.length - 1];
                 }
-                last = top[top.length - 1];
                 var textArr = $(last.p).text().split(" ");
                 textArr.pop();
-                $(last.p).text(textArr.join(" "));
+                $(last.p).text(textArr.join(" ")); // skróć tekst o jedno słowo
             }
-            var separator = top[top.length - 1];
-            var text = $(separator.p).text();
-            var head = text;
-            var tail = separator.originalText.substring(text.length);
+            var lastTop = top[top.length - 1];
+            var text = $(lastTop.p).text(); 
+            var head = text; // tekst będący wynikiem pętli while
+            var tail = lastTop.originalText.substring(text.length); // jego pozostała część
 
-            $(separator.p).text(head);
-            separator.originalText = head;
+            $(lastTop.p).text(head);
+            lastTop.originalText = head;
 
-            bottom.unshift({
+            bottom.unshift({ // dodaj do listy bottom tekst który został usunięty w pętli white
                 p: $("<p class='paged'>" + tail + "</p>")[0],
                 originalText: tail,
-                originalParent: separator.originalParent
+                originalParent: lastTop.originalParent
             });
 
-            bottom.unshift({
+            bottom.unshift({ // dodaj numer strony
                 p: $("<div class='book_page_separator paged'> - " + (i - 1) + " - </div>")[0],
                 originalText: " - " + (i - 1) + " - ",
-                originalParent: separator.originalParent
+                originalParent: lastTop.originalParent
             });
         }
 

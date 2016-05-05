@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using MVCDemo.Models;
 using Newtonsoft.Json;
+using MVCDemo.Common;
 
 namespace MVCDemo.Controllers
 {
@@ -18,7 +19,7 @@ namespace MVCDemo.Controllers
         //}
 
         [HttpGet]
-        public ViewResult Register(bool displayRegisterPanel, bool displayActivateAccountPanel, bool displayRemindPasswordPanel)
+        public ViewResult Register(bool displayRegisterPanel = false, bool displayActivateAccountPanel = false, bool displayRemindPasswordPanel = false)
         {
             Session["DisplayRegisterPanels"] = new
             {
@@ -89,7 +90,6 @@ namespace MVCDemo.Controllers
             var user = new User();
             AutoMapperConfiguration.Mapper.Map(userToRegister, user);
             var registrationResult = user.Register();
-            Session["EmailData"] = Server.MapPath("~/Data/Email.xml");
             var sendActivationResult = user.SendActivationLink();
             
             if (registrationResult == ActionStatus.DatabaseError || sendActivationResult == ActionStatus.DatabaseError)

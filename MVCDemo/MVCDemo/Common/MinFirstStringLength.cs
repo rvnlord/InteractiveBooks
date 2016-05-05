@@ -7,28 +7,27 @@ using System.Threading.Tasks;
 
 namespace MVCDemo.Common
 {
-    internal class MinFirstStringLength : ValidationAttribute
+    public class MinFirstStringLength : ValidationAttribute
     {
         public MinFirstStringLength(int minLength, char separator)
         {
-            this.MinLength = minLength;
-            this.Separator = separator;
+            MinLength = minLength;
+            Separator = separator;
         }
 
-        public int MinLength { get; private set; }
-        public char Separator { get; private set; }
+        public int MinLength { get; }
+        public char Separator { get; }
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            if (value == null || string.IsNullOrEmpty(value.ToString()))
+            if (string.IsNullOrEmpty(value?.ToString()))
                 return ValidationResult.Success;
 
             var arrCurrTerm = value.ToString().Split(Separator);
             
-            if (arrCurrTerm[0].Length < MinLength)
-                return new ValidationResult(this.FormatErrorMessage(validationContext.DisplayName));
-
-            return ValidationResult.Success;
+            return arrCurrTerm[0].Length < MinLength 
+                ? new ValidationResult(FormatErrorMessage(validationContext.DisplayName)) 
+                : ValidationResult.Success;
         }
     }
 }

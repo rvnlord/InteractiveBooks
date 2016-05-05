@@ -1,25 +1,16 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Linq.Dynamic;
 using System.Web.Mvc;
 using MVCDemo.Models;
-using System.Web.Script.Serialization;
-using System.Text;
 using System.IO;
 using Newtonsoft.Json;
-using System.Data.Entity;
-using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
-using System.Linq.Expressions;
-using System.Text.RegularExpressions;
-using System.Threading;
 using System.Web;
 using System.Xml.Linq;
-using AutoMapper;
 using MySql.Data.MySqlClient;
+using static MVCDemo.Models.AutoMapperConfiguration;
 
 namespace MVCDemo.Controllers
 {
@@ -67,7 +58,7 @@ namespace MVCDemo.Controllers
 
             using (var db = new ProjectDbContext())
             {
-                db.Database.Initialize(force: false); // MODEL MUSI BYĆ ZBUDOWANY ZANIM OTWORZYMY POŁĄCZENIE, INACZEJ BĘDZIE BŁĄD, CANNOT USE CONTEXT DURING MODEL CREATING
+                db.Database.Initialize(false); // MODEL MUSI BYĆ ZBUDOWANY ZANIM OTWORZYMY POŁĄCZENIE, INACZEJ BĘDZIE BŁĄD, CANNOT USE CONTEXT DURING MODEL CREATING
 
                 var paramSearchTerms = new MySqlParameter { ParameterName = "p_SearchTerms", Value = search.SearchTerm };
                 var paramIncludeTitle = new MySqlParameter { ParameterName = "p_IncludeTitle", Value = search.IncludeTitle };
@@ -219,7 +210,7 @@ namespace MVCDemo.Controllers
 
             if (System.IO.File.Exists(xmlUrl) && new FileInfo(xmlUrl).Length > 0)
             {
-                var authuser = GetAuthenticatedUser();
+                //var authuser = GetAuthenticatedUser();
 
                 var actionController = controller + "/" + action;
                 var url = Url.Content("~/");
@@ -287,13 +278,10 @@ namespace MVCDemo.Controllers
             //Thread.Sleep(5000);
 
             var user = new User();
-            AutoMapperConfiguration.Mapper.Map(userToLogin, user);
+            Mapper.Map(userToLogin, user);
 
             var isAuthenticated = user.Authenticate();
-            userToLogin.Id = user.Id;
-            userToLogin.UserName = user.UserName;
-            userToLogin.Password = user.Password;
-            userToLogin.RememberMe = user.RememberMe;
+            Mapper.Map(user, userToLogin);
 
             switch (isAuthenticated)
             {
@@ -401,24 +389,17 @@ namespace MVCDemo.Controllers
         {
             var userCookie = Request.Cookies["LoggedUser"];
             var userSession = (UserToLoginViewModel)Session["LoggedUser"];
-            if (userCookie != null)
-            {
-                var userToLogin = JsonConvert.DeserializeObject<UserToLoginViewModel>(userCookie.Value);
-                var user = new User();
-                AutoMapperConfiguration.Mapper.Map(userToLogin, user);
-                if (user.Authenticate(true) == ActionStatus.Success) // (przy użyciu Hasha z cookie, a nie czystego hasła)
-                    return userToLogin;
-            }
-            else if (userSession != null)
-            {
-                var userToLogin = userSession;
-                var user = new User();
-                AutoMapperConfiguration.Mapper.Map(userToLogin, user);
-                if (user.Authenticate(true) == ActionStatus.Success)
-                    return userToLogin;
-            }
+            var user = new User();
+            UserToLoginViewModel userToLogin = null;
+            if (userSession != null)
+                userToLogin = userSession;
+            else if (userCookie != null)
+                userToLogin = JsonConvert.DeserializeObject<UserToLoginViewModel>(userCookie.Value);
 
-            return null;
+            Mapper.Map(userToLogin, user);
+            return user.Authenticate(true) == ActionStatus.Success 
+                ? userToLogin 
+                : null;
         }
     }
 

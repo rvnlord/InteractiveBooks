@@ -303,7 +303,7 @@ namespace MVCDemo.Controllers
                     
                     UpdateXmlBookContent(dbBook, bookContent);
                     
-                    return JsonConvert.SerializeObject(new {BookContent = GetXmlBookContent(dbBook)}, new JsonSerializerSettings // nie jest zwracane bookContent modyfioowane w metodzie, bo zmieniam właściwości na wartości zmlowe (jeśli byłby błąd to za pierwszym razem nie wyświetli inaczej niż przy wczytaniu przy użyciu GetXmlBookContent)
+                    return JsonConvert.SerializeObject(new {BookContent = GetXmlBookContent(dbBook)}, new JsonSerializerSettings // nie jest zwracane bookContent modyfikowane w metodzie, bo zmieniam właściwości na wartości xmlowe (jeśli byłby błąd to za pierwszym razem nie wyświetli inaczej niż przy wczytaniu przy użyciu GetXmlBookContent)
                     {
                         ReferenceLoopHandling = ReferenceLoopHandling.Serialize, PreserveReferencesHandling = PreserveReferencesHandling.Objects
                     });
@@ -959,13 +959,17 @@ namespace MVCDemo.Controllers
             {
                 return Json(new
                 {
-                    ResultsCount = error ? -1 : books.Count, ResultsCounter = resultsCounter, PartialView = string.Empty
+                    ResultsCount = error ? -1 : books.Count,
+                    ResultsCounter = resultsCounter,
+                    PartialView = string.Empty
                 }, JsonRequestBehavior.AllowGet);
             }
 
             return Json(new
             {
-                ResultsCount = books.Count, ResultsCounter = resultsCounter, PartialView = RenderPartialView("_SearchResults", books)
+                ResultsCount = books.Count,
+                ResultsCounter = resultsCounter,
+                PartialView = RenderPartialView("_SearchResults", books)
             }, JsonRequestBehavior.AllowGet);
         }
 
@@ -1044,11 +1048,16 @@ namespace MVCDemo.Controllers
 
         public string IsTitleAvailable(string title)
         {
+            return IsTitleAvailable(title, new Guid()); // Pusty Guid
+        }
+
+        public string IsTitleAvailable(string title, Guid id)
+        {
             using (var db = new ProjectDbContext())
             {
                 try
                 {
-                    var isTitleAvailable = !db.Books.Any(b => b.Title == title);
+                    var isTitleAvailable = !db.Books.Where(b => b.Id != id).Any(b => b.Title == title);
                     return JsonConvert.SerializeObject(new
                     {
                         Message = isTitleAvailable ? "" : "Tytuł jest już używany",

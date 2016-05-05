@@ -67,14 +67,8 @@ namespace MVCDemo.Models
         [DisplayName("Szukaj Książek: ")]
         public string SearchTerm
         {
-            get
-            {
-                return !string.IsNullOrWhiteSpace(_searchTerm) ? _searchTerm : string.Empty;
-            }
-            set
-            {
-                _searchTerm = value;
-            }
+            get { return !string.IsNullOrWhiteSpace(_searchTerm) ? _searchTerm : string.Empty; }
+            set { _searchTerm = value; }
         }
 
         [Required]

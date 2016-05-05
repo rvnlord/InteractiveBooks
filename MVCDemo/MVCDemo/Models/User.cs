@@ -1,25 +1,18 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Configuration;
 using System.Data;
 using System.Linq;
-using System.Data.Entity.Spatial;
-using System.Net.Configuration;
+using System.Net;
 using System.Net.Mail;
-using System.Security.Cryptography;
 using System.Text;
 using System.Web;
-using System.Web.Mvc;
-using System.Xml;
 using System.Xml.Linq;
 using MVCDemo.Common;
 using MVCDemo.Controllers;
-using MySql.Data.MySqlClient;
+using static MVCDemo.Common.Encryption;
 
 namespace MVCDemo.Models
 {
@@ -104,7 +97,7 @@ namespace MVCDemo.Models
 
                     var dbUser = dbUsers.Single();
 
-                    var password = !useHash ? Encryption.VerifyHash(Password ?? "", HashAlgorithmType.SHA512, dbUser.Password) : Password;
+                    var password = !useHash ? VerifyHash(Password ?? "", HashAlgorithmType.SHA512, dbUser.Password) : Password;
                     
                     Id = dbUser.Id;
                     UserName = dbUser.UserName;
@@ -190,7 +183,7 @@ namespace MVCDemo.Models
                 {
                     Id = Guid.NewGuid();
                     UserName = UserName;
-                    Password = Encryption.ComputeHash(Password, HashAlgorithmType.SHA512);
+                    Password = ComputeHash(Password, HashAlgorithmType.SHA512);
                     Email = Email;
                     ActivationEmail = Email;
                     RegistrationDate = accountCreationTime;
@@ -401,12 +394,13 @@ namespace MVCDemo.Models
             {
                 try
                 {
-                    var enc = new Encryption();
                     var dbPrivateKey = db.Keys.Single(k => k.Id == "email_private");
                     var dbPublicKey = db.Keys.Single(k => k.Id == "email_public");
                     var privateKey = dbPrivateKey.Value;
 
-                    var xmlPath = HttpContext.Current.Session["EmailData"].ToString();
+                    //var xmlPath = HttpContext.Current.Server.MapPath("~/Data/Email.xml");
+                    var xmlPath = $@"{AppDomain.CurrentDomain.BaseDirectory}\Data\Email.xml";
+                    
                     var doc = XDocument.Load(xmlPath);
                     var smtp = doc.Element("smtp");
                     var network = smtp?.Element("network");
@@ -415,11 +409,11 @@ namespace MVCDemo.Models
                     var port = Convert.ToInt32(network?.Attribute("port").Value);
                     var address = smtp?.Attribute("from").Value ?? "";
                     var userName = network?.Attribute("userName").Value;
-                    var password = enc.RsaDecryptWithPrivate(network?.Attribute("password").Value, privateKey);
+                    var password = RsaDecryptWithPrivate(network?.Attribute("password").Value, privateKey);
                     var enableSsl = network?.Attribute("enableSsl").Value;
 
-                    var keys = enc.RsaGenerateKeys();
-                    network?.SetAttributeValue("password", enc.RsaEncryptWithPublic(password, keys.Public));
+                    var keys = RsaGenerateKeys();
+                    network?.SetAttributeValue("password", RsaEncryptWithPublic(password, keys.Public));
                     doc.Save(xmlPath);
 
                     dbPrivateKey.Value = keys.Private;
@@ -435,7 +429,7 @@ namespace MVCDemo.Models
 
                     var smtpClient = new SmtpClient(host, port)
                     {
-                        Credentials = new System.Net.NetworkCredential()
+                        Credentials = new NetworkCredential()
                         {
                             UserName = userName,
                             Password = password

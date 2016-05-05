@@ -15,8 +15,8 @@ namespace MVCDemo.Common
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            var propValues = new List<object> {value};
-            if (!(string.IsNullOrWhiteSpace(AdditionalFields) || string.IsNullOrEmpty(AdditionalFields)))
+            var propValues = new List<object> { value };
+            if (!string.IsNullOrWhiteSpace(AdditionalFields))
             {
                 var additionalFields = AdditionalFields.Split(',');
                 propValues.AddRange(additionalFields
@@ -25,34 +25,22 @@ namespace MVCDemo.Common
                     .Select(prop => prop.GetValue(validationContext.ObjectInstance, null)));
             }
 
-            // Get the controller using reflection
+            // Pobierz kontroler używając Reflection
             var controller = Assembly.GetExecutingAssembly().GetTypes()
                 .FirstOrDefault(type => string.Equals(type.Name, $"{RouteData["controller"].ToString()}Controller", StringComparison.CurrentCultureIgnoreCase));
 
-            // Get the action method that has validation logic
+            // Pobierz metodę akcji zawierającą logikę walidacji
             var action = controller?.GetMethods()
-                .FirstOrDefault(method => string.Equals(method.Name, RouteData["action"].ToString(), StringComparison.CurrentCultureIgnoreCase));
+                .FirstOrDefault(method => string.Equals(method.Name, RouteData["action"].ToString(), StringComparison.CurrentCultureIgnoreCase)
+                     && method.GetParameters().Select(p => p.ParameterType).SequenceEqual(propValues.Select(p => p.GetType())));
 
             if (action == null)
                 throw new Exception("Wskazana w RemoteClientServerAttribute metoda walidacji nie istnieje");
-
-            // poniższy skomenotwany kod jest niepotrzebny, bo wywoływany przez serwer typ np Usera przyjmie tylko 
-            // w wypadku, jęzeli prześlemy tego Usera jako 'additionalFields', 'value' jest zawsze właściwością Usera
-
-            //var notStrParams = action.GetParameters().Where(p => p.ParameterType != typeof(string));
-            //var notStrParamValues = propValues.Where(p => notStrParams.Select(x => x.Name).Contains(nameof(p)));
-            //propValues.RemoveAll(p => notStrParamValues.Contains(p));
-            //var paramProps =
-            //    from pv in notStrParamValues
-            //    from prop in pv.GetType().GetProperties()
-            //    select prop.GetValue(pv, null);
-
-            //propValues.AddRange(paramProps);
-
-            // Create an instance of the controller class
+            
+            // Utwórz instancję klasy kontrolera
             var instance = Activator.CreateInstance(controller);
-            // Invoke the action method that has validation logic
-            var response = action.Invoke(instance, propValues.ToArray()); // 1 parametr, TYLKO value // new[] { value }
+            // Wywołaj metodę akcji posiadającą logikę walidacji
+            var response = action.Invoke(instance, propValues.ToArray());
             var jsonString = response as string;
             var jsonResult = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(jsonString);
             var result = jsonResult["Result"];

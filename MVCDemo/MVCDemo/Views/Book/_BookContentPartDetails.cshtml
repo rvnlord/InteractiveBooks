@@ -8,14 +8,13 @@
     var chapter = Model.Chapter;
 }
 
-@if (parents == null || parents.Count <= 0 || choiceParentChapter != chapter.Number) // parents.Count(p => p.Chapter.Number == chapter.Number) == parents.Count)
+@if (parents == null || parents.Count <= 0 || choiceParentChapter != chapter.Number) 
 {
     <div class="book_details_content_chapter">
         Rozdział @Model.Chapter.Number: @Model.Chapter.Title
     </div>
 }
 <div class="book_details_content_story">
-    @*@(((BookController) ViewContext.Controller).ParseStoryFromXmlToHtml(Model.Story))*@
     @{ Html.RenderAction("ParseStoryFromXmlToHtmlPartial", "Book", new { Model.Story }); }
 </div>
 <div class="book_details_content_choice" choice-parent="@Model.Id">
