@@ -97,7 +97,7 @@ namespace MVCDemo.Controllers
             return View();
         }
 
-        public string GetXmlBookNodeContent(Guid id, int nodeNumber, int? choiceParent)
+        public string GetXmlBookNodeContent(Guid id, int? nodeNumber, int? choiceParent)
         {
             //Thread.Sleep(3000);
             if (!Request.IsAjaxRequest())
@@ -125,10 +125,10 @@ namespace MVCDemo.Controllers
                             Message = "Książka nie zawiera żadnej treści do wyświetlenia"
                         });
                     }
-
+                    
                     return JsonConvert.SerializeObject(new
                     {
-                        PartialView = RenderPartialView("_BookContentPartDetails", bookContent[nodeNumber]),
+                        PartialView = RenderPartialView("_BookContentPartDetails", bookContent[nodeNumber ?? bookContent.Root().Id]),
                         Message = string.Empty
                     });
                 }

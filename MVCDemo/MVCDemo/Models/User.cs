@@ -399,7 +399,7 @@ namespace MVCDemo.Models
                     var privateKey = dbPrivateKey.Value;
 
                     //var xmlPath = HttpContext.Current.Server.MapPath("~/Data/Email.xml");
-                    var xmlPath = $@"{AppDomain.CurrentDomain.BaseDirectory}\Data\Email.xml";
+                    var xmlPath = $@"{AppDomain.CurrentDomain.BaseDirectory}Data\Email.xml";
                     
                     var doc = XDocument.Load(xmlPath);
                     var smtp = doc.Element("smtp");

@@ -188,10 +188,10 @@ BEGIN
   PREPARE stmt FROM @v_statement;
   EXECUTE stmt;
   DEALLOCATE PREPARE stmt;
-
+  
   SELECT COUNT(Id) INTO v_totalResults 
     FROM temp_tblSearchResults;
-
+  
   SELECT COUNT(Id) INTO v_resultsCount
     FROM 
     (
@@ -213,7 +213,7 @@ BEGIN
   SELECT * 
     FROM temp_tblSearchResults 
     LIMIT p_HowMuchTake OFFSET p_HowMuchSkip;
-
+  
   DROP TEMPORARY TABLE IF EXISTS temp_tblSearchMatches;
   DROP TEMPORARY TABLE IF EXISTS temp_tblSearchResults;
 END;
@@ -258,9 +258,20 @@ Update tblBooks
   WHERE 
     tblBooks.Id = "7bcba4ed-f28c-11e5-9c77-00ff23f4a6cf";
 
+UPDATE tblUsers u SET u.UserName = "Szymon" WHERE u.UserName = "rvnlord";
+
+UPDATE tblKeys k SET k.Value = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAMHyQkWwqP3zgc3YesQzLAPYo65o34/xw6ioN4puJ9ExZZtyA2ILV12Ms8sE6C7WLMQ6yjqOJ5asNV20Tdbzc+uw6A+WkdFBI1WB1XPoKG2zTj2CF+UOPmOrqZJ+9ETo8bjMbDOGD/XJ1bHLrBDzRx5LwsVpEMEdtyYWcYfBsiJNAgMBAAECgYAKHXJrZA1MQVjxvWqZtPmEsdXHkNyoCznjH/LVm20kMelUtBuND35c+Kuf2P+rAayQB2joqOVTrGOUIYU1wri26NW1yYgt/zncbBAgrPpqaP4oyCGRJ3DBqSmk5hbHuonZ2BZeVuzz3FyK/vHEEDOC1cSge7xxVMfM4Wn2m/td2QJBAO43BNepixL4xcZXw8VzFavTvsXQZdYn1xH7TPVGm7nwoW2YqSSOuUFY85BkvrudTXVL9mAe02ai14g2yaHjCJMCQQDQbSNecRKLpis5uiZkFk6i7Fs2VhSjpdIcgQdkjZ5MsfiEaLRgXAdB50utNze0xjMB8evrEQGL2oLkmRymLVWfAkAN/J0ELKhFzOWP58dO6Jr1I9Gnu7y+/kfafm7eV+780+wmizgjNV4bQCXM7J1mVq4dnQAyVJ0FAbq1/MGKB9KRAkEAoAAINMnMmNO5Pxl9uzu8pimXY8D1GyOChksu56wnp2zAALV4MrizAY6Tc6d95hJ4ubeDifKGI1xdOyum6JLItQJBAOYlBUEL1nuKAsH0QdIfUAFYJhzT/THdxMpzPJuKnSJYCCBXVty6hkXmvJxfcd9s1zO1PI6HEQY+DXXbI/NOrEk="
+  WHERE k.Id = "email_private";
+UPDATE tblKeys k SET k.Value = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDB8kJFsKj984HN2HrEMywD2KOuaN+P8cOoqDeKbifRMWWbcgNiC1ddjLPLBOgu1izEOso6jieWrDVdtE3W83PrsOgPlpHRQSNVgdVz6Chts049ghflDj5jq6mSfvRE6PG4zGwzhg/1ydWxy6wQ80ceS8LFaRDBHbcmFnGHwbIiTQIDAQAB"
+  WHERE k.Id = "email_public";
+
 -- NOWE
 
+
+
 -- ================================================================================================
+
+SELECT * FROM tblBooks b WHERE b.Title LIKE 'Przyk%';
 
 DELETE FROM tblBooks WHERE tblBooks.Category IS NULL;
 
@@ -301,6 +312,56 @@ INSERT INTO tblactivationrequests (tblActivationRequests.Id, tblActivationReques
   VALUES ("9d892b2b-9e15-4f0e-97a5-af4343d8b596", "016bcf98-e9cc-4a30-a538-b2e9ac371d9a", "2016-02-22 01:29:33");
 INSERT INTO tblactivationrequests (tblActivationRequests.Id, tblActivationRequests.UserId, tblActivationRequests.ActivationRequestDateTime)
   VALUES ("9d892b2b-9e15-4f0e-97a5-af4343d8b596", "016bcf98-e9cc-4a30-a538-b2e9ac371d9a", CURDATE());
+
+-- TEST
+
+DROP PROCEDURE IF EXISTS sp_SearchTest;
+CREATE PROCEDURE sp_SearchTest(
+  IN p_SearchTerms VARCHAR(1000), 
+  IN p_IncludeTitle TINYINT, 
+  IN p_IncludeAuthor TINYINT, 
+  IN p_IncludeCategory TINYINT, 
+  IN p_IncludeDescription TINYINT,
+  IN p_HowMuchSkip INT,
+  IN p_HowMuchTake INT,
+  IN p_SortBy VARCHAR(100),
+  IN p_SortOrder VARCHAR(100)
+)
+BEGIN
+  DECLARE i INT DEFAULT 1;
+  DECLARE v_currTerm VARCHAR(100) DEFAULT "";
+  DECLARE v_totalResults INT DEFAULT 0;
+  DECLARE v_resultsCount INT DEFAULT 0;
+  DECLARE v_sortBy VARCHAR(100);
+
+  DROP TEMPORARY TABLE IF EXISTS temp_tblSearchMatches;
+	CREATE TEMPORARY TABLE temp_tblSearchMatches
+  (
+    Id VARCHAR(36),
+    SearchTerm VARCHAR(100),
+    CONSTRAINT ck_temp_searchmatches_id CHECK (Id REGEXP '[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}')
+  );
+
+  WHILE (SUBSTRING_INDEX(SUBSTRING_INDEX(CONCAT(p_SearchTerms, " end;"), ' ', i), ' ', -1) != "end;") DO
+    SET v_currTerm = LOWER(SUBSTRING_INDEX(SUBSTRING_INDEX(CONCAT(p_SearchTerms, " end;"), ' ', i), ' ', -1));
+    INSERT INTO temp_tblSearchMatches (temp_tblSearchMatches.Id, temp_tblSearchMatches.SearchTerm) 
+      SELECT b.Id, v_currTerm FROM tblBooks b
+        WHERE 
+          LOWER(CONCAT(
+            CASE p_IncludeTitle WHEN 1 THEN b.Title ELSE "" END, " ",
+            CASE p_IncludeAuthor WHEN 1 THEN (SELECT u.UserName FROM tblUsers u WHERE u.ID = b.AuthorId) ELSE "" END, " ",
+            CASE p_IncludeCategory WHEN 1 THEN b.Category ELSE "" END, " ",
+            CASE p_IncludeDescription WHEN 1 THEN b.Description ELSE "" END)) LIKE CONCAT("%", v_currTerm, "%");
+    SET i = i + 1;
+  END WHILE;
+  COMMIT;
+
+  SELECT * FROM temp_tblSearchMatches sm;
+
+  DROP TEMPORARY TABLE IF EXISTS temp_tblSearchMatches;
+END;
+
+CALL sp_SearchTest("przy szy ksi¹", 1, 0, 0, 1, 4, 12, 'title', 'asc');
 
 
 

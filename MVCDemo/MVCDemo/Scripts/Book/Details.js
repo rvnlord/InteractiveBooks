@@ -177,7 +177,7 @@ $(document).ready(function () {
 
     function getXmlBookNodeContent(args) {
         args = args || {};
-        var nodeNumber = args.nodeNumber || 0;
+        var nodeNumber = args.nodeNumber || null;
         var choiceParent = args.choiceParent || null;
 
         $("#divBookDetailsContentLoader").remove();

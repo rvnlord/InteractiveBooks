@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using MoreLinq;
 
 namespace MVCDemo.Models
 {
@@ -64,6 +65,11 @@ namespace MVCDemo.Models
         public BookContentEnumerator GetEnumerator()
         {
             return new BookContentEnumerator(_bookContent);
+        }
+
+        public BookContentPart Root()
+        {
+            return _bookContent.Where(x => (x.ParentIds?.Count ?? 0) == 0).MinBy(x => x.Id);
         }
     }
 
