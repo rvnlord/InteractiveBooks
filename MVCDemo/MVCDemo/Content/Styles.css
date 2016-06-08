@@ -78,6 +78,19 @@ body, p, table, tr, td {
     border: none;
 }
 
+#divHomeDescription {
+    color: blue;
+    font-size: 20px;
+}
+
+#divHomeDescription div {
+    padding-bottom: 10px;
+}
+
+#divHomeDescription ul li {
+    padding-bottom: 5px;
+}
+
 div#Main {
     width: 1004px;
     margin: 0 auto;

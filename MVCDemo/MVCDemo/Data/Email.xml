@@ -1,4 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <smtp deliveryMethod="Network" from="Interaktywne Książki &lt;rvnlord@gmail.com&gt;">
-  <network host="smtp.gmail.com" password="IXXKZlowlhGWlYIMn4iQCvC7/PvtwWftlZLKWiVw+PMyuUSphFVGYYKMRnfU9xM0/toJ3lRthP/L9KW4Ic2Ma+QymEdAy/2oEftVewR024+R7Ru5V92SpmMJ6AfzZavzJeT8K+EQdt8SdKrQqexchZlWm1olhSDcSUdhi+THVRg=" port="587" userName="rvnlord@gmail.com" enableSsl="true" />
+  <network host="smtp.gmail.com" password="FxO3aVyfPStdeZWknVCNTUpPLb06nsVFSJJGnplez1Fqgr4mlMWY7h7O4LVgSDN2RowKFz/3ccueLfk5YZ0xaiLFtjdrLgTqr7XuTsPNSEHiUrjZ/nA7lnqjg0zztCc1jghM+htlB3mh0EExxFCHrSf2wDEQPj0mk1mn3WGwMgQ=" port="587" userName="rvnlord@gmail.com" enableSsl="true" />
 </smtp>

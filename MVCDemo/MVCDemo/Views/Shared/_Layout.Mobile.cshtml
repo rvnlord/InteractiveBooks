@@ -6,10 +6,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title</title>
-    @*<link href="~/Content/jquery.mobile-1.4.5.css" rel="stylesheet"/>*@
+    <link rel="icon" type="image/png" href="@Url.Content("~/Images/Icons/favicon.png")" />
+
     <link href="~/Content/themes/base/all.css" rel="stylesheet" />
     <link href="~/Content/Styles.css" rel="stylesheet" />
-    <meta name="description" content="The description of my page" />
+    <meta name="description" content="Interaktywne Książki" />
 </head>
 <body>
 
@@ -24,6 +25,7 @@
         @{
             var controller = ViewContext.RouteData.GetRequiredString("controller");
             var action = ViewContext.RouteData.GetRequiredString("action");
+            var id = ViewContext.RouteData.Values["id"];
         }
 
         @Html.Partial("_ViewSwitcher")
@@ -58,20 +60,14 @@
     </div>
     <script src="~/Scripts/jquery-2.1.4.js"></script>
     <script type="text/javascript">
-        //Function that provides a relative URL for cases of virtual directories.
-        jQuery.url = function (path) {
+        $.url = function (path) {
             return '@Url.Content("~/")' + path;
         };
+        $.controller = '@controller';
+        $.action = '@action';
+        $.id = '@id';
     </script>
-    @*<script type="text/javascript">
-        $(document).on('mobileinit', function () {
-            //$.mobile.keepNative = "*";
-            $.mobile.ignoreContentEnabled = true;
-            //$.mobile.autoInitializePage = false;
-        });
-    </script>*@
     <script src="~/Scripts/jquery-ui-1.11.4.js"></script>
-    @* http://jquerymobile.com/download-builder/ *@
     <script src="~/Scripts/jquery.mobile.noinit.noselects-1.4.5.js"></script>
     <script src="~/Scripts/jquery.validate.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
@@ -88,8 +84,9 @@
     <script src="~/Scripts/dagre.js"></script>
     <script src="~/Scripts/cytoscape.js"></script>
     <script src="~/Scripts/cytoscape-dagre.js"></script>
-    <script src="~/Scripts/Base/Index.js"></script>
+    <script src="~/Scripts/Base/Global.js"></script>
     @RenderSection("Scripts", false)
+    <script src="~/Scripts/Base/After.js"></script>
 </body>
 
 </html>

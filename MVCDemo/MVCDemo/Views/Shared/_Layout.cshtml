@@ -10,7 +10,7 @@
 
     <link href="~/Content/themes/base/all.css" rel="stylesheet" />
     <link href="~/Content/Styles.css" rel="stylesheet" />
-    <meta name="description" content="The description of my page" />
+    <meta name="description" content="Interaktywne Książki" />
 </head>
 <body>
 
@@ -26,9 +26,6 @@
             var controller = ViewContext.RouteData.GetRequiredString("controller");
             var action = ViewContext.RouteData.GetRequiredString("action");
             var id = ViewContext.RouteData.Values["id"];
-            //var t = "";
-            //var url = Request.ApplicationPath + "/" + controller + "/" + action;
-            //var url = Request.Url?.AbsoluteUri;
         }
 
         @Html.Partial("_ViewSwitcher")

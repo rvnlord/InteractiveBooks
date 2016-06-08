@@ -51,22 +51,23 @@ function btnDeleteBook_Click(e) {
                     length: 1000,
                     message: message,
                     messageColor: msgColor,
-                    appendToElement: $appendToElement
+                    appendToElement: $appendToElement,
+                    callback: function() {
+                        if (status !== "success") {
+                            $(e.target).off("click").on("click", function (evt) {
+                                btnDeleteBook_Click(evt);
+                            });
+                            $("#" + loaderContainerId).css({
+                                "min-height": "auto"
+                            });
+                            $divDeleteLoader.remove();
+                            resizeBackground();
+                            positionBackground();
+                        } else {
+                            $("#divBookDetailsContainer").children("div").not("#divDeleteLoader").remove();
+                        }
+                    }
                 });
-            }
-
-            if (status !== "success") {
-                $(e.target).off("click").on("click", function (evt) {
-                    btnDeleteBook_Click(evt);
-                });
-                $("#" + loaderContainerId).css({
-                    "min-height": "auto"
-                });
-                $divDeleteLoader.remove();
-                positionBackground();
-                resizeBackground();
-            } else {
-                $("#divBookDetailsContainer").children("div").not("#divDeleteLoader").remove();
             }
         },
         error: function (err) {

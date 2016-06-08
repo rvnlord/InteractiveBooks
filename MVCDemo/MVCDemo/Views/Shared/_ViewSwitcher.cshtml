@@ -4,12 +4,12 @@
         @if (ViewContext.HttpContext.GetOverriddenBrowser().IsMobileDevice)
         {
             @: Widok Mobilny | 
-            @Html.ActionLink("Włącz Widok Normalny", "SwitchView", "ViewSwitcher", new {mobile = false, returnUrl = Request.Url.PathAndQuery}, new {rel = "external"})
+            @Html.ActionLink("Włącz Widok Normalny", "SwitchView", "ViewSwitcher", new { mobile = false, returnUrl = Request.Url.PathAndQuery }, new { @id = "lnkbtnViewSwitcher", rel = "external" })
         }
         else
         {
             @: Widok Normalny | 
-            @Html.ActionLink("Włącz Widok Mobilny", "SwitchView", "ViewSwitcher", new {mobile = true, returnUrl = Request.Url.PathAndQuery}, new {rel = "external"})
+            @Html.ActionLink("Włącz Widok Mobilny", "SwitchView", "ViewSwitcher", new { mobile = true, returnUrl = Request.Url.PathAndQuery }, new { @id = "lnkbtnViewSwitcher", rel = "external" })
         }
     </div>
 @*}*@

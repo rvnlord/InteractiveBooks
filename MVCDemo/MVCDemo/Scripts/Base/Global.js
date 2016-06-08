@@ -731,6 +731,7 @@ function toggleUniversalMessage(args) {
     var fadetime = args.fadetime || 1000; // time of fade in and fade out in miliseconds
     var messageColor = args.messageColor || "yellow";
     var appendToElement = args.appendToElement || null;
+    var callback = args.callback || null;
 
     var containerId = id + "UniversalMessageContainer";
     var contentId = id + "UniversalMessageContent";
@@ -748,7 +749,7 @@ function toggleUniversalMessage(args) {
                 "opacity": "0",
                 "position": "absolute",
                 "background-color": "#000000",
-                "z-index": "5",
+                "z-index": "100",
                 "width": $element.outerWidth() + "px",
                 "height": $element.outerHeight() + "px"
             })
@@ -765,7 +766,7 @@ function toggleUniversalMessage(args) {
                 "position": "absolute",
                 //"width": $element.outerWidth() + "px",
                 //"height": $element.outerHeight() + "px",
-                "z-index": "6",
+                "z-index": "101",
                 "background-position": "center center",
                 "background-repeat": "no-repeat",
                 "-ms-background-size": "contain",
@@ -790,19 +791,36 @@ function toggleUniversalMessage(args) {
         $divContent
             .css({ "opacity": "0" })
             .stop(true, true)
-            .animate({ "opacity": "1" }, { queue: true, duration: fadetime });
+            .animate({ "opacity": "1" }, { queue: true, duration: fadetime, complete: function() {
+                if (callback && option !== "hide" && !fadeout) {
+                    callback();
+                }
+            }
+        });
+
     }
+
     if (option === "hide" || fadeout) {
         $divContainer = $("#" + containerId);
         $divContent = $("#" + contentId);
 
         $divContainer
             .delay(length)
-            .animate({ "opacity": "0" }, { queue: true, duration: fadetime, complete: function () { $divContainer.remove(); } });
+            .animate({ "opacity": "0" }, { queue: true, duration: fadetime, complete: function() {
+                $divContainer.remove();
+            }
+            });
+
         $divContent
             .delay(length)
-            .animate({ "opacity": "0" }, { queue: true, duration: fadetime, complete: function () { $divContent.remove(); } });
+            .animate({ "opacity": "0" }, { queue: true, duration: fadetime, complete: function() {
+                $divContent.remove();
+                if (callback) {
+                    callback();
+                }
+            } });
     }
+
     if (option !== "show" && option !== "hide") {
         alert("toggleSearchResultsSpinner - podana opcja jest nieprawidłowa. ");
     }
@@ -1353,13 +1371,6 @@ $(document).ready(function () {
         }
     }
 
-    //$(document).on("click keydown", "#btnLoginSubmit, #frmLoginPanel input", function (e) {
-    //    if (e.type === "keydown" && e.which !== 13)
-    //        return;
-    //
-    //    if (e.type === "click" && e.target.id !== "btnLoginSubmit")
-    //        return;
-
     $(document).on("keyup", "#frmLoginPanel input", function (e) {
         if (e.which !== 13)
             return;
@@ -1398,7 +1409,6 @@ $(document).ready(function () {
         }
     }
 
-    //$("#btnLoginSubmit").on("click keydown", function(e) {
     $(document).on("click", "#btnLoginSubmit", function (e) {
         $("#btnLoginSubmit").prop("disabled", true);
         updateLoginPanelOnBegin();
@@ -1515,6 +1525,22 @@ $(document).ready(function () {
     $divMain.find("*").on("attrchange", function () {
         positionBackground();
         resizeBackground();
+    });
+
+    // Niezaimplementowane funkcjonalności
+
+    $("a[href*='User'], a[href*='ViewSwitcher'], a[href*='Home/About']").not("a[href*='Register']").on("click", function (e) { /*"#lnkbtnViewSwitcher, #lnkbtnUserDetails"*/
+        e.preventDefault();
+        toggleUniversalMessage({
+            id: "divMenuAndSearchContainer",
+            option: "show",
+            fadeout: true,
+            fadetime: 1000,
+            length: 1000,
+            message: "Funkcjonalność nie została jeszcze zaimplementowana",
+            messageColor: "#0b970d",
+            appendToElement: $("#Main")
+        });
     });
 
 });

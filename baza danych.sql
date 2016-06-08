@@ -54,8 +54,12 @@ CREATE TABLE tblBooks
 DROP PROCEDURE IF EXISTS sp_InsertSampleUsers;
 CREATE PROCEDURE sp_InsertSampleUsers()
 BEGIN
-  INSERT INTO tblUsers (tblUsers.Id, tblUsers.UserName, tblUsers.Password, tblUsers.Email, tblUsers.RegistrationDate, tblUsers.RetryAttempts, tblUsers.IsLocked, tblUsers.LockedDateTime) 
-    VALUES ("748cea8f-80be-11e5-87be-d43d7ef137da", "rvnlord", "lU80CJOjak3avac/ekz/6KsNmDP4emkviKRSl6uYobrZpQ2ACrycpFNOhmWLZiTUh5qqaUfb75GXn+J8GBVfNmBiM+s=", "rvnlord@gmail.com", "2014-10-27 18:54:55", 1, 0, null);
+  INSERT INTO tblusers(Id, UserName, Password, Email, RegistrationDate, RetryAttempts, IsLocked, LockedDateTime, IsActivated) VALUES
+    ('748cea8f-80be-11e5-87be-d43d7ef137da', 'Szymon', '+TxaMVKYX75MXYY0t20SXdNBU0UJOp1IF+3G8/+NPzpI5o4cKU6KBT3WcGijDMk9uYDO1rh3O75zGRY+NoLz43ggoHzZ6CA=', 'rvnlord@gmail.com', '2014-10-27 18:54:55', 0, 0, '2016-04-14 14:12:37', 1);
+  INSERT INTO tblusers(Id, UserName, Password, Email, RegistrationDate, RetryAttempts, IsLocked, LockedDateTime, IsActivated) VALUES
+    ('7698a976-e44b-43b9-a075-972c25b85a79', 'koverss', 'JUgJPkd6aEENlbbYPt0YVaU9zkqT3+HlBherT5FmCnZvk8tvVVwqPrvvG2fNQuSR9L5RFWzDzWpXnqs4fVXfgPAzVyHC', 'bbabczynski@gmail.com', '2016-04-04 01:22:10', 0, 0, '2016-04-04 01:22:10', 1);
+  INSERT INTO tblusers(Id, UserName, Password, Email, RegistrationDate, RetryAttempts, IsLocked, LockedDateTime, IsActivated) VALUES
+    ('a613ab1e-2e21-431a-a43e-1c0025c078ac', 'Test', 'LYPYblW2nFmH9KZ+xZfpdWm/jspQHLFo1bLEk77ODoYM3V9ILiVzR7wuxb5QTaWV8vs5wjuU1US8DOdOJ/14AQe2FW4=', 'r.vnlord@gmail.com', '2016-06-08 15:31:02', 0, 0, '2016-06-08 15:31:02', 1);
 END;
 
 TRUNCATE TABLE tblBooks;

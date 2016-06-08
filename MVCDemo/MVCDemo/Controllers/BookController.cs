@@ -862,6 +862,9 @@ namespace MVCDemo.Controllers
             {
                 try
                 {
+                    GC.Collect();
+                    GC.WaitForPendingFinalizers();
+
                     var dbBook = db.Books.Single(b => b.Id == id);
                     new DirectoryInfo(Server.MapPath(dbBook.Path)).Delete(true);
                     db.Books.Remove(dbBook);
