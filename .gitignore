@@ -297,6 +297,6 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
-MVCDemo/MVCDemo/Data/Email.xml
-MVCDemo/MVCDemo/Data/Email.xml
-MVCDemo/MVCDemo/Data/Email.xml
+
+# Custom
+/*/Email.xml
