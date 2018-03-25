@@ -4,9 +4,10 @@ Web.Debug.config
 Web.Release.config
 packages.config
 App_Start
+InteractiveBooks/InteractiveBooks/Content/images
+InteractiveBooks/InteractiveBooks/images
 CodeTemplates
 *bootstrap*
-images
 *jquery*
 *Microsoft*
 *moment*.js
