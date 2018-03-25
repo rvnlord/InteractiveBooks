@@ -3,6 +3,22 @@ web.config
 Web.Debug.config
 Web.Release.config
 packages.config
+App_Start
+CodeTemplates
+*bootstrap*
+images
+*jquery*
+*Microsoft*
+*moment*.js
+themes
+fonts
+_references
+*cytoscape*
+*dagre*
+*eventPause*
+*jHash*
+*linq*.js
+Email.xml
 
 # Windows image file caches
 Thumbs.db
