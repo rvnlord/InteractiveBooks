@@ -13,7 +13,9 @@ CodeTemplates
 *moment*.js
 themes
 fonts
-_references
+*_references*
+*additional-methods*
+*attrchange*
 *cytoscape*
 *dagre*
 *eventPause*
