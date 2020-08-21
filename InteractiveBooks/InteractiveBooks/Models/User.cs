@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -394,10 +395,8 @@ namespace MVCDemo.Models
             {
                 try
                 {
-                    var dbPrivateKey = db.Keys.Single(k => k.Id == "email_private");
-                    var dbPublicKey = db.Keys.Single(k => k.Id == "email_public");
-                    var privateKey = dbPrivateKey.Value;
-
+                    var dbPrivateKey = db.Keys.SingleOrDefault(k => k.Id == "email_private");
+                    var privateKey = dbPrivateKey?.Value;
                     //var xmlPath = HttpContext.Current.Server.MapPath("~/Data/Email.xml");
                     var xmlPath = $@"{AppDomain.CurrentDomain.BaseDirectory}Data\Email.xml";
                     
@@ -405,19 +404,21 @@ namespace MVCDemo.Models
                     var smtp = doc.Element("smtp");
                     var network = smtp?.Element("network");
 
-                    var host = network?.Attribute("host").Value;
-                    var port = Convert.ToInt32(network?.Attribute("port").Value);
-                    var address = smtp?.Attribute("from").Value ?? "";
-                    var userName = network?.Attribute("userName").Value;
-                    var password = RsaDecryptWithPrivate(network?.Attribute("password").Value, privateKey);
-                    var enableSsl = network?.Attribute("enableSsl").Value;
+                    var host = network?.Attribute("host")?.Value;
+                    var port = Convert.ToInt32(network?.Attribute("port")?.Value);
+                    var address = smtp?.Attribute("from")?.Value ?? "";
+                    var userName = network?.Attribute("userName")?.Value;
+                    var rawPassword = network?.Attribute("rawpassword")?.Value;
+                    var password = rawPassword ?? RsaDecryptWithPrivate(network?.Attribute("password")?.Value, privateKey);
+                    var enableSsl = network?.Attribute("enableSsl")?.Value;
 
                     var keys = RsaGenerateKeys();
                     network?.SetAttributeValue("password", RsaEncryptWithPublic(password, keys.Public));
+                    network?.Attribute("rawpassword")?.Remove();
                     doc.Save(xmlPath);
 
-                    dbPrivateKey.Value = keys.Private;
-                    dbPublicKey.Value = keys.Public;
+                    db.Keys.AddOrUpdate(new Key { Id = "email_private", Value = keys.Private });
+                    db.Keys.AddOrUpdate(new Key { Id = "email_public", Value = keys.Public });
                     db.SaveChanges();
 
                     var mailMessage = new MailMessage(address, Email)
